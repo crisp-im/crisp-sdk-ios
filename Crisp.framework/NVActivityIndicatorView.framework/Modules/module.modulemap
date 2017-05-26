@@ -1,0 +1,10 @@
+framework module NVActivityIndicatorView {
+  umbrella header "NVActivityIndicatorView.h"
+
+  export *
+  module * { export * }
+}
+
+module NVActivityIndicatorView.Swift {
+    header "NVActivityIndicatorView-Swift.h"
+}

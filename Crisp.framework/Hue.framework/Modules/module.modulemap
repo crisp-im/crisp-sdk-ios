@@ -1,0 +1,3 @@
+framework module Hue {
+    header "Hue-Swift.h"
+}

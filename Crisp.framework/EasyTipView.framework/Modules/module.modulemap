@@ -1,0 +1,10 @@
+framework module EasyTipView {
+  umbrella header "EasyTipView.h"
+
+  export *
+  module * { export * }
+}
+
+module EasyTipView.Swift {
+    header "EasyTipView-Swift.h"
+}
