@@ -52,17 +52,17 @@ Run `carthage update` to build the framework and drag the built `Crisp.framework
 
 If you prefer not to use any of the aforementioned dependency managers, you can integrate Crisp into your project manually.
 
-	- Download the crisp-ios-sdk repo on your computer
+- Download the crisp-ios-sdk repo on your computer
 
- 	- Next, select your application project in the Project Navigator (blue project icon) to navigate to the target configuration window and select the application target under the "Targets" heading in the sidebar.
+- Next, select your application project in the Project Navigator (blue project icon) to navigate to the target configuration window and select the application target under the "Targets" heading in the sidebar.
 
- 	- In the tab bar at the top of that window, open the "General" panel.
+- In the tab bar at the top of that window, open the "General" panel.
  	
- 	- Click on the + button under the "Embedded Binaries" section.
+- Click on the + button under the "Embedded Binaries" section.
 
- 	- Select the Crisp.framework downloaded
+- Select the Crisp.framework downloaded
 
- 	- In Build Settings tab, add a new path to Framework Search Paths: `$(PROJECT_DIR)/Crisp.framework/Frameworks`
+- In Build Settings tab, add a new path to Framework Search Paths: `$(PROJECT_DIR)/Crisp.framework/Frameworks`
 
 
 ## Usage
