@@ -15,5 +15,3 @@ FOUNDATION_EXPORT double CrispVersionNumber;
 FOUNDATION_EXPORT const unsigned char CrispVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Crisp/PublicHeader.h>
-
-
