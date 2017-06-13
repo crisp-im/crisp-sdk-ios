@@ -138,7 +138,7 @@ Enum `ThemeColors` :
 
 #### Theme Texte
 
-```
+```Swift
 Crisp.preference.setThemeText(.defaultChat)
 Crisp.preference.setThemeText(string: "LOCALIZED_STRING")
 ```
@@ -191,12 +191,12 @@ let phone = Crisp.user.phone
 
 Open the chatbox with :
 
-```
+```Swift
 Crisp.chat.open()
 ```
 
 Close the chatbox with :
 
-```
+```Swift
 Crisp.chat.close()
 ```
