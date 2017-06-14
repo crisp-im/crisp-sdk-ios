@@ -9,4 +9,4 @@ github "Alamofire/Alamofire" ~> 4.4
 github "hyperoslo/Lightbox"
 github "ninjaprox/NVActivityIndicatorView"
 github "Flipboard/FLAnimatedImage"
-github "crisp-im/crisp-sdk-ios" 
+zip "https://github.com/crisp-im/crisp-sdk-ios/blob/master/framework.json" ~> 1.0.10

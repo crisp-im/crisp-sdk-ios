@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
     s.license           = { :type => 'Copyright', :file => 'LICENSE' }
 
     s.platform          = :ios
-    s.source            = { :git => "https://github.com/crisp-im/crisp-sdk-ios.git", :tag => "#{s.version}"}
+    s.source            = { :http => 'https://github.com/crisp-im/crisp-sdk-ios/releases/download/#{s.version}/Crisp.zip' }
 
     s.ios.deployment_target = '9.0'
     s.ios.vendored_frameworks = 'Crisp.framework'
