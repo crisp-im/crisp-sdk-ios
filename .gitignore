@@ -27,6 +27,7 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
+*.framework
 
 # CocoaPods
 #
@@ -63,4 +64,4 @@ fastlane/test_output
 iOSInjectionProject/
 /Crisp.zip
 .DS_Store
-*.framework
+
