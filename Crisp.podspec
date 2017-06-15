@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
     s.license               = { :type => 'Copyright', :file => 'LICENSE' }
 
     s.platform              = :ios
-    s.source                = { :http => 'https://github.com/crisp-im/crisp-sdk-ios/releases/download/#{s.version}/Crisp.zip' }
-    s.preserve_paths        =  'Instabug.framework/*'
+    s.source                = { :http => "https://github.com/crisp-im/crisp-sdk-ios/releases/download/#{s.version}/Crisp.zip" }
+    s.preserve_paths        = 'Crisp.framework/*'
     s.frameworks            = 'Foundation', 'UIKit', 'SystemConfiguration'
     s.ios.deployment_target = '9.0'
     s.vendored_frameworks   = 'Crisp.framework'
