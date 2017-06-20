@@ -46,7 +46,9 @@ To integrate Crisp into your Xcode project using Carthage, specify it in your `C
 binary "https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/framework.json" ~> 1.0.11
 ```
 
-Run `carthage update` to build the framework and drag the built `Crisp.framework` into your Xcode project. (*Embedded Binaries* + *Linked Frameworks and Libraries*) and add on FRAMEWORK_SEARCH_PATH: `$(PROJECT_DIR)/Carthage/Build/iOS/Crisp.framework/Frameworks`
+Run `carthage update` to build the framework and drag the built `Crisp.framework` into your Xcode project. (**Embedded Binaries** + **Linked Frameworks and Libraries**)
+
+In Build Settings tab, add a new path to Framework Search Paths:`$(PROJECT_DIR)/Carthage/Build/iOS/Crisp.framework/Frameworks`
 
 ### Manually
 
@@ -62,7 +64,7 @@ If you prefer not to use any of the aforementioned dependency managers, you can 
 
 - Select the Crisp.framework downloaded
 
-- In Build Settings tab, add a new path to Framework Search Paths: `$(PROJECT_DIR)/Crisp.framework/Frameworks`
+- In Build Settings tab, add a new path to Framework Search Paths: `$(PROJECT_DIR)/Crisp.framework/Frameworks` and `$(PROJECT_DIR)/Crisp.framework/Frameworks`
 
 
 ## Usage
