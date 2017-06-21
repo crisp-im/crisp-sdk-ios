@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
     s.platform              = :ios
     s.source                = {
         :git => 'https://github.com/crisp-im/crisp-sdk-ios.git',
-        :tag => '#{s.version}'
+        :tag => "#{s.version}"
     }
     s.frameworks            = 'SystemConfiguration'
     s.ios.deployment_target = '9.0'
