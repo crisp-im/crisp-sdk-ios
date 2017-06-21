@@ -1,20 +1,31 @@
 Pod::Spec.new do |s|
     s.name                  = 'Crisp'
-    s.version               = '1.0.12'
+    s.version               = '1.0.11'
     s.summary               = 'The Crisp iOS Framework'
     s.homepage              = 'https://crisp.im/'
 
-    s.author                = { 'Name' => 'quentin@crisp.im' }
-    s.license               = { :type => 'Copyright', :file => 'LICENSE' }
+    s.author                = {
+        'Name' => 'quentin@crisp.im'
+    }
+    s.license               = {
+        :type => 'Copyright',
+        :file => 'LICENSE'
+    }
 
     s.platform              = :ios
-    s.source                = { :http => "https://github.com/crisp-im/crisp-sdk-ios/archive/#{s.version}.zip" }
-    s.frameworks            = 'Foundation', 'UIKit', 'SystemConfiguration'
+    s.source                = {
+        :git => 'https://github.com/crisp-im/crisp-sdk-ios.git',
+        :tag => '#{s.version}'
+    }
+    s.frameworks            = 'SystemConfiguration'
     s.ios.deployment_target = '9.0'
-    s.vendored_frameworks   = 'Crisp.framework', '$(PROJECT_DIR)/Pods/Crisp/Crisp.framework/Frameworks/*.framework'
+    s.vendored_frameworks   = 'Crisp.framework'
 
     s.requires_arc          = true
-    # s.pod_target_xcconfig = { 'FRAMEWORK_SEARCH_PATH' => '$(PROJECT_DIR)/Pods/Crisp/Crisp.framework/Frameworks/' }
+    s.xcconfig              = {
+        'FRAMEWORK_SEARCH_PATH' => '$(SRCROOT)/Pods/Crisp/Crisp.framework/Frameworks/'
+    }
+
     # s.dependency 'Socket.IO-Client-Swift',  '10.0'
     # s.dependency 'SnapKit',                 '3.2'
     # s.dependency 'ObjectMapper',            '2.2'
