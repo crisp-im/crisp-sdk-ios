@@ -3,7 +3,7 @@
 ## Installation
 
 
-### Cocoapods (!) Not yet ready
+### Cocoapods
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
 
