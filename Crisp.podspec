@@ -17,23 +17,23 @@ Pod::Spec.new do |s|
         :git => 'https://github.com/crisp-im/crisp-sdk-ios.git',
         :tag => "#{s.version}"
     }
-    s.frameworks            = 'SystemConfiguration'
+    s.frameworks            = 'SystemConfiguration'#, 'Socket.IO-Client-Swift', 'SnapKit', 'ObjectMapper', 'RxSwift', 'RxCocoa', 'EasyTipView', 'SDWebImage', 'Lightbox', 'SwiftEventBus', 'Alamofire', 'NVActivityIndicatorView'
     s.ios.deployment_target = '9.0'
-    s.vendored_frameworks   = 'Crisp.framework'#, 'Crisp.framework/Frameworks/*.framework'
+    s.vendored_frameworks   = 'Crisp.framework', 'Crisp.framework/Frameworks/*.framework'
 
     s.requires_arc          = true
 
-    s.dependency 'Socket.IO-Client-Swift', '10.0.0'
-    s.dependency 'SnapKit', '3.2.0'
-    s.dependency 'ObjectMapper', '2.2'
-    s.dependency 'RxSwift', '3.0'
-    s.dependency 'RxCocoa', '3.0'
-    s.dependency 'EasyTipView'
-    s.dependency 'SDWebImage'
-    s.dependency 'SDWebImage/GIF'
-    s.dependency 'Lightbox'
-    s.dependency 'SwiftEventBus'
-    s.dependency 'Alamofire', '4.0'
-    s.dependency 'NVActivityIndicatorView'
+    # s.dependency 'Socket.IO-Client-Swift', '10.0.0'
+    # s.dependency 'SnapKit', '3.2.0'
+    # s.dependency 'ObjectMapper', '2.2'
+    # s.dependency 'RxSwift', '3.0'
+    # s.dependency 'RxCocoa', '3.0'
+    # s.dependency 'EasyTipView'
+    # s.dependency 'SDWebImage'
+    # s.dependency 'SDWebImage/GIF'
+    # s.dependency 'Lightbox'
+    # s.dependency 'SwiftEventBus'
+    # s.dependency 'Alamofire', '4.0'
+    # s.dependency 'NVActivityIndicatorView'
 
 end
