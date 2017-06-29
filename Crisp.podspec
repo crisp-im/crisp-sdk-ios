@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
     }
     s.frameworks            = 'SystemConfiguration'
     s.ios.deployment_target = '9.0'
-    s.vendored_frameworks   = 'Crisp.framework'#, 'Crisp.framework/Frameworks/*.framework'
+    s.vendored_frameworks   = 'Crisp.framework'
 
     s.requires_arc          = true
 
