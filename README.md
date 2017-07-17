@@ -1,4 +1,4 @@
-# Crisp iOS SDK
+# Crisp iOS SDK - WIP
 
 ## Installation
 
