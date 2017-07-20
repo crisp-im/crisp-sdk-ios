@@ -1,0 +1,286 @@
+/* 
+  Localizable.strings
+  Crisp
+
+  Created by Quentin de Quelen on 02/05/2017.
+  Copyright © 2017 crisp.chat. All rights reserved.
+*/
+
+"actionSheetCamera"= "Prendre une nouvelle photo";
+"actionSheetLibrary"= "Chercher dans la galerie";
+"actionSheetCloud"= "Chercher dans les applications";
+"actionSheetCancel"= "Fermer";
+"actionSheetSendFile" = "Envoyer un fichier";
+"actionSheetAddToShortcut" = "Ajouter au racourcis";
+"actionSheetCreateNote" = "Créer une note";
+"actionSheetDeleteConfirmation"= "Êtes-vous sur de vouloir supprimer cette conversation ?";
+
+
+
+/*"_meta"*/
+"locale_name" = "French";
+
+/*"_meta"*/
+"locale_code" = "fr";
+
+/*"_meta"*/
+"locale_direction" = "ltr";
+
+/*"_strings"."date"*/
+"hour_singular" = "Il y a 1 heure";
+
+/*"_strings"."date"*/
+"hour_plural" = "Il y a %@ heures";
+
+/*"_strings"."date"*/
+"minute_singular" = "Il y a 1 minute";
+
+/*"_strings"."date"*/
+"minute_plural" = "Il y a %@ minutes";
+
+/*"_strings"."date"*/
+"second" = "À l'instant";
+
+/*"_strings"."date"*/
+"now" = "À l'instant";
+
+/*"_strings"."duration"*/
+"days" = "Quelques jours";
+
+/*"_strings"."duration"*/
+/*Fuzzy*/
+"hour_singular" = "1 heure";
+
+/*"_strings"."duration"*/
+"hour_plural" = "%@ heures";
+
+/*"_strings"."duration"*/
+/*Fuzzy*/
+"minute_singular" = "1 minute";
+
+/*"_strings"."duration"*/
+"minute_plural" = "%@ minutes";
+
+/*"_strings"."duration"*/
+/*Fuzzy*/
+"second" = "Quelques secondes";
+
+/*"_strings"."duration"*/
+"now" = "Instantanément";
+
+/*"_strings"."days"*/
+"monday" = "Lundi";
+
+/*"_strings"."days"*/
+"tuesday" = "Mardi";
+
+/*"_strings"."days"*/
+"wednesday" = "Mercredi";
+
+/*"_strings"."days"*/
+"thursday" = "Jeudi";
+
+/*"_strings"."days"*/
+"friday" = "Vendredi";
+
+/*"_strings"."days"*/
+"saturday" = "Samedi";
+
+/*"_strings"."days"*/
+"sunday" = "Dimanche";
+
+/*"_strings"."months"*/
+"january" = "Janvier";
+
+/*"_strings"."months"*/
+"february" = "Février";
+
+/*"_strings"."months"*/
+"march" = "Mars";
+
+/*"_strings"."months"*/
+"april" = "Avril";
+
+/*"_strings"."months"*/
+"may" = "Mai";
+
+/*"_strings"."months"*/
+"june" = "Juin";
+
+/*"_strings"."months"*/
+"july" = "Juillet";
+
+/*"_strings"."months"*/
+"august" = "Août";
+
+/*"_strings"."months"*/
+"september" = "Septembre";
+
+/*"_strings"."months"*/
+"october" = "Octobre";
+
+/*"_strings"."months"*/
+"november" = "Novembre";
+
+/*"_strings"."months"*/
+"december" = "Décembre";
+
+/*"_strings"."theme_text"*/
+"theme_text_default_chat" = "Des questions ? Discutons !";
+
+/*"_strings"."theme_text"*/
+"theme_text_1_chat" = "Des questions ? Discutons !";
+
+/*"_strings"."theme_text"*/
+/*Fuzzy*/
+"theme_text_2_chat" = "Posez-nous vos questions";
+
+/*"_strings"."theme_text"*/
+/*Fuzzy*/
+"theme_text_3_chat" = "Posez-moi vos questions";
+
+/*"_strings"."theme_text"*/
+/*Fuzzy*/
+"theme_text_4_chat" = "Discuter avec le support";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_default_chat" = "Comment puis-je vous aider à propos de %@ ?";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_1_chat" = "Bonjour, voulez-vous discuter avec nous ?";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_2_chat" = "Avez-vous des questions ?";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_3_chat" = "Bonjour, posez-moi toutes vos questions à propos de %@.";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_4_chat" = "Bonjour! Comment puis-je vous aider ? :)";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_5_chat" = "Des questions en tête à propos de %@ ?";
+
+/*"_strings"."minimized"*/
+"unauthorized_pane" = "Code chatbox invalide";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_close" = "Fermer";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_title" = "Équipe %@";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_status_online" = "En ligne";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_explain_online" = "Posez-nous vos questions. Notre équipe est là pour vous répondre.";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_form_compose" = "Composez votre message...";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"minimized_tooltip_unread_singular" = "Nouveau message";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"minimized_tooltip_unread_plural" = "Nouveaux messages";
+
+/*"_strings"."chat"*/
+"minimized_tooltip_message_from" = "Message de";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"chat_header_ongoing_from" = "de";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"chat_header_ongoing_status_metrics" = "Réponse sous %@";
+
+/*"_strings"."chat"*/
+"chat_header_ongoing_status_last" = "Actif %@";
+
+/*"_strings"."chat"*/
+"chat_header_ongoing_status_online" = "Support en ligne";
+
+/*"_strings"."chat"*/
+"chat_header_ongoing_status_away" = "Support absent";
+
+/*"_strings"."chat"*/
+"chat_alerts_new_messages" = "Nouveaux messages";
+
+/*"_strings"."chat"*/
+"chat_alerts_warn_reply" = "Renseignez votre e-mail pour recevoir les réponses.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_invalid" = "Votre e-mail est invalide. Le vérifier ?";
+
+/*"_strings"."chat"*/
+"chat_alerts_wait_reply_online" = "Merci ! Nous devrions bientôt répondre...";
+
+/*"_strings"."chat"*/
+"chat_alerts_wait_reply_away" = "Nous ne sommes pas en ligne. Nous vous répondrons plus tard.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_label" = "Quelle est votre adresse e-mail ?";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_entice_default" = "Nous l'utiliserons seulement pour vous répondre.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_entice_error" = "Votre e-mail est invalide. Entrez-le à nouveau.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_email_field" = "Votre adresse e-mail...";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_email_cancel" = "Je ne souhaite pas être informé des réponses.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_email_button" = "Envoyer";
+
+/*"_strings"."chat"*/
+"chat_pickers_selector_smileys" = "Emojis";
+
+/*"_strings"."chat"*/
+"chat_pickers_selector_gifs" = "GIFs";
+
+/*"_strings"."chat"*/
+"chat_pickers_gif_search" = "Trouver un GIF...";
+
+/*"_strings"."chat"*/
+"chat_pickers_gif_no_results" = "Pas de résultat. Réessayez.";
+
+/*"_strings"."chat"*/
+"chat_message_file_name" = "Fichier attaché";
+
+/*"_strings"."chat"*/
+"chat_message_file_button" = "Télécharger le fichier";
+
+/*"_strings"."chat"*/
+"chat_message_info_read" = "Lu";
+
+/*"_strings"."chat"*/
+"chat_message_error_retry" = "Échec de l'envoi. Réessayer ?";
+
+/*"_strings"."chat"*/
+"chat_message_send_abort_warn" = "Des messages n'ont pas encore été transmis. Vous risquez de les perdre si vous changez de page.";
+
+/*"_strings"."chat"*/
+"chat_form_field_message" = "Entrez votre message...";
+
+/*"_strings"."chat"*/
+"chat_form_smiley_tooltip" = "Insérer un emoji";
+
+/*"_strings"."chat"*/
+"chat_form_attach_tooltip" = "Envoyer un fichier";
+
+/*"_strings"."chat"*/
+"chat_form_attach_alert_size" = "Fichier trop volumineux. Veuillez réduire sa taille et réessayer.";
+
+/*"_strings"."chat"*/
+"chat_form_attach_alert_error" = "Une erreur s'est produite lors de l'envoi du fichier. Veuillez réessayer.";
+
+/*"_strings"."chat"*/
+"chat_form_attach_abort_warn" = "Changer de page lorsqu'un fichier est en cours d'envoi arrête son envoi.";

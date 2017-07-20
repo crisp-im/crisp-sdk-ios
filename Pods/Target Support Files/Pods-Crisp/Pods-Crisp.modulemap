@@ -1,0 +1,6 @@
+framework module Pods_Crisp {
+  umbrella header "Pods-Crisp-umbrella.h"
+
+  export *
+  module * { export * }
+}

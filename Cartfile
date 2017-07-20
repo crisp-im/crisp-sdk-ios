@@ -10,5 +10,3 @@ github "hyperoslo/Lightbox"
 github "ninjaprox/NVActivityIndicatorView"
 github "Flipboard/FLAnimatedImage"
 
-# A binary only framework
-binary "https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/framework.json" ~> 0.1.0

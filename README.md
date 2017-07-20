@@ -59,7 +59,7 @@ If you prefer not to use any of the aforementioned dependency managers, you can 
 - Next, select your application project in the Project Navigator (blue project icon) to navigate to the target configuration window and select the application target under the "Targets" heading in the sidebar.
 
 - In the tab bar at the top of that window, open the "General" panel.
- 	
+
 - Click on the + button under the "Embedded Binaries" section.
 
 - Select the Crisp.framework downloaded
@@ -69,7 +69,7 @@ If you prefer not to use any of the aforementioned dependency managers, you can 
 
 ## Usage
 
-Start usign Crisp by adding on your AppDelegate : 
+Start usign Crisp by adding on your AppDelegate :
 
 ```Swift
 import Crisp
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
 
 You can change the main color of crisp and texts :
 
-#### Color 
+#### Color
 
 ```swift
 Crisp.preference.setColor(.red)
@@ -153,7 +153,7 @@ Enum `ThemeText` :
 - threeChat
 - fourChat
 
-#### Theme Welcome 
+#### Theme Welcome
 
 ```Swift
 Crisp.preference.setThemeWelcome(.defaultChat)

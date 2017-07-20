@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Notification Enum Reference</title>
+    <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../../js/jquery.min.js" defer></script>
+    <script src="../../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Enum/Notification" class="dashAnchor"></a>
+    <a title="Notification Enum Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../../index.html">Crisp Docs</a> (68% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../../index.html">Crisp Reference</a>
+        <img id="carat" src="../../img/carat.png" />
+        Notification Enum Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Classes/ChatBox.html">ChatBox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/CrispButton.html">CrispButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/CrispMain.html">CrispMain</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/CrispNotifier.html">CrispNotifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/CrispNotifier/Notification.html">– Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/MessageInterface.html">MessageInterface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/Preferences.html">Preferences</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/SessionInterface.html">SessionInterface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Classes/UserInterface.html">UserInterface</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Global Variables.html#/s:v5Crisp5CrispCS_9CrispMain">Crisp</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Enums/ThemeColors.html">ThemeColors</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/ThemeText.html">ThemeText</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../../Enums/ThemeWelcome.html">ThemeWelcome</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../../Protocols/PublicNotifier.html">PublicNotifier</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Notification</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Notification</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                </div>
+              </div>
+            <p>Type of an notification</p>
+
+<ul>
+<li>sessionLoaded</li>
+<li>chatInitiated</li>
+<li>messageSent</li>
+<li>messageReceive</li>
+<li>composeSent</li>
+<li>composeReceive</li>
+<li>chatOpened</li>
+<li>chatClosed</li>
+<li>userEmailChanged</li>
+<li>userPhoneChanged</li>
+<li>userNicknameChanged</li>
+<li>userAvatarChanged</li>
+</ul>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification13sessionLoadedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/sessionLoaded" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification13sessionLoadedFMS1_S1_">sessionLoaded</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the session loaded event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">sessionLoaded</span>   <span class="o">=</span> <span class="s">"crisp:session:loaded"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification13chatInitiatedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/chatInitiated" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification13chatInitiatedFMS1_S1_">chatInitiated</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the chatbox initiated event, on the first time the user clicks on the chatbox</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">chatInitiated</span>   <span class="o">=</span> <span class="s">"crisp:chat:initiated"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification11messageSentFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/messageSent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification11messageSentFMS1_S1_">messageSent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the message sent event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">messageSent</span>     <span class="o">=</span> <span class="s">"crisp:message:sent"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification14messageReceiveFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/messageReceive" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification14messageReceiveFMS1_S1_">messageReceive</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the message received event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">messageReceive</span>  <span class="o">=</span> <span class="s">"crisp:message:received"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification11composeSentFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/composeSent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification11composeSentFMS1_S1_">composeSent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the message compose sent event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">composeSent</span>     <span class="o">=</span> <span class="s">"crisp:compose:sent"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification14composeReceiveFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/composeReceive" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification14composeReceiveFMS1_S1_">composeReceive</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the message compose received event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">composeReceive</span>  <span class="o">=</span> <span class="s">"crisp:compose:received"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification10chatOpenedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/chatOpened" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification10chatOpenedFMS1_S1_">chatOpened</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the chatbox opened event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">chatOpened</span>     <span class="o">=</span> <span class="s">"crisp:chatbox:opened"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification10chatClosedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/chatClosed" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification10chatClosedFMS1_S1_">chatClosed</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the chatbox closed event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">chatClosed</span>    <span class="o">=</span> <span class="s">"crisp:chatbox:closed"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification16userEmailChangedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/userEmailChanged" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification16userEmailChangedFMS1_S1_">userEmailChanged</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the user email changed event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">userEmailChanged</span>    <span class="o">=</span> <span class="s">"crisp:user:email:changed"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification16userPhoneChangedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/userPhoneChanged" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification16userPhoneChangedFMS1_S1_">userPhoneChanged</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the user phone changed event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">userPhoneChanged</span>    <span class="o">=</span> <span class="s">"crisp:user:phone:changed"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification19userNicknameChangedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/userNicknameChanged" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification19userNicknameChangedFMS1_S1_">userNicknameChanged</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the user nickname changed event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">userNicknameChanged</span> <span class="o">=</span> <span class="s">"crisp:user:nickname:changed"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification17userAvatarChangedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/userAvatarChanged" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification17userAvatarChangedFMS1_S1_">userAvatarChanged</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the user avatar changed event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">userAvatarChanged</span>   <span class="o">=</span> <span class="s">"crisp:user:avatar:changed"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FOC5Crisp13CrispNotifier12Notification26websiteAvailabilityChangedFMS1_S1_"></a>
+                    <a name="//apple_ref/swift/Element/websiteAvailabilityChanged" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FOC5Crisp13CrispNotifier12Notification26websiteAvailabilityChangedFMS1_S1_">websiteAvailabilityChanged</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles the website availability changed event</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">websiteAvailabilityChanged</span> <span class="o">=</span> <span class="s">"crisp:website:availability:changed"</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="https://crisp.im/en/" target="_blank" rel="external">Quentin de Quelen</a>. All rights reserved. (Last updated: 2017-05-25)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

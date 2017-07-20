@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CrispButton Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/CrispButton" class="dashAnchor"></a>
+    <a title="CrispButton Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">Crisp Docs</a> (68% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">Crisp Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        CrispButton Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ChatBox.html">ChatBox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CrispButton.html">CrispButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CrispMain.html">CrispMain</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CrispNotifier.html">CrispNotifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CrispNotifier/Notification.html">– Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MessageInterface.html">MessageInterface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Preferences.html">Preferences</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SessionInterface.html">SessionInterface</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UserInterface.html">UserInterface</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:v5Crisp5CrispCS_9CrispMain">Crisp</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ThemeColors.html">ThemeColors</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ThemeText.html">ThemeText</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ThemeWelcome.html">ThemeWelcome</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/PublicNotifier.html">PublicNotifier</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>CrispButton</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CrispButton</span><span class="p">:</span> <span class="kt">UIView</span></code></pre>
+
+                </div>
+              </div>
+            <p>Use this UI component to show the crisp bubble on you app</p>
+<h1 id='exemple' class='heading'>Exemple</h1>
+
+<p>&ldquo;swift
+import Crisp
+import SnapKit</p>
+
+<p>class ViewController: UIViewController {</p>
+<pre class="highlight plaintext"><code>override func viewDidLoad() {
+    super.viewDidLoad()
+    // Do any additional setup after loading the view, typically from a nib.
+    let crispButton = CrispButton()
+    view.addSubview(crispButton)
+    crispButton.snp.makeConstraints { (make) in
+        make.trailing.equalToSuperview().offset(-20)
+        make.bottom.equalToSuperview().offset(-20)
+    }
+}
+
+override func didReceiveMemoryWarning() {
+   super.didReceiveMemoryWarning()
+   // Dispose of any resources that can be recreated.
+}
+</code></pre>
+
+<p>}</p>
+<pre class="highlight plaintext"><code></code></pre>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC5Crisp11CrispButtoncFT5coderCSo7NSCoder_GSqS0__"></a>
+                    <a name="//apple_ref/swift/Method/init(coder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC5Crisp11CrispButtoncFT5coderCSo7NSCoder_GSqS0__">init(coder:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CrispButton</span><span class="p">:</span> <span class="kt">UIView</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="https://crisp.im/en/" target="_blank" rel="external">Quentin de Quelen</a>. All rights reserved. (Last updated: 2017-05-25)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

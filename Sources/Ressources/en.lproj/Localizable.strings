@@ -1,0 +1,284 @@
+/* 
+  Localizable.strings
+  Crisp
+
+  Created by Quentin de Quelen on 02/05/2017.
+  Copyright © 2017 crisp.chat. All rights reserved.
+*/
+
+"actionSheetCamera"= "Send picture from camera";
+"actionSheetLibrary"= "Send picture from library";
+"actionSheetCloud"= "Send file from Cloud";
+"actionSheetCancel"= "Cancel";
+"actionSheetSendFile" = "Send a file";
+"actionSheetAddToShortcut" = "Add to shortcuts";
+"actionSheetCreateNote" = "Create a note";
+"actionSheetDeleteConfirmation"= "Do you really want to delete this conversation?";
+
+/*"_meta"*/
+"locale_name" = "English";
+
+/*"_meta"*/
+"locale_code" = "en";
+
+/*"_meta"*/
+"locale_direction" = "ltr";
+
+/*"_strings"."date"*/
+"hour_singular" = "An hour ago";
+
+/*"_strings"."date"*/
+"hour_plural" = "%@ hours ago";
+
+/*"_strings"."date"*/
+"minute_singular" = "A minute ago";
+
+/*"_strings"."date"*/
+"minute_plural" = "%@ minutes ago";
+
+/*"_strings"."date"*/
+"second" = "A few seconds ago";
+
+/*"_strings"."date"*/
+"now" = "Just now";
+
+/*"_strings"."duration"*/
+"days" = "A few days";
+
+/*"_strings"."duration"*/
+/*Fuzzy*/
+"hour_singular" = "An hour";
+
+/*"_strings"."duration"*/
+"hour_plural" = "%@ hours";
+
+/*"_strings"."duration"*/
+/*Fuzzy*/
+"minute_singular" = "A minute";
+
+/*"_strings"."duration"*/
+"minute_plural" = "%@ minutes";
+
+/*"_strings"."duration"*/
+/*Fuzzy*/
+"second" = "A few seconds";
+
+/*"_strings"."duration"*/
+"now" = "Instantly";
+
+/*"_strings"."days"*/
+"monday" = "Monday";
+
+/*"_strings"."days"*/
+"tuesday" = "Tuesday";
+
+/*"_strings"."days"*/
+"wednesday" = "Wednesday";
+
+/*"_strings"."days"*/
+"thursday" = "Thursday";
+
+/*"_strings"."days"*/
+"friday" = "Friday";
+
+/*"_strings"."days"*/
+"saturday" = "Saturday";
+
+/*"_strings"."days"*/
+"sunday" = "Sunday";
+
+/*"_strings"."months"*/
+"january" = "January";
+
+/*"_strings"."months"*/
+"february" = "February";
+
+/*"_strings"."months"*/
+"march" = "March";
+
+/*"_strings"."months"*/
+"april" = "April";
+
+/*"_strings"."months"*/
+"may" = "May";
+
+/*"_strings"."months"*/
+"june" = "June";
+
+/*"_strings"."months"*/
+"july" = "July";
+
+/*"_strings"."months"*/
+"august" = "August";
+
+/*"_strings"."months"*/
+"september" = "September";
+
+/*"_strings"."months"*/
+"october" = "October";
+
+/*"_strings"."months"*/
+"november" = "November";
+
+/*"_strings"."months"*/
+"december" = "December";
+
+/*"_strings"."theme_text"*/
+"theme_text_default_chat" = "Questions? Chat with us!";
+
+/*"_strings"."theme_text"*/
+"theme_text_1_chat" = "Questions? Chat with me!";
+
+/*"_strings"."theme_text"*/
+/*Fuzzy*/
+"theme_text_2_chat" = "Ask us your questions";
+
+/*"_strings"."theme_text"*/
+/*Fuzzy*/
+"theme_text_3_chat" = "Ask me your questions";
+
+/*"_strings"."theme_text"*/
+/*Fuzzy*/
+"theme_text_4_chat" = "Chat with support";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_default_chat" = "How can we help with %@?";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_1_chat" = "Hey, want to chat with us?";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_2_chat" = "Anything you want to ask?";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_3_chat" = "Hello, ask us any question about %@.";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_4_chat" = "Hello! How can I help you? :)";
+
+/*"_strings"."theme_welcome"*/
+"theme_welcome_5_chat" = "Any question about %@?";
+
+/*"_strings"."minimized"*/
+"unauthorized_pane" = "Invalid chatbox code";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_close" = "Close";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_title" = "%@ Team";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_status_online" = "Online";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_explain_online" = "Ask us anything you want to know. Our team is online and will reply.";
+
+/*"_strings"."minimized"*/
+"tooltip_entice_form_compose" = "Compose your message here...";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"minimized_tooltip_unread_singular" = "Open to reply to message";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"minimized_tooltip_unread_plural" = "Open to reply to messages";
+
+/*"_strings"."chat"*/
+"minimized_tooltip_message_from" = "Message from";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"chat_header_ongoing_from" = "from";
+
+/*"_strings"."chat"*/
+/*Fuzzy*/
+"chat_header_ongoing_status_metrics" = "Replies under %@";
+
+/*"_strings"."chat"*/
+"chat_header_ongoing_status_last" = "Last active %@";
+
+/*"_strings"."chat"*/
+"chat_header_ongoing_status_online" = "Support is online";
+
+/*"_strings"."chat"*/
+"chat_header_ongoing_status_away" = "Support is away";
+
+/*"_strings"."chat"*/
+"chat_alerts_new_messages" = "There are new messages below. Click to see.";
+
+/*"_strings"."chat"*/
+"chat_alerts_warn_reply" = "Click to set your email to get notifications.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_invalid" = "You mistyped your email, can you check it?";
+
+/*"_strings"."chat"*/
+"chat_alerts_wait_reply_online" = "Thanks ! We should reply in a few moments.";
+
+/*"_strings"."chat"*/
+"chat_alerts_wait_reply_away" = "We are not online. We will email you back.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_label" = "What is your email address?";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_entice_default" = "We use your email to reply, if we reply later.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_entice_error" = "You entered an invalid email. Enter it again.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_email_field" = "Enter your email address...";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_email_cancel" = "I don't want to be notified of replies.";
+
+/*"_strings"."chat"*/
+"chat_alerts_email_form_email_button" = "Send";
+
+/*"_strings"."chat"*/
+"chat_pickers_selector_smileys" = "Smileys";
+
+/*"_strings"."chat"*/
+"chat_pickers_selector_gifs" = "GIFs";
+
+/*"_strings"."chat"*/
+"chat_pickers_gif_search" = "Find GIFs...";
+
+/*"_strings"."chat"*/
+"chat_pickers_gif_no_results" = "No results. Try another search.";
+
+/*"_strings"."chat"*/
+"chat_message_file_name" = "Attached file";
+
+/*"_strings"."chat"*/
+"chat_message_file_button" = "Download file";
+
+/*"_strings"."chat"*/
+"chat_message_info_read" = "Read";
+
+/*"_strings"."chat"*/
+"chat_message_error_retry" = "Failed to send. Retry?";
+
+/*"_strings"."chat"*/
+"chat_message_send_abort_warn" = "Some messages have not yet been sent. Navigating will prevent them from being sent.";
+
+/*"_strings"."chat"*/
+"chat_form_field_message" = "Compose your message...";
+
+/*"_strings"."chat"*/
+"chat_form_smiley_tooltip" = "Insert an emoji";
+
+/*"_strings"."chat"*/
+"chat_form_attach_tooltip" = "Send a file";
+
+/*"_strings"."chat"*/
+"chat_form_attach_alert_size" = "File too large. Please reduce its size and try again.";
+
+/*"_strings"."chat"*/
+"chat_form_attach_alert_error" = "An error occured while uploading the file. Please try again.";
+
+/*"_strings"."chat"*/
+"chat_form_attach_abort_warn" = "Navigating when a file is being uploaded will stop upload.";

@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'jazzy'
+gem 'cocoapods'
+gem 'cocoapods-deintegrate'
+gem 'cocoapods-plugins'
+gem 'cocoapods-search'
+gem 'cocoapods-stats'
+gem 'cocoapods-trunk'
+gem 'cocoapods-try'
