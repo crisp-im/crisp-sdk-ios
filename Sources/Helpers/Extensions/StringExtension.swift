@@ -161,8 +161,14 @@ extension  String {
     internal var localized: String {
         return NSLocalizedString(self,
                                  tableName: nil,
-                                 bundle: Bundle(identifier: "im.crisp.crisp-sdk")!,
+                                 bundle: Bundle(for: CrispMain.self),
                                  value: "",
                                  comment: "")
     }
+
+    internal var bundledImage: UIImage {
+        return UIImage(named: self, in: Bundle(for: CrispMain.self), compatibleWith: nil)!
+    }
+
+
 }

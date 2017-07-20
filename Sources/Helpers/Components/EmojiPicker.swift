@@ -107,7 +107,7 @@ class EmojiPicker: UIView, UICollectionViewDataSource, UICollectionViewDelegateF
         let cell = collectionView
             .dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! EmojiCell
         let name = smileys[indexPath.row][0]
-        let image = UIImage(named: name, in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
+        let image = UIImage(named: name, in: Bundle(for: CrispMain.self), compatibleWith: nil)
         cell.image.image = image
         cell.backgroundColor = .white
 

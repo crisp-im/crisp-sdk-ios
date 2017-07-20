@@ -52,7 +52,7 @@ class Smiley {
 
                 let textAttachment: NSTextAttachment = NSTextAttachment()
 				let attrStringWithImage: NSAttributedString
-				textAttachment.image = UIImage(named: image, in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
+				textAttachment.image = UIImage(named: image, in: Bundle(for: CrispMain.self), compatibleWith: nil)
 				if bigSmile {
                     textAttachment.bounds = CGRect(x: 0, y: -2, width: largeImageSize!, height: largeImageSize!)
 					attrStringWithImage = NSAttributedString(attachment: textAttachment)

@@ -182,7 +182,7 @@ extension Network {
         if let data = dataArray![0] as? [String: Any], let remoteMessage = Message(JSON: data) {
             storageSyncUpdate(withData: [data], type: remoteMessage.type == .file ? .file : .message)
             sharedStore.messages.value[remoteMessage.fingerprint]?.stamped = true
-            SwiftEventBus.post(.eventMessageReceive, sender: remoteMessage.fingerprint)
+            SwiftEventBus.post(.eventMessageReceive, sender: remoteMessage.fingerprint as AnyObject)
         }
     }
     
@@ -246,7 +246,7 @@ extension Network {
                 if let message = sharedStore.messages.value[_f]?.toJSON() {
                     storageSyncUpdate(withData: [message], type: .message)
                 }
-                SwiftEventBus.post(.eventMessageRead, sender: _f)
+                SwiftEventBus.post(.eventMessageRead, sender: _f as AnyObject)
             }
         }
     }

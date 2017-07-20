@@ -31,20 +31,16 @@ class Input: UIView {
 
     let addButton: ActiveButton = {
         let button = ActiveButton()
-        let image = UIImage(named: "Add", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        let imageActive = UIImage(named: "Send", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        button.setImage(image, for: UIControlState.normal)
-        button.setImage(imageActive, for: UIControlState.active)
+        button.setImage(.add, for: UIControlState.normal)
+        button.setImage(.send, for: UIControlState.active)
         button.addTarget(self, action: #selector(addTouched), for: .touchUpInside)
         return button
     }()
 
     let smileyButton: ActiveButton = {
         let button = ActiveButton()
-        let image = UIImage(named: "Smiley", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        let imageActive = UIImage(named: "SmileyActive", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        button.setImage(image, for: UIControlState.normal)
-        button.setImage(imageActive, for: UIControlState.active)
+        button.setImage(.smiley, for: UIControlState.normal)
+        button.setImage(.smileyActive, for: UIControlState.active)
         button.addTarget(self, action: #selector(smileyTouched), for: .touchUpInside)
         return button
     }()

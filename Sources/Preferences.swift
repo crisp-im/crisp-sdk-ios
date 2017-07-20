@@ -160,7 +160,7 @@ public class Preferences {
     }
     
     public func setThemeText(_ themeName: ThemeText) {
-        _themeText = NSLocalizedString(themeName.rawValue, tableName: nil, bundle: Bundle(identifier: "im.crisp.crisp-sdk")!, value: "", comment: "")
+        _themeText = themeName.rawValue.localized
     }
     
     public func setThemeText(string: String) {
@@ -168,7 +168,7 @@ public class Preferences {
     }
     
     public func setThemeWelcome(_ themeName: ThemeWelcome) {
-        _themeWelcome = NSLocalizedString(themeName.rawValue, tableName: nil, bundle: Bundle(identifier: "im.crisp.crisp-sdk")!, value: "", comment: "")
+        _themeWelcome = themeName.rawValue.localized
     }
     
     public func setThemeWelcome(string: String) {

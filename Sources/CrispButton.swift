@@ -45,7 +45,7 @@ public class CrispButton: UIView, EasyTipViewDelegate {
     
     private var bubbleButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        button.setImage(UIImage(named: "CrispLogo", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil), for: .normal)
+        button.setImage(.crispLogo, for: .normal)
         button.backgroundColor = sharedPreferences.color
         button.layer.cornerRadius = 30
         button.clipsToBounds = true

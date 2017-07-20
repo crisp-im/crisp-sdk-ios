@@ -213,11 +213,8 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
                 }
             }
         }
-        let closeImage = UIImage(named: "CloseButton", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(dissmissView))
-        
-        let operatorImage = UIImage(named: "operators", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: operatorImage, style: .plain, target: self, action: #selector(setupTeamNavBar))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .close, style: .plain, target: self, action: #selector(dissmissView))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .operators, style: .plain, target: self, action: #selector(setupTeamNavBar))
         if sharedStore.session!.activeOperators.count == 0 {
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
@@ -230,8 +227,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
             navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: sharedPreferences.color]
         }
         navigationItem.titleView = NavbarOperatorsListView().set(operators: sharedStore.session!.activeOperators)
-        let closeImage = UIImage(named: "CloseButton", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(setupDefautNavBar))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .close, style: .plain, target: self, action: #selector(setupDefautNavBar))
         navigationItem.leftBarButtonItem = nil
     }
     
@@ -252,8 +248,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
                 .set(title: company)
                 .set(prompt: .chat_header_ongoing_status_away)
         }
-        let closeImage = UIImage(named: "CloseButton", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: closeImage, style: .plain, target: self, action: #selector(dissmissView))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .close, style: .plain, target: self, action: #selector(dissmissView))
 
         navigationItem.rightBarButtonItem = nil
     }

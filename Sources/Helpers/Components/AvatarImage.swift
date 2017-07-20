@@ -26,7 +26,7 @@ class AvatarImage: UIView {
     private var tooltipTimer: Timer? = nil
     private var tooltipIsShow: Bool = false
     
-    private let defaultImage = UIImage(named: "Avatar", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
+    private let defaultImage = UIImage.avatar
     private var user: User?
     private var op: Operator?
     

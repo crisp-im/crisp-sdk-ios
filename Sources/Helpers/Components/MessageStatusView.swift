@@ -68,15 +68,15 @@ class MessageStatusView: UIView {
         case .received:
             actInd.stopAnimating()
             imageView.isHidden = false
-            imageView.image = UIImage(named: "feedback_receive", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
+            imageView.image = .feedbackReceived
         case .read:
             actInd.stopAnimating()
             imageView.isHidden = false
-            imageView.image = UIImage(named: "feedback_read", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
+            imageView.image = .feedbackRead
         case .error:
             actInd.stopAnimating()
             imageView.isHidden = false
-            imageView.image = UIImage(named: "feedback_error", in: Bundle(identifier: "im.crisp.crisp-sdk"), compatibleWith: nil)
+            imageView.image = .feedbackError
         }
     }
     
