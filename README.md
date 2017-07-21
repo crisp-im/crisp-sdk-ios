@@ -59,11 +59,11 @@ Run `carthage update` to build the framework and drag the built `Crisp.framework
 
 ## Requirements
 
-⚠️ You should absolutly add photos permissions, `NSCameraUsageDescription` and `NSPhotoLibraryUsageDescription` on your `Info.plist`, to tell the user why you need to access the Camera and Photo Library. You also need to have "iCloud Documents" enable on you Capabilities.
+⚠️ Adding Camera and Photo permissions is mandatory, `NSCameraUsageDescription` and `NSPhotoLibraryUsageDescription` in  `Info.plist`, to inform your users that you need to access to the Camera and Photo Library. You also have to enable **"iCloud Documents"** capability
 
 ## Usage
 
-Start usign Crisp by adding on your AppDelegate :
+Start using Crisp by adding the following code on your AppDelegate :
 
 ```Swift
 import Crisp
@@ -72,7 +72,7 @@ Crisp.initialize(websiteId: "YOUR_WEBSITE_ID")
 
 ### Chatbox
 
-You can add the crisp bubble bu adding on your view `CrispButton()` :
+You can add the Crisp bubble by adding in your view `CrispButton()` :
 
 ```Swift
 import UIKit
@@ -97,7 +97,7 @@ class ViewController: UIViewController {
 
 ### Preferences
 
-You can change the main color of crisp and texts :
+You can change the main Crisp's color and texts :
 
 #### Color
 
@@ -195,12 +195,12 @@ Crisp.chat.close()
 
 ## More
 
-You can also check out our [API Reference](https://crisp-im.github.io/crisp-sdk-ios/) for more detailed information about our SDK.
+You can also check out our [API Reference](https://crisp-im.github.io/crisp-sdk-ios/) for more detailed information about our this SDK.
 
 ## Credits
 
-Crisp iOS SDk was owned and maintained by [Crisp IM, inc](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
+Crisp iOS SDk is owned and maintained by [Crisp IM, inc](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
 
 ## License
 
-Crisp iOS SDk was under Copyright license. see [LICENSE](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/LICENSE) for more details.
+Crisp iOS SDk is under Copyright license. see [LICENSE](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/LICENSE) for more details.
