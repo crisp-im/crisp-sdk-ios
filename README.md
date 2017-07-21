@@ -43,29 +43,10 @@ $ brew install carthage
 To integrate Crisp into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-binary "https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/framework.json" ~> 1.0.11
+github "crisp-im/crisp-sdk-ios"
 ```
 
-Run `carthage update` to build the framework and drag the built `Crisp.framework` into your Xcode project. (**Embedded Binaries** + **Linked Frameworks and Libraries**)
-
-In Build Settings tab, add a new path to Framework Search Paths:`$(PROJECT_DIR)/Carthage/Build/iOS/Crisp.framework/Frameworks`
-
-### Manually
-
-If you prefer not to use any of the aforementioned dependency managers, you can integrate Crisp into your project manually.
-
-- Download the crisp-ios-sdk repo on your computer
-
-- Next, select your application project in the Project Navigator (blue project icon) to navigate to the target configuration window and select the application target under the "Targets" heading in the sidebar.
-
-- In the tab bar at the top of that window, open the "General" panel.
-
-- Click on the + button under the "Embedded Binaries" section.
-
-- Select the Crisp.framework downloaded
-
-- In Build Settings tab, add a new path to Framework Search Paths: `$(PROJECT_DIR)/Crisp.framework/Frameworks` and `$(PROJECT_DIR)/Crisp.framework/Frameworks`
-
+Run `carthage update` to build the framework and drag the built `Crisp.framework` into your Xcode project.
 
 ## Usage
 
@@ -99,8 +80,6 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 
 ```
