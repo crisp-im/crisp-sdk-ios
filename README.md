@@ -130,7 +130,7 @@ Enum `ThemeColors` :
 - red
 - teal
 
-#### Theme Texte
+#### Theme Text
 
 ```Swift
 Crisp.preference.setThemeText(.defaultChat)
