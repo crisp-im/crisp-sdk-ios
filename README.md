@@ -63,8 +63,6 @@ Run `carthage update` to build the framework and drag the built `Crisp.framework
 
 ## Usage
 
-All the documentation was on [this page](https://crisp-im.github.io/crisp-sdk-ios/)
-
 Start usign Crisp by adding on your AppDelegate :
 
 ```Swift
@@ -194,3 +192,15 @@ Close the chatbox with :
 ```Swift
 Crisp.chat.close()
 ```
+
+## More
+
+You can also check out our [API Reference](https://crisp-im.github.io/crisp-sdk-ios/) for more detailed information about our SDK.
+
+## Credits
+
+Crisp iOS SDk was owned and maintained by [Crisp IM, inc](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
+
+## License
+
+Crisp iOS SDk was under Copyright license. see [LICENSE](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/LICENSE) for more details.
