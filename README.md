@@ -58,6 +58,8 @@ Run `carthage update` to build the framework and drag the built `Crisp.framework
 
 ## Usage
 
+All the documentation was on [this page](https://crisp-im.github.io/crisp-sdk-ios/)
+
 Start usign Crisp by adding on your AppDelegate :
 
 ```Swift
