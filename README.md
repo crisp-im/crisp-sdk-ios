@@ -1,5 +1,7 @@
 ![Crisp](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/logo_blue.png)
 
+Chat with app users, integrate your favorite tools, and deliver a great customer experience.
+
 # Crisp iOS SDK - Beta
 
 ![Crisp screenshot](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/crisp_screenshot.jpg)
