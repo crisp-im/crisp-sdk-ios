@@ -56,6 +56,11 @@ github "crisp-im/crisp-sdk-ios"
 
 Run `carthage update` to build the framework and drag the built `Crisp.framework` into your Xcode project.
 
+
+## Requirements
+
+⚠️ You should absolutly add photos permissions, `NSCameraUsageDescription` and `NSPhotoLibraryUsageDescription` on your `Info.plist`, to tell the user why you need to access the Camera and Photo Library. You also need to have "iCloud Documents" enable on you Capabilities.
+
 ## Usage
 
 All the documentation was on [this page](https://crisp-im.github.io/crisp-sdk-ios/)
@@ -79,7 +84,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         let crispButton = CrispButton()
         view.addSubview(crispButton)
         crispButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
@@ -88,7 +92,6 @@ class ViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 }
 
