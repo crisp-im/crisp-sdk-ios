@@ -215,7 +215,7 @@ class MessageViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: .close, style: .plain, target: self, action: #selector(dissmissView))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .operators, style: .plain, target: self, action: #selector(setupTeamNavBar))
-        if sharedStore.session!.activeOperators.count == 0 {
+        if let session = sharedStore.session, session.activeOperators.count == 0 {
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
     }
