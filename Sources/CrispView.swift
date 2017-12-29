@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import WebKit
-import SnapKit
 
 open class CrispView: UIView {
     var webView: WKWebView!

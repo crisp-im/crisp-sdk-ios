@@ -19,7 +19,6 @@ Pod::Spec.new do |s|
     }
 
     s.source_files  = "Sources/**/*.swift"
-    s.resources = "Sources/Ressources/**/*"
 
     s.ios.deployment_target = '9.0'
 

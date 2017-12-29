@@ -7,7 +7,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'Crisp' do
-  pod 'SnapKit'
+
 end
 
 target 'Example' do
