@@ -8,17 +8,28 @@
 
 import UIKit
 import Crisp
+import SnapKit
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
-        let crispButton = CrispButton()
-        view.addSubview(crispButton)
-        crispButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-        crispButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        
+        /*
+        let crispView = CrispView()
+        crispView.bounds = view.bounds
+        crispView.center = view.center*/
+        
+        let crispView = CrispView()
+        
+        view.addSubview(crispView)
+        
+        crispView.snp.makeConstraints { (make) -> Void in
+            make.height.equalToSuperview()
+            make.width.equalToSuperview()
+            make.top.equalToSuperview()
+        }
     }
 
     override func didReceiveMemoryWarning() {

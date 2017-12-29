@@ -84,10 +84,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let crispButton = CrispButton()
-        view.addSubview(crispButton)
-        crispButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-        crispButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        
+        let crispView = CrispView()
+        crispView.bounds = view.bounds
+        crispView.center = view.center
+
+        view.addSubview(crispView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -95,104 +97,6 @@ class ViewController: UIViewController {
     }
 }
 
-```
-
-### Preferences
-
-You can change the main Crisp's color and texts :
-
-#### Color
-
-```swift
-Crisp.preference.setColor(.red)
-Crisp.preference.setColor(def: .blue)
-Crisp.preference.setColor(hex: "000000")
-```
-
-Enum `ThemeColors` :
-
-- blue
-- amber
-- black
-- blueGrey
-- blueLight
-- brown
-- cyan
-- green
-- greenLight
-- grey
-- indigo
-- orange
-- orangeDeep
-- pink
-- purple
-- purpleDeep
-- red
-- teal
-
-#### Theme Text
-
-```Swift
-Crisp.preference.setThemeText(.defaultChat)
-Crisp.preference.setThemeText(string: "LOCALIZED_STRING")
-```
-
-Enum `ThemeText` :
-
-- defaultChat
-- oneChat
-- twoChat
-- threeChat
-- fourChat
-
-#### Theme Welcome
-
-```Swift
-Crisp.preference.setThemeWelcome(.defaultChat)
-Crisp.preference.setThemeWelcome(string: "LOCALIZED_STRING")
-```
-
-Enum `ThemeWelcome` :
-
-- defaultChat
-- oneChat
-- twoChat
-- threeChat
-- fourChat
-- fiveChat
-
-### User
-
-- Setters
-
-``` Swift
-Crisp.user.set(email: "quentin@crisp.im")
-Crisp.user.set(avatar: "http://your.website.com/user_id/size")
-Crisp.user.set(nickname: "Quentin de Quelen")
-Crisp.user.set(phone: "+33645XXXXXX")
-```
-
-- Getters
-
-```Swift
-let email = Crisp.user.email
-let avatar = Crisp.user.avatar
-let nickname = Crisp.user.nickname
-let phone = Crisp.user.phone
-```
-
-### Chatbox
-
-Open the chatbox with :
-
-```Swift
-Crisp.chat.open()
-```
-
-Close the chatbox with :
-
-```Swift
-Crisp.chat.close()
 ```
 
 ## More

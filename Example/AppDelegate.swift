@@ -18,23 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        let crispWebsiteId = "187fc3ad-83d7-4b50-86e8-07e05f5ad24e" // test
-        //let crispWebsiteId = "c46126bf-9865-4cd1-82ee-dbe93bd42485" //debug
-        Crisp.initialize(websiteId: crispWebsiteId)
-        Crisp.preferences.setColor(def: .blue)
-        Crisp.user.set(email: "quentin@dequelen.me")
-        Crisp.session.append(segment: "toto")
-        Crisp.user.set(nickname: "Quentin")
-        CrispNotifier.addObserver(observer: self, selector: #selector(crispMessageSent), notification: CrispNotifier.Notification.messageSent)
+        Crisp.initialize(websiteId: "7598bf86-9ebb-46bc-8c61-be8929bbf93d")
         return true
     }
-
-    @objc func crispMessageSent(_ notification: NSNotification) {
-        if let message = notification.object as? String {
-            print(message)
-        }
-    }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
