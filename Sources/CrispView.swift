@@ -24,6 +24,8 @@ open class CrispView: UIView, UIWebViewDelegate {
         loadWebView()
        
         CrispView.webView?.scrollView.isScrollEnabled = false;
+        CrispView.webView?.scalesPageToFit = true;
+        CrispView.webView?.contentMode = .scaleAspectFit;
         CrispView.webView?.delegate = self
     }
     
