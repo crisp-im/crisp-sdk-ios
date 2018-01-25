@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         Crisp.initialize(websiteId: "7598bf86-9ebb-46bc-8c61-be8929bbf93d")
+
         return true
     }
     

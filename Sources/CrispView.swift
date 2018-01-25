@@ -10,21 +10,21 @@ import Foundation
 import UIKit
 import WebKit
 
-open class CrispView: UIView {
-    var webView: WKWebView!
-
+open class CrispView: UIView, UIWebViewDelegate {
+    static var webView: UIWebView?
+    static var commandQueue: [String] = []
+    static var isLoaded = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        webView = WKWebView()
-        webView.allowsBackForwardNavigationGestures = true
-   
-        addSubview(webView)
+        CrispView.webView = UIWebView()
+        addSubview(CrispView.webView!)
         
         loadWebView()
        
-        webView.scrollView.isScrollEnabled = false;
+        CrispView.webView?.scrollView.isScrollEnabled = false;
+        CrispView.webView?.delegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -34,33 +34,55 @@ open class CrispView: UIView {
     override open func layoutSubviews() {
         super.layoutSubviews()
         
-        webView.frame = bounds
-        webView.center = center
+        CrispView.webView?.frame = bounds
+        CrispView.webView?.center = center
+    }
+    
+    override open func removeFromSuperview() {
+        CrispView.isLoaded = false
+        super.removeFromSuperview()
+    }
+    
+    public func webViewDidFinishLoad(_ webView: UIWebView) {
+        CrispView.isLoaded = true
+        CrispView.flushQueue()
     }
     
     
     func loadWebView() {
-        let url = URL(string: "https://go.crisp.chat/chat/embed/?website_id="+Crisp.websiteId)
-        webView.load(URLRequest(url: url!))
-        /*let bundle = Bundle(for: CrispView.self)
-        //print(bundle)
-        
+        let bundle = Bundle(for: type(of: self))
+
         let filePath: String? = bundle.path(forResource: "assets/index", ofType: "html")
-  
-        let url = URL(string: filePath!);
-        let myRequest = NSURLRequest(url: url!);
-        print(myRequest)
+
+        let urlPath =  URL(string: filePath!)
+
+        CrispView.webView?.loadRequest(URLRequest(url: urlPath!))
         
-        do {
-            //let content = try String(contentsOf: url!, encoding: .utf8)
-            let content = try String(contentsOfFile: filePath!)
-            print(content)
-            webView.loadHTMLString(content, baseURL: nil)
+        if (Crisp.tokenId != "") {
+            CrispView.execute(script: "window.CRISP_TOKEN_ID = \"" + Crisp.tokenId + "\";");
         }
-        catch {/* error handling here */}
         
-        //webView.load(myRequest as URLRequest);
-        //webView.load(URLRequest(url: url!))*/
+        CrispView.execute(script: "window.CRISP_WEBSITE_ID = \"" + Crisp.websiteId + "\";");
+        CrispView.execute(script: "initialize()");
     }
     
+    static func execute(script: String) {
+        commandQueue.append(script)
+        
+        if (isLoaded) {
+            flushQueue()
+        }
+    }
+    
+    static func flushQueue() {
+        for script in commandQueue {
+            callJavascript(script: script)
+        }
+        commandQueue = []
+    }
+    
+    static func callJavascript(script: String) {
+        guard let webView =  CrispView.webView else { return }
+        webView.stringByEvaluatingJavaScript(from: script)
+    }
 }

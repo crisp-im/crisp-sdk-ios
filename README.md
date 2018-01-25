@@ -99,6 +99,16 @@ class ViewController: UIViewController {
 
 ```
 
+## Availables APIs:
+
+* `Crisp.user.set(email: "john.doe@gmail.com");`
+* `Crisp.user.set(nickname: "John Doe");`
+* `Crisp.user.set(phone: "003370123456789");`
+* `Crisp.user.set(avatar: "https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg");`
+* `Crisp.session.set(data: ["key" : "value"]);`
+* `Crisp.session.set(segment: "segment");`
+* `Crisp.session.set(segments: ["segment1", "segment2"]);`
+
 ## More
 
 You can also check out our [API Reference](https://crisp-im.github.io/crisp-sdk-ios/) for more detailed information about our this SDK.
