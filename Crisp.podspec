@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name                  = 'Crisp'
-    s.version               = '0.1.4'
+    s.version               = '0.1.5'
     s.summary               = 'The Crisp iOS Framework'
     s.homepage              = 'https://crisp.im/'
 
@@ -10,6 +10,10 @@ Pod::Spec.new do |s|
     s.license               = {
         :type => 'Copyright',
         :file => 'LICENSE'
+    }
+
+    s.resource_bundles = {
+        'Crisp' => ['Sources/assets/**/*.{js,html}']
     }
 
     s.platform              = :ios

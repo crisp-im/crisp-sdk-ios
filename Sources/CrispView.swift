@@ -52,9 +52,11 @@ open class CrispView: UIView, UIWebViewDelegate {
     
     
     func loadWebView() {
-        let bundle = Bundle(for: type(of: self))
+        let frameworkBundle = Bundle(for: CrispView.self)
+        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Crisp.bundle")
+        let bundle = Bundle.init(url: bundleURL!)
 
-        let filePath: String? = bundle.path(forResource: "assets/index", ofType: "html")
+        let filePath: String? = bundle?.path(forResource: "assets/index", ofType: "html")
 
         let urlPath =  URL(string: filePath!)
 
