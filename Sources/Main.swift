@@ -10,7 +10,7 @@ import Foundation
 
 public let Crisp: CrispMain = CrispMain()
 
-open class CrispMain: NSObject {
+@objc open class CrispMain: NSObject {
     
     var websiteId: String!
     var tokenId: String!
@@ -33,13 +33,13 @@ open class CrispMain: NSObject {
      Crisp.initialize(websiteId: "c46126bf-9865-4cd1-82ee-dbe93bd42485")
      ```
      */
-    public func initialize(websiteId: String) {
+    @objc public func initialize(websiteId: String) {
         self.websiteId = websiteId
         self.tokenId = ""
     }    
 }
 
-public class SessionInterface {
+@objc public class SessionInterface : NSObject {
     
     // MARK: Session Setter
     
@@ -55,24 +55,8 @@ public class SessionInterface {
      Crisp.user.set(segment: "pro")
      ```
      */
-    public func set(segment: String) {
-
-    }
-    
-    /**
-     
-     - parameter segment: an array of segment
-     
-     Replace existing crisp segments by news
-     
-     # Exemple
-     
-     ```
-     Crisp.user.set(segments: ["paid", "pro"])
-     ```
-     */
-    public func set(segments: [String]) {
-       
+    @objc public func set(segment: String) {
+        CrispView.execute(script: "window.$crisp.push([\"set\", \"session:segments\", [[\"" + segment + "\"]]])");
     }
     
     /**
@@ -88,12 +72,20 @@ public class SessionInterface {
      Crisp.user.set(data: ["paid_user":true])
      ```
      */
-    public func set(data: [String:Any]) {
-        
+    @objc public func set(data: [String:Any]) {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+            
+            let jsonText = String(data: jsonData,
+                                     encoding: .utf8)
+            
+            CrispView.execute(script: "window.$crisp.push([\"set\", \"session:data\", [[[\"" + jsonText! + "\"]]]])")
+        } catch {
+        }
     }
 }
 
-public class UserInterface {
+@objc public class UserInterface : NSObject {
     
     // MARK: User Setter
     
@@ -111,7 +103,7 @@ public class UserInterface {
      Crisp.user.set(email: "quentin@crisp.chat")
      ```
      */
-    public func set(email: String) {
+    @objc public func set(email: String) {
         CrispView.execute(script: "window.$crisp.push([\"set\", \"user:email\", [\"" + email + "\"]])")
     }
     
@@ -129,7 +121,7 @@ public class UserInterface {
      Crisp.user.set(avatar: "http://your.website.com/avatar.png")
      ```
      */
-    public func set(avatar: String) {
+    @objc public func set(avatar: String) {
         CrispView.execute(script: "window.$crisp.push([\"set\", \"user:avatar\", [\"" + avatar + "\"]])");
     }
     
@@ -147,7 +139,7 @@ public class UserInterface {
      Crisp.user.set(nickname: "John Doe")
      ```
      */
-    public func set(nickname: String) {
+    @objc public func set(nickname: String) {
         CrispView.execute(script: "window.$crisp.push([\"set\", \"user:nickname\", [\"" + nickname + "\"]])")
     }
     
@@ -165,7 +157,7 @@ public class UserInterface {
      Crisp.user.set(phone: "+33645XXXXXX")
      ```
      */
-    public func set(phone: String) {
+    @objc public func set(phone: String) {
         CrispView.execute(script: "window.$crisp.push([\"set\", \"user:phone\", [\"" + phone + "\"]])");
     }
 }
