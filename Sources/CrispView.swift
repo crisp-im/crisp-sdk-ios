@@ -59,9 +59,7 @@ open class CrispView: UIView, UIWebViewDelegate {
         var filePath: String? = bundle?.path(forResource: "index", ofType: "html")
         
         if (filePath == nil) {
-            print("filePath nil")
             frameworkBundle = Bundle(for: type(of: self))
-            print(frameworkBundle)
             filePath = frameworkBundle.path(forResource: "assets/index", ofType: "html")
         }
 
@@ -73,6 +71,10 @@ open class CrispView: UIView, UIWebViewDelegate {
             CrispView.execute(script: "window.CRISP_TOKEN_ID = \"" + Crisp.tokenId + "\";");
         }
         
+        CrispView._load()
+    }
+    
+    static func _load() {
         CrispView.execute(script: "window.CRISP_WEBSITE_ID = \"" + Crisp.websiteId + "\";");
         CrispView.execute(script: "initialize()");
     }
@@ -94,6 +96,7 @@ open class CrispView: UIView, UIWebViewDelegate {
     
     static func callJavascript(script: String) {
         guard let webView =  CrispView.webView else { return }
+
         webView.stringByEvaluatingJavaScript(from: script)
     }
 }

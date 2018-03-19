@@ -83,6 +83,16 @@ public let Crisp: CrispMain = CrispMain()
         } catch {
         }
     }
+    
+    /**
+     
+     Resets the user session
+     */
+    @objc public func reset() {
+        CrispView.execute(script: "window.$crisp.push([\"do\", \"session:reset\", [true]])");
+        CrispView.isLoaded = false
+        CrispView._load()
+    }
 }
 
 @objc public class UserInterface : NSObject {

@@ -108,6 +108,7 @@ class ViewController: UIViewController {
 * `Crisp.session.set(data: ["key" : "value"]);`
 * `Crisp.session.set(segment: "segment");`
 * `Crisp.session.set(segments: ["segment1", "segment2"]);`
+* `Crisp.session.reset();`
 
 ## More
 
