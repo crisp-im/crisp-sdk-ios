@@ -74,12 +74,12 @@ public let Crisp: CrispMain = CrispMain()
      */
     @objc public func set(data: [String:Any]) {
         do {
-            let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+            var pendingData = "";
+            for (key, value) in data {
+                pendingData = "\(pendingData)['\(key)','\(value)']"
+            }
             
-            let jsonText = String(data: jsonData,
-                                     encoding: .utf8)
-            
-            CrispView.execute(script: "window.$crisp.push([\"set\", \"session:data\", [[[\"" + jsonText! + "\"]]]])")
+            CrispView.execute(script: "window.$crisp.push([\"set\", \"session:data\", [["+pendingData+"]]])")
         } catch {
         }
     }
