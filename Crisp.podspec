@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name                  = 'Crisp'
-    s.version               = '0.1.11'
+    s.version               = '0.1.12'
     s.summary               = 'The Crisp iOS Framework'
     s.homepage              = 'https://crisp.im/'
 

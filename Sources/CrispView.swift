@@ -36,12 +36,21 @@ open class CrispView: UIView, UIWebViewDelegate {
     override open func layoutSubviews() {
         super.layoutSubviews()
         
-        CrispView.webView?.frame = bounds
-        CrispView.webView?.center = center
+        guard let webView = CrispView.webView else { return }
+        
+        webView.frame = bounds
+        webView.center = center
     }
     
     override open func removeFromSuperview() {
+        guard let webView = CrispView.webView else { return }
+        
         CrispView.isLoaded = false
+        
+        webView.removeFromSuperview()
+        
+        CrispView.webView = nil
+        
         super.removeFromSuperview()
     }
     
@@ -52,6 +61,8 @@ open class CrispView: UIView, UIWebViewDelegate {
     
     
     func loadWebView() {
+        guard let webView = CrispView.webView else { return }
+        
         var frameworkBundle = Bundle(for: CrispView.self)
         let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Crisp.bundle")
         let bundle = Bundle.init(url: bundleURL!)
@@ -65,7 +76,7 @@ open class CrispView: UIView, UIWebViewDelegate {
 
         let urlPath =  URL(string: filePath!)
 
-        CrispView.webView?.loadRequest(URLRequest(url: urlPath!))
+        webView.loadRequest(URLRequest(url: urlPath!))
         
         if (Crisp.tokenId != "") {
             CrispView.execute(script: "window.CRISP_TOKEN_ID = \"" + Crisp.tokenId + "\";");
