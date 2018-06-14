@@ -74,7 +74,7 @@ Crisp.initialize(websiteId: "YOUR_WEBSITE_ID")
 
 ### Chatbox
 
-You can add the Crisp bubble by adding in your view `CrispButton()` :
+You can add the Crisp bubble by adding in your view `CrispView()` :
 
 ```Swift
 import UIKit
