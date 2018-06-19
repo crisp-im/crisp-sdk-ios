@@ -119,13 +119,9 @@ class ViewController: UIViewController {
 * `Crisp.session.set(segments: ["segment1", "segment2"]);`
 * `Crisp.session.reset();`
 
-## More
-
-You can also check out our [API Reference](https://crisp-im.github.io/crisp-sdk-ios/) for more detailed information about our this SDK.
-
 ## Credits
 
-Crisp iOS SDk is owned and maintained by [Crisp IM, inc](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
+Crisp iOS SDk is owned and maintained by [Crisp IM, SARL](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
 
 ## License
 
