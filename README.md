@@ -63,6 +63,15 @@ Run `carthage update` to build the framework and drag the built `Crisp.framework
 
 ⚠️ Adding Camera and Photo permissions is mandatory, `NSCameraUsageDescription` and `NSPhotoLibraryUsageDescription` in  `Info.plist`, to inform your users that you need to access to the Camera and Photo Library. You also have to enable **"iCloud Documents"** capability
 
+## Get your website ID
+
+Your website ID can be found in the Crisp App URL:
+
+- https://app.crisp.chat/website/[WEBISTE_ID]/inbox/
+
+Crisp Website ID is an UUID like e30a04ee-f81c-4935-b8d8-5fa55831b1c0
+
+
 ## Usage
 
 Start using Crisp by adding the following code on your AppDelegate :
@@ -110,13 +119,9 @@ class ViewController: UIViewController {
 * `Crisp.session.set(segments: ["segment1", "segment2"]);`
 * `Crisp.session.reset();`
 
-## More
-
-You can also check out our [API Reference](https://crisp-im.github.io/crisp-sdk-ios/) for more detailed information about our this SDK.
-
 ## Credits
 
-Crisp iOS SDk is owned and maintained by [Crisp IM, inc](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
+Crisp iOS SDk is owned and maintained by [Crisp IM, SARL](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
 
 ## License
 
