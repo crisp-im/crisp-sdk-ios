@@ -8,7 +8,6 @@
 
 import UIKit
 import Crisp
-import SnapKit
 
 class ViewController: UIViewController {
 
@@ -16,20 +15,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        /*
         let crispView = CrispView()
         crispView.bounds = view.bounds
-        crispView.center = view.center*/
-        
-        let crispView = CrispView()
-        
+        crispView.center = view.center
+
         view.addSubview(crispView)
-        
-        crispView.snp.makeConstraints { (make) -> Void in
-            make.height.equalToSuperview()
-            make.width.equalToSuperview()
-            make.top.equalToSuperview()
-        }
     }
 
     override func didReceiveMemoryWarning() {

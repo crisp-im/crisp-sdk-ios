@@ -9,7 +9,3 @@ inhibit_all_warnings!
 target 'Crisp' do
 
 end
-
-target 'Example' do
-  pod 'SnapKit'
-end
