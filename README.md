@@ -4,7 +4,7 @@ Chat with app users, integrate your favorite tools, and deliver a great customer
 
 # Crisp iOS SDK
 
-![Crisp screenshot](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/crisp_screenshot.jpg)
+![Crisp screenshot](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/crisp_screenshot.png)
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/Crisp.svg)](https://cocoapods.org/?q=crisp)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
@@ -57,6 +57,10 @@ github "crisp-im/crisp-sdk-ios"
 ```
 
 Run `carthage update` to build the framework and drag the built `Crisp.framework` into your Xcode project.
+
+**Ensure you embed binaries**
+
+![Embed binaries](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/embed.jpg)
 
 
 ## Requirements
