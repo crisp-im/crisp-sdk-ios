@@ -86,6 +86,11 @@ open class CrispView: UIView, UIWebViewDelegate {
     }
     
     static func _load() {
+        if Crisp.websiteId == nil {
+            print("=====================================")
+            print("Warning. Please initiate the Crisp SDK from your AppDelegate")
+            print("=====================================")
+        }
         CrispView.execute(script: "window.CRISP_WEBSITE_ID = \"" + Crisp.websiteId + "\";");
         CrispView.execute(script: "initialize()");
     }
