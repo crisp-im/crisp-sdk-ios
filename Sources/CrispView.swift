@@ -78,7 +78,7 @@ open class CrispView: UIView, UIWebViewDelegate {
 
         webView.loadRequest(URLRequest(url: urlPath!))
         
-        if (Crisp.tokenId != "") {
+        if (Crisp.tokenId != nil && Crisp.tokenId != "") {
             CrispView.execute(script: "window.CRISP_TOKEN_ID = \"" + Crisp.tokenId + "\";");
         }
         
