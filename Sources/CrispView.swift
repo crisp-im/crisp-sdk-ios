@@ -24,6 +24,7 @@ open class CrispView: UIView, UIWebViewDelegate {
         loadWebView()
        
         CrispView.webView?.scrollView.isScrollEnabled = false;
+        CrispView.webView?.dataDetectorTypes = .all;
         CrispView.webView?.scalesPageToFit = true;
         CrispView.webView?.contentMode = .scaleAspectFit;
         CrispView.webView?.delegate = self
@@ -59,6 +60,14 @@ open class CrispView: UIView, UIWebViewDelegate {
         CrispView.flushQueue()
     }
     
+    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if (request.url?.scheme == "tel") {
+            UIApplication.shared.open(request.url!)
+            return false
+        }
+        
+        return true
+    }
     
     func loadWebView() {
         guard let webView = CrispView.webView else { return }
