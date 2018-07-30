@@ -60,6 +60,7 @@ open class CrispView: UIView, UIWebViewDelegate {
         CrispView.flushQueue()
     }
     
+    @available(iOS 10.0, *)
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if (request.url?.scheme == "tel") {
             UIApplication.shared.open(request.url!)
