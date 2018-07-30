@@ -83,9 +83,9 @@ open class CrispView: UIView, UIWebViewDelegate {
             filePath = frameworkBundle.path(forResource: "assets/index", ofType: "html")
         }
 
-        let urlPath =  URL(string: filePath!)
+        let urlPath =  URL(fileURLWithPath: filePath!)
 
-        webView.loadRequest(URLRequest(url: urlPath!))
+        webView.loadRequest(URLRequest(url: urlPath))
         
         if (Crisp.tokenId != nil && Crisp.tokenId != "") {
             CrispView.execute(script: "window.CRISP_TOKEN_ID = \"" + Crisp.tokenId + "\";");
