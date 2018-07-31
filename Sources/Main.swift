@@ -13,7 +13,7 @@ public let Crisp: CrispMain = CrispMain()
 @objc open class CrispMain: NSObject {
     
     var websiteId: String!
-    var tokenId: String!
+    @objc public var tokenId: String!
     
     public var session      = SessionInterface()
     public var user         = UserInterface()
@@ -36,7 +36,8 @@ public let Crisp: CrispMain = CrispMain()
     @objc public func initialize(websiteId: String) {
         self.websiteId = websiteId
         self.tokenId = ""
-    }    
+    }
+    
 }
 
 @objc public class SessionInterface : NSObject {
