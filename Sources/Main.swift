@@ -36,6 +36,14 @@ public let Crisp: CrispMain = CrispMain()
     @objc public func initialize(websiteId: String) {
         self.websiteId = websiteId
         self.tokenId = ""
+
+        if (Crisp.websiteId = nil) {
+            Crisp.websiteId = websiteId
+        }
+
+        if (Crisp.tokenId = nil) {
+            Crisp.tokenId = ""
+        }
     }
     
 }
