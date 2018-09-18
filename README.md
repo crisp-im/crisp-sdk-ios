@@ -76,7 +76,7 @@ Your website ID can be found in the Crisp App URL:
 Crisp Website ID is an UUID like e30a04ee-f81c-4935-b8d8-5fa55831b1c0
 
 
-## Usage
+## Usage (Swift)
 
 Start using Crisp by adding the following code on your AppDelegate :
 
@@ -85,9 +85,7 @@ import Crisp
 Crisp.initialize(websiteId: "YOUR_WEBSITE_ID")
 ```
 
-### Chatbox
-
-You can add the Crisp bubble by adding in your view `CrispView()` :
+You can add the Crisp view by adding in your view `CrispView()` :
 
 ```Swift
 import UIKit
@@ -108,6 +106,41 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+}
+
+```
+
+
+## Usage (Objective C)
+
+Start using Crisp by adding the following code on your AppDelegate :
+
+
+```objective-c
+#import "Crisp-Swift.h"
+
+[[CrispMain alloc] initializeWithWebsiteId:@"YOUR_WEBSITE_ID"];
+```
+
+You can add the Crisp view by adding in your view `CrispView()` :
+
+```objective-c
+#import "Crisp-Swift.h"
+
+@interface ViewController ()
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    CrispView *crispView = [[CrispView alloc] init];
+    crispView.bounds = self.view.bounds;
+    crispView.center = self.view.center;
+    
+    [self.view addSubview:crispView];
 }
 
 ```
