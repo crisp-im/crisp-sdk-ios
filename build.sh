@@ -1,1 +1,1 @@
-pod trunk push Crisp.podspec
+pod trunk push Crisp.podspec --allow-warnings

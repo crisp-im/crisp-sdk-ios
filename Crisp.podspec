@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name                  = 'Crisp'
-    s.version               = '0.1.23'
+    s.version               = '0.1.24'
     s.summary               = 'The Crisp iOS Framework'
     s.homepage              = 'https://crisp.im/'
 
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
 
     s.source_files  = "Sources/**/*.swift"
 
-    s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
+    s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.2' }
     s.ios.deployment_target = '9.0'
 
     s.requires_arc          = true

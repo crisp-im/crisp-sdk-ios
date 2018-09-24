@@ -61,7 +61,7 @@ open class CrispView: UIView, UIWebViewDelegate {
     }
     
     @available(iOS 9, *)
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         if (request.url?.scheme == "tel") {
             if #available(iOS 10, *) {
                 UIApplication.shared.open(request.url!)
