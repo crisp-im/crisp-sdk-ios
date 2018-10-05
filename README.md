@@ -145,7 +145,7 @@ You can add the Crisp view by adding in your view `CrispView()` :
 
 ```
 
-## Availables APIs:
+## API Usage (Swift):
 
 * `Crisp.user.set(email: "john.doe@gmail.com");`
 * `Crisp.user.set(nickname: "John Doe");`
@@ -155,6 +155,25 @@ You can add the Crisp view by adding in your view `CrispView()` :
 * `Crisp.session.set(segment: "segment");`
 * `Crisp.session.set(segments: ["segment1", "segment2"]);`
 * `Crisp.session.reset();`
+
+## API Usage (Objective C ):
+
+```
+UserInterface *user = [[UserInterface alloc] init];
+[user setWithEmail:@"user@gmail.com"];
+[user setWithNickname:@"John Doe"];
+[user setWithPhone:@"003370123456789"];
+[user setWithAvatar:@"https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg"];
+
+SessionInterface *session = [[SessionInterface alloc] init];
+
+NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+[dict setObject: @"Value"  forKey: @"Key"];
+
+[session setWithData:dict];
+[session setWithSegment:@"segment"];
+    
+```
 
 ## Credits
 
