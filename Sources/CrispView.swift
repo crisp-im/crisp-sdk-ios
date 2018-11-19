@@ -10,24 +10,21 @@ import Foundation
 import UIKit
 import WebKit
 
-open class CrispView: UIView, UIWebViewDelegate {
-    static var webView: UIWebView?
+open class CrispView: UIView, UIWebViewDelegate, WKNavigationDelegate {
+    static var webView: WKWebView?
     static var commandQueue: [String] = []
     static var isLoaded = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        CrispView.webView = UIWebView()
+        CrispView.webView = WKWebView()
+        CrispView.webView?.navigationDelegate = self
         addSubview(CrispView.webView!)
         
         loadWebView()
        
         CrispView.webView?.scrollView.isScrollEnabled = false;
-        CrispView.webView?.dataDetectorTypes = .all;
-        CrispView.webView?.scalesPageToFit = true;
-        CrispView.webView?.contentMode = .scaleAspectFit;
-        CrispView.webView?.delegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -55,45 +52,15 @@ open class CrispView: UIView, UIWebViewDelegate {
         super.removeFromSuperview()
     }
     
-    public func webViewDidFinishLoad(_ webView: UIWebView) {
+    public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         CrispView.isLoaded = true
-        CrispView.flushQueue()
-    }
-    
-    @available(iOS 9, *)
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
-        if (request.url?.scheme == "tel") {
-            if #available(iOS 10, *) {
-                UIApplication.shared.open(request.url!)
-                return false
-            }
-        }
         
-        return true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+            CrispView.flushQueue()
+        })
     }
     
     func loadWebView() {
-        guard let webView = CrispView.webView else { return }
-        
-        var frameworkBundle = Bundle(for: CrispView.self)
-        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Crisp.bundle")
-        let bundle = Bundle.init(url: bundleURL!)
-
-        var filePath: String? = bundle?.path(forResource: "index", ofType: "html")
-        
-        if (filePath == nil) {
-            frameworkBundle = Bundle(for: type(of: self))
-            filePath = frameworkBundle.path(forResource: "assets/index", ofType: "html")
-        }
-
-        let urlPath =  URL(fileURLWithPath: filePath!)
-
-        webView.loadRequest(URLRequest(url: urlPath))
-        
-        if (Crisp.tokenId != nil && Crisp.tokenId != "") {
-            CrispView.execute(script: "window.CRISP_TOKEN_ID = \"" + Crisp.tokenId + "\";");
-        }
-        
         CrispView._load()
     }
     
@@ -102,9 +69,17 @@ open class CrispView: UIView, UIWebViewDelegate {
             print("=====================================")
             print("Warning. Please initiate the Crisp SDK from your AppDelegate")
             print("=====================================")
+            return
         }
-        CrispView.execute(script: "window.CRISP_WEBSITE_ID = \"" + Crisp.websiteId + "\";");
-        CrispView.execute(script: "initialize()");
+        var crispURL = "https://go.crisp.chat/chat/embed/?website_id="
+        
+        crispURL += Crisp.websiteId
+        
+        if (Crisp.tokenId != nil && Crisp.tokenId != "") {
+            crispURL += "&token_id=" + Crisp.tokenId
+        }
+        
+        webView?.load(URLRequest(url: URL(string: crispURL)!))
     }
     
     static func execute(script: String) {
@@ -125,6 +100,7 @@ open class CrispView: UIView, UIWebViewDelegate {
     static func callJavascript(script: String) {
         guard let webView =  CrispView.webView else { return }
 
-        webView.stringByEvaluatingJavaScript(from: script)
+        print(script)
+        webView.evaluateJavaScript(script, completionHandler: nil)
     }
 }
