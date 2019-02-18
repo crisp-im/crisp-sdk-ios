@@ -79,6 +79,10 @@ open class CrispView: UIView, UIWebViewDelegate, WKNavigationDelegate {
             crispURL += "&token_id=" + Crisp.tokenId
         }
         
+        if (Crisp.locale != nil && Crisp.locale != "") {
+            crispURL += "&locale=" + Crisp.locale
+        }
+        
         webView?.load(URLRequest(url: URL(string: crispURL)!))
     }
     

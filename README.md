@@ -147,6 +147,8 @@ You can add the Crisp view by adding in your view `CrispView()` :
 
 ## API Usage (Swift):
 
+* `Crisp.tokenId = "XXXX"` sets your own token_id
+* `Crisp.locale = "it"` Overrides the Crisp locale with a custom one
 * `Crisp.user.set(email: "john.doe@gmail.com");`
 * `Crisp.user.set(nickname: "John Doe");`
 * `Crisp.user.set(phone: "003370123456789");`

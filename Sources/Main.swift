@@ -14,6 +14,7 @@ public let Crisp: CrispMain = CrispMain()
     
     var websiteId: String!
     @objc public var tokenId: String!
+    @objc public var locale: String!
     
     public var session      = SessionInterface()
     public var user         = UserInterface()
@@ -43,6 +44,10 @@ public let Crisp: CrispMain = CrispMain()
 
         if (Crisp.tokenId == nil) {
             Crisp.tokenId = ""
+        }
+        
+        if (Crisp.locale == nil) {
+            Crisp.locale = ""
         }
     }
     
