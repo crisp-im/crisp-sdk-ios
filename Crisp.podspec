@@ -12,10 +12,6 @@ Pod::Spec.new do |s|
         :file => 'LICENSE'
     }
 
-    s.resource_bundles = {
-        'Crisp' => ['Sources/assets/**/*.{js,html}']
-    }
-
     s.platform              = :ios
     s.source                = {
         :git => 'https://github.com/crisp-im/crisp-sdk-ios.git',
