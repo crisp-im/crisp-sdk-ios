@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		194ABE731FF68E5000A2707F /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 194ABE721FF68E5000A2707F /* assets */; };
 		194ABE7C1FF6AA9F00A2707F /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194ABE7B1FF6AA9F00A2707F /* Main.swift */; };
 		1985D82B1FF6851D00393B10 /* CrispView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1985D82A1FF6851D00393B10 /* CrispView.swift */; };
 		D126197A1F208427000B18F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12619791F208427000B18F6 /* AppDelegate.swift */; };
@@ -45,7 +44,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		194ABE721FF68E5000A2707F /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		194ABE7B1FF6AA9F00A2707F /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		1985D82A1FF6851D00393B10 /* CrispView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrispView.swift; sourceTree = "<group>"; };
 		66110E091EA8F8B800AB8FB0 /* Crisp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Crisp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,7 +119,6 @@
 			isa = PBXGroup;
 			children = (
 				1985D82A1FF6851D00393B10 /* CrispView.swift */,
-				194ABE721FF68E5000A2707F /* assets */,
 				194ABE7B1FF6AA9F00A2707F /* Main.swift */,
 			);
 			path = Sources;
@@ -273,7 +270,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				194ABE731FF68E5000A2707F /* assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
