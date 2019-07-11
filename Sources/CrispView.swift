@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import WebKit
 
-open class CrispView: UIView, UIWebViewDelegate, WKNavigationDelegate {
+open class CrispView: UIView, WKUIDelegate, WKNavigationDelegate {
     static var webView: WKWebView?
     static var commandQueue: [String] = []
     static var isLoaded = false
@@ -20,6 +20,8 @@ open class CrispView: UIView, UIWebViewDelegate, WKNavigationDelegate {
         
         CrispView.webView = WKWebView()
         CrispView.webView?.navigationDelegate = self
+        
+        CrispView.webView?.uiDelegate = self
         addSubview(CrispView.webView!)
         
         loadWebView()
@@ -59,6 +61,23 @@ open class CrispView: UIView, UIWebViewDelegate, WKNavigationDelegate {
             CrispView.flushQueue()
         })
     }
+    
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+       decisionHandler(.allow)
+    }
+    
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil, let url = navigationAction.request.url {
+            if url.description.lowercased().range(of: "http://") != nil ||
+                url.description.lowercased().range(of: "https://") != nil ||
+                url.description.lowercased().range(of: "mailto:") != nil {
+                
+                UIApplication.shared.open(url)
+            }
+        }
+        return nil
+    }
+
     
     func loadWebView() {
         CrispView._load()
