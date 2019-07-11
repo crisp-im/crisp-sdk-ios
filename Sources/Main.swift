@@ -88,8 +88,14 @@ public let Crisp: CrispMain = CrispMain()
      */
     @objc public func set(data: [String:Any]) {
         var pendingData = "";
+        var index = 0
         for (key, value) in data {
-            pendingData = "\(pendingData)['\(key)','\(value)']"
+            if index == 0 {
+                pendingData = "['\(key)','\(value)']"
+            } else {
+                pendingData = "\(pendingData),['\(key)','\(value)']"
+            }
+            index+=1
         }
             
         CrispView.execute(script: "window.$crisp.push([\"set\", \"session:data\", [["+pendingData+"]]])")
