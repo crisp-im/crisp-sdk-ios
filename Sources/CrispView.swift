@@ -72,7 +72,11 @@ open class CrispView: UIView, WKUIDelegate, WKNavigationDelegate {
                 url.description.lowercased().range(of: "https://") != nil ||
                 url.description.lowercased().range(of: "mailto:") != nil {
                 
-                UIApplication.shared.open(url)
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
             }
         }
         return nil
