@@ -156,6 +156,7 @@ You can add the Crisp view by adding in your view `CrispView()` :
 * `Crisp.session.set(data: ["key" : "value"]);`
 * `Crisp.session.set(segment: "segment");`
 * `Crisp.session.set(segments: ["segment1", "segment2"]);`
+* `Crisp.session.pushEvent(name: "signup", ["key" : "value"], "blue");`
 * `Crisp.session.reset();`
 
 ## API Usage (Objective C ):

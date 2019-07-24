@@ -102,6 +102,31 @@ public let Crisp: CrispMain = CrispMain()
     }
     
     /**
+     - parameter name: Event name
+     - parameter data: Event data
+     - parameter color: Event color
+     
+     Set the session data for given key, with a value (value must be either a string, boolean or number)
+     
+     # Exemple
+     
+     
+     ```
+     push(name: "purchase", data: ["paid_user":true], color: "blue")
+     ```
+     */
+    @objc public func pushEvent(name: String, data: [String:Any], color: String = "blue") {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: data)
+
+            if let JSONString = String(data: jsonData, encoding: String.Encoding.utf8) {
+                CrispView.execute(script: "window.$crisp.push([\"set\", \"session:event\", [[['"+name+"', "+JSONString+", '"+color+"']]]])")
+            }
+        } catch {
+        }
+    }
+    
+    /**
      
      Resets the user session
      */
