@@ -1,28 +1,13 @@
-Pod::Spec.new do |s|
-    s.name                  = 'Crisp'
-    s.version               = '0.1.30'
-    s.summary               = 'The Crisp iOS Framework'
-    s.homepage              = 'https://crisp.im/'
-
-    s.author                = {
-        'Name' => 'baptiste@crisp.chat'
-    }
-    s.license               = {
-        :type => 'Copyright',
-        :file => 'LICENSE'
-    }
-
-    s.platform              = :ios
-    s.source                = {
-        :git => 'https://github.com/crisp-im/crisp-sdk-ios.git',
-        :tag => "#{s.version}"
-    }
-
-    s.source_files  = "Sources/**/*.swift"
-
-    s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
-    s.ios.deployment_target = '9.0'
-
-    s.requires_arc          = true
-
+Pod::Spec.new do |spec|
+  spec.name                = "Crisp"
+  spec.version             = "1.0.0.beta2"
+  spec.summary             = "Crisp SDK for iOS."
+  spec.description         = "Crisp SDK for iOS, used for visitors to get help from operators."
+  spec.homepage            = "https://crisp.chat"
+  spec.author              = "Crisp IM SARL"
+  spec.platform            = :ios, "10.0"
+  spec.license             = { :type => "Commercial" }
+  spec.source              = { :http => "https://github.com/crisp-im/crisp-sdk-ios/releases/download/1.0.0.beta2/Crisp_1.0.0.beta2.tar.gz" }
+  spec.vendored_frameworks = "Crisp.xcframework"
+  spec.preserve_paths      = 'Crisp.xcframework', 'Crisp.dSYMs/**/*.dSYM'
 end
