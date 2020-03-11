@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		ki9eVfhWbC6K0gCBvT3ErHxDNCg=
+		NmDe6cNETdju83nDBka9MRuYScU=
 		</data>
 		<key>CREDITS.txt</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/Crisp-Swift.h</key>
 		<data>
-		/nicMZtenay+ajmHvCwQOs9wXgg=
+		yWELR/qFTmVTJEPuVsY/NN2kiCk=
 		</data>
 		<key>Headers/Crisp.h</key>
 		<data>
@@ -22,67 +22,67 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Qrtv7aQG5UY0E/+Lyl1OSujSruk=
+		fNVp+KbVCe+BLS8LIh005fIWuIQ=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm.swiftdoc</key>
 		<data>
-		etYvfVKyMHxI8GfYzKafwMd+7iQ=
+		sabRVp32VN9YGAeMert3doSfMlc=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm.swiftinterface</key>
 		<data>
-		dVvyJZq04kqKN/nOTikdu/IkhRo=
+		4/XouBEOAFLxQw+CIyVIqwEDrvs=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm.swiftmodule</key>
 		<data>
-		FgAyl0UjSG/P2aIBoHlKLb/6VaA=
+		7LVKLG/JtXLYs5JCHSYdHJq5Qw4=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		L2KhZFZshKEX2KlMWdE7Qdtkm10=
+		/gjTz3NoC6Nn8uggO8tDI0+lKBk=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		fceoBE3qt5sxv3qvYGRDRuow0bc=
+		v4+aS5ckSNPuecMOCfp25jjMR7c=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		VbwO6dR+fBhlOwuPOhFsQX1aLMw=
+		iTuye3izp6PRPhKbqskW9GD0nBU=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		L2KhZFZshKEX2KlMWdE7Qdtkm10=
+		/gjTz3NoC6Nn8uggO8tDI0+lKBk=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		fceoBE3qt5sxv3qvYGRDRuow0bc=
+		v4+aS5ckSNPuecMOCfp25jjMR7c=
 		</data>
 		<key>Modules/Crisp.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		VbwO6dR+fBhlOwuPOhFsQX1aLMw=
+		iTuye3izp6PRPhKbqskW9GD0nBU=
 		</data>
 		<key>Modules/Crisp.swiftmodule/armv7-apple-ios.swiftdoc</key>
 		<data>
-		etYvfVKyMHxI8GfYzKafwMd+7iQ=
+		sabRVp32VN9YGAeMert3doSfMlc=
 		</data>
 		<key>Modules/Crisp.swiftmodule/armv7-apple-ios.swiftinterface</key>
 		<data>
-		dVvyJZq04kqKN/nOTikdu/IkhRo=
+		4/XouBEOAFLxQw+CIyVIqwEDrvs=
 		</data>
 		<key>Modules/Crisp.swiftmodule/armv7-apple-ios.swiftmodule</key>
 		<data>
-		FgAyl0UjSG/P2aIBoHlKLb/6VaA=
+		7LVKLG/JtXLYs5JCHSYdHJq5Qw4=
 		</data>
 		<key>Modules/Crisp.swiftmodule/armv7.swiftdoc</key>
 		<data>
-		etYvfVKyMHxI8GfYzKafwMd+7iQ=
+		sabRVp32VN9YGAeMert3doSfMlc=
 		</data>
 		<key>Modules/Crisp.swiftmodule/armv7.swiftinterface</key>
 		<data>
-		dVvyJZq04kqKN/nOTikdu/IkhRo=
+		4/XouBEOAFLxQw+CIyVIqwEDrvs=
 		</data>
 		<key>Modules/Crisp.swiftmodule/armv7.swiftmodule</key>
 		<data>
-		FgAyl0UjSG/P2aIBoHlKLb/6VaA=
+		7LVKLG/JtXLYs5JCHSYdHJq5Qw4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -1079,11 +1079,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ki9eVfhWbC6K0gCBvT3ErHxDNCg=
+			NmDe6cNETdju83nDBka9MRuYScU=
 			</data>
 			<key>hash2</key>
 			<data>
-			YICMR23mtPSTHvxEckrH2hvUFnq6RtWzAAJWKVh9pkQ=
+			KsYhwmSWhc+cTsm4MsHdUqiHmXPPiirRnJOaQdAzSzc=
 			</data>
 		</dict>
 		<key>CREDITS.txt</key>
@@ -1101,11 +1101,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			/nicMZtenay+ajmHvCwQOs9wXgg=
+			yWELR/qFTmVTJEPuVsY/NN2kiCk=
 			</data>
 			<key>hash2</key>
 			<data>
-			gyUAmk2avEgo4ve3dT5YConYiG71KFYiMJb6X9Kt03M=
+			hmCg2nLJFCIzQK3yF//X2dOh5BmyUGS+H/n7aFylT6M=
 			</data>
 		</dict>
 		<key>Headers/Crisp.h</key>
@@ -1123,165 +1123,165 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			etYvfVKyMHxI8GfYzKafwMd+7iQ=
+			sabRVp32VN9YGAeMert3doSfMlc=
 			</data>
 			<key>hash2</key>
 			<data>
-			t1tO9eoht8ltGUyN5YLEXtlPjS6y7zPdJzreydhQj4M=
+			Bqp76VdGKxml19OqjYj9IDJSBopaNA0NiGEImj08uRg=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			dVvyJZq04kqKN/nOTikdu/IkhRo=
+			4/XouBEOAFLxQw+CIyVIqwEDrvs=
 			</data>
 			<key>hash2</key>
 			<data>
-			FrIbo3YOFYzFWLo+eHHRWmZvzmVkGsj0YdjYzZqeF7s=
+			U0ZDZ3riCAKjmNMeLQPTrp7lBWFOZddhF74TONH0cos=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			FgAyl0UjSG/P2aIBoHlKLb/6VaA=
+			7LVKLG/JtXLYs5JCHSYdHJq5Qw4=
 			</data>
 			<key>hash2</key>
 			<data>
-			XX9y+QqGcvBBZZHgpXI57oLQhCZPVo7jHEOmya8fYh0=
+			DXH4ST1k/im1gtfeuFn54CKb+0RFo7lm/d2j1s6nwDE=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			L2KhZFZshKEX2KlMWdE7Qdtkm10=
+			/gjTz3NoC6Nn8uggO8tDI0+lKBk=
 			</data>
 			<key>hash2</key>
 			<data>
-			0SYYXnBSWEHHsg+Z2iQdRCa00kKaiqLJqkmdEPZeNEk=
+			OHnIi7JBv4Of8UnMRf6IGR72qoBfwau8zFiTEMtsVdM=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			fceoBE3qt5sxv3qvYGRDRuow0bc=
+			v4+aS5ckSNPuecMOCfp25jjMR7c=
 			</data>
 			<key>hash2</key>
 			<data>
-			k4uZTWPJ6dljKDXf211jbALNzA4QiBzmnhsRNxGZmso=
+			Hi03VHpDejb1TmkEAau5/LMg6SgGFaUpvvwsUM2koMc=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			VbwO6dR+fBhlOwuPOhFsQX1aLMw=
+			iTuye3izp6PRPhKbqskW9GD0nBU=
 			</data>
 			<key>hash2</key>
 			<data>
-			JVhcXKrBurLxUVzjHn75yYNufbobI+yxRkTgNBQW7AM=
+			fn54vBEKMYMer3fpFKV+pz0uYn+qDQOtPsdD32vPGYM=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			L2KhZFZshKEX2KlMWdE7Qdtkm10=
+			/gjTz3NoC6Nn8uggO8tDI0+lKBk=
 			</data>
 			<key>hash2</key>
 			<data>
-			0SYYXnBSWEHHsg+Z2iQdRCa00kKaiqLJqkmdEPZeNEk=
+			OHnIi7JBv4Of8UnMRf6IGR72qoBfwau8zFiTEMtsVdM=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm64.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			fceoBE3qt5sxv3qvYGRDRuow0bc=
+			v4+aS5ckSNPuecMOCfp25jjMR7c=
 			</data>
 			<key>hash2</key>
 			<data>
-			k4uZTWPJ6dljKDXf211jbALNzA4QiBzmnhsRNxGZmso=
+			Hi03VHpDejb1TmkEAau5/LMg6SgGFaUpvvwsUM2koMc=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			VbwO6dR+fBhlOwuPOhFsQX1aLMw=
+			iTuye3izp6PRPhKbqskW9GD0nBU=
 			</data>
 			<key>hash2</key>
 			<data>
-			JVhcXKrBurLxUVzjHn75yYNufbobI+yxRkTgNBQW7AM=
+			fn54vBEKMYMer3fpFKV+pz0uYn+qDQOtPsdD32vPGYM=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/armv7-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			etYvfVKyMHxI8GfYzKafwMd+7iQ=
+			sabRVp32VN9YGAeMert3doSfMlc=
 			</data>
 			<key>hash2</key>
 			<data>
-			t1tO9eoht8ltGUyN5YLEXtlPjS6y7zPdJzreydhQj4M=
+			Bqp76VdGKxml19OqjYj9IDJSBopaNA0NiGEImj08uRg=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/armv7-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			dVvyJZq04kqKN/nOTikdu/IkhRo=
+			4/XouBEOAFLxQw+CIyVIqwEDrvs=
 			</data>
 			<key>hash2</key>
 			<data>
-			FrIbo3YOFYzFWLo+eHHRWmZvzmVkGsj0YdjYzZqeF7s=
+			U0ZDZ3riCAKjmNMeLQPTrp7lBWFOZddhF74TONH0cos=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/armv7-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			FgAyl0UjSG/P2aIBoHlKLb/6VaA=
+			7LVKLG/JtXLYs5JCHSYdHJq5Qw4=
 			</data>
 			<key>hash2</key>
 			<data>
-			XX9y+QqGcvBBZZHgpXI57oLQhCZPVo7jHEOmya8fYh0=
+			DXH4ST1k/im1gtfeuFn54CKb+0RFo7lm/d2j1s6nwDE=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/armv7.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			etYvfVKyMHxI8GfYzKafwMd+7iQ=
+			sabRVp32VN9YGAeMert3doSfMlc=
 			</data>
 			<key>hash2</key>
 			<data>
-			t1tO9eoht8ltGUyN5YLEXtlPjS6y7zPdJzreydhQj4M=
+			Bqp76VdGKxml19OqjYj9IDJSBopaNA0NiGEImj08uRg=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/armv7.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			dVvyJZq04kqKN/nOTikdu/IkhRo=
+			4/XouBEOAFLxQw+CIyVIqwEDrvs=
 			</data>
 			<key>hash2</key>
 			<data>
-			FrIbo3YOFYzFWLo+eHHRWmZvzmVkGsj0YdjYzZqeF7s=
+			U0ZDZ3riCAKjmNMeLQPTrp7lBWFOZddhF74TONH0cos=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/armv7.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			FgAyl0UjSG/P2aIBoHlKLb/6VaA=
+			7LVKLG/JtXLYs5JCHSYdHJq5Qw4=
 			</data>
 			<key>hash2</key>
 			<data>
-			XX9y+QqGcvBBZZHgpXI57oLQhCZPVo7jHEOmya8fYh0=
+			DXH4ST1k/im1gtfeuFn54CKb+0RFo7lm/d2j1s6nwDE=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

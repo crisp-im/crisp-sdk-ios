@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		myloPkev/6j955aBAh4Nex3yG/I=
+		WzuqkE4wcPjEWdQPOpqUZR5hU5A=
 		</data>
 		<key>CREDITS.txt</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/Crisp-Swift.h</key>
 		<data>
-		0Gt4XLuIfDRWIgVOWKKXyQKFpOE=
+		CRfH0lQ1jG562kHheuf8GZNz0us=
 		</data>
 		<key>Headers/Crisp.h</key>
 		<data>
@@ -22,55 +22,55 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Li/8zYD5XE3reaHcYy1zgsH2e5A=
+		fUGtV9HcOKpTWSGbPF96HiFoj3M=
 		</data>
 		<key>Modules/Crisp.swiftmodule/i386-apple-ios-simulator.swiftdoc</key>
 		<data>
-		UVVL8qibKKBruwk4pqxZWKZOkPo=
+		kmBqeCK6ZP3E1WbJ1KM/ugZ1dwQ=
 		</data>
 		<key>Modules/Crisp.swiftmodule/i386-apple-ios-simulator.swiftinterface</key>
 		<data>
-		weIz7Yf+kWLjd4E/t+drD1RjqDU=
+		WDFl1WHxnS1EX6zyEcHmtYYzYZI=
 		</data>
 		<key>Modules/Crisp.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
 		<data>
-		YBhV4tCxXGsywyBwU7XBOEGQn1o=
+		Lga5bjV8VantEeuj2+FqJmt9StI=
 		</data>
 		<key>Modules/Crisp.swiftmodule/i386.swiftdoc</key>
 		<data>
-		UVVL8qibKKBruwk4pqxZWKZOkPo=
+		kmBqeCK6ZP3E1WbJ1KM/ugZ1dwQ=
 		</data>
 		<key>Modules/Crisp.swiftmodule/i386.swiftinterface</key>
 		<data>
-		weIz7Yf+kWLjd4E/t+drD1RjqDU=
+		WDFl1WHxnS1EX6zyEcHmtYYzYZI=
 		</data>
 		<key>Modules/Crisp.swiftmodule/i386.swiftmodule</key>
 		<data>
-		YBhV4tCxXGsywyBwU7XBOEGQn1o=
+		Lga5bjV8VantEeuj2+FqJmt9StI=
 		</data>
 		<key>Modules/Crisp.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		83Idr1G2Lr88oMNVE7+ZnKGJJfw=
+		U8nfbreP5aKSqHmWzFNcPcLPG+s=
 		</data>
 		<key>Modules/Crisp.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		oM6xsx66NYe4CRKXu0huNrmSLrs=
+		ohZUx527kIi+aYsdxZBIwi8V260=
 		</data>
 		<key>Modules/Crisp.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		guc2wZ3S/HJb387devvBanLs/oo=
+		fheStQuRLbTIRMWvNds4H0xjNdM=
 		</data>
 		<key>Modules/Crisp.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		83Idr1G2Lr88oMNVE7+ZnKGJJfw=
+		U8nfbreP5aKSqHmWzFNcPcLPG+s=
 		</data>
 		<key>Modules/Crisp.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		oM6xsx66NYe4CRKXu0huNrmSLrs=
+		ohZUx527kIi+aYsdxZBIwi8V260=
 		</data>
 		<key>Modules/Crisp.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		guc2wZ3S/HJb387devvBanLs/oo=
+		fheStQuRLbTIRMWvNds4H0xjNdM=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -1067,11 +1067,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			myloPkev/6j955aBAh4Nex3yG/I=
+			WzuqkE4wcPjEWdQPOpqUZR5hU5A=
 			</data>
 			<key>hash2</key>
 			<data>
-			UqXlzptfK8XAZPsjlzBBsfsIc5kU/b9chTn/weUKSqk=
+			6ZHL453mSaEQpCLRHIfAHfjPlGH/0zVuTN8FXIJMROo=
 			</data>
 		</dict>
 		<key>CREDITS.txt</key>
@@ -1089,11 +1089,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			0Gt4XLuIfDRWIgVOWKKXyQKFpOE=
+			CRfH0lQ1jG562kHheuf8GZNz0us=
 			</data>
 			<key>hash2</key>
 			<data>
-			D7jIadARAJUAGSNVArOw/CiGfT6uGan5suQ48HmLc8I=
+			Y3AAwBccv4+GD7VgOTuBDT6dGSvtzG2PX3DBa17c4ms=
 			</data>
 		</dict>
 		<key>Headers/Crisp.h</key>
@@ -1111,132 +1111,132 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			UVVL8qibKKBruwk4pqxZWKZOkPo=
+			kmBqeCK6ZP3E1WbJ1KM/ugZ1dwQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			BvogAm3h4DKB3mJmrgN+Aq51D5OR20OusIkrqBBF4Z4=
+			jP5KTrpA+kpMATmol47jsxt0SgqLqbM1Sn4oM3bkYgw=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/i386-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			weIz7Yf+kWLjd4E/t+drD1RjqDU=
+			WDFl1WHxnS1EX6zyEcHmtYYzYZI=
 			</data>
 			<key>hash2</key>
 			<data>
-			rg+BdovHmtGNIokfueEMWX2TUAvJ2B3Z9GGKJYjbFYg=
+			ol2/iypl6AtGLz1slj/Z7m3BwW+q7oi2Au7PCyQ9uc4=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			YBhV4tCxXGsywyBwU7XBOEGQn1o=
+			Lga5bjV8VantEeuj2+FqJmt9StI=
 			</data>
 			<key>hash2</key>
 			<data>
-			Nvk9CEstuYPNN/722MiFnBl7XXO2m70dco8iO3/xRAU=
+			PmOCSTL3BJdc2tBooRJDLmyUNctS5Gp46ArCzoowCQY=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/i386.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			UVVL8qibKKBruwk4pqxZWKZOkPo=
+			kmBqeCK6ZP3E1WbJ1KM/ugZ1dwQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			BvogAm3h4DKB3mJmrgN+Aq51D5OR20OusIkrqBBF4Z4=
+			jP5KTrpA+kpMATmol47jsxt0SgqLqbM1Sn4oM3bkYgw=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/i386.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			weIz7Yf+kWLjd4E/t+drD1RjqDU=
+			WDFl1WHxnS1EX6zyEcHmtYYzYZI=
 			</data>
 			<key>hash2</key>
 			<data>
-			rg+BdovHmtGNIokfueEMWX2TUAvJ2B3Z9GGKJYjbFYg=
+			ol2/iypl6AtGLz1slj/Z7m3BwW+q7oi2Au7PCyQ9uc4=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/i386.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			YBhV4tCxXGsywyBwU7XBOEGQn1o=
+			Lga5bjV8VantEeuj2+FqJmt9StI=
 			</data>
 			<key>hash2</key>
 			<data>
-			Nvk9CEstuYPNN/722MiFnBl7XXO2m70dco8iO3/xRAU=
+			PmOCSTL3BJdc2tBooRJDLmyUNctS5Gp46ArCzoowCQY=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			83Idr1G2Lr88oMNVE7+ZnKGJJfw=
+			U8nfbreP5aKSqHmWzFNcPcLPG+s=
 			</data>
 			<key>hash2</key>
 			<data>
-			uMkkM4nbl00XPzCkryw5UiKzJRzLrQGUNO2V3aJXjP0=
+			HdUO2c3NVVb+dZoleR2OLAixmaNKYXbTIMRKKUcI/mI=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oM6xsx66NYe4CRKXu0huNrmSLrs=
+			ohZUx527kIi+aYsdxZBIwi8V260=
 			</data>
 			<key>hash2</key>
 			<data>
-			IMLl+n117cBltd8gbtnEuAxQHNdLDYK/S8AaMMFU2Vw=
+			klQiSu1MzF+7LTDY8l4ZudVeUYAc+rvN8tlVqov0Y0Y=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			guc2wZ3S/HJb387devvBanLs/oo=
+			fheStQuRLbTIRMWvNds4H0xjNdM=
 			</data>
 			<key>hash2</key>
 			<data>
-			AF1uV+UvUs6RHfTI7EdqEshTeEr/C01HNqBBrOhV8Pc=
+			Jkm0DMJeVEKVoftIYltx/QEVw6BvnLjal/PUy7PEsPc=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			83Idr1G2Lr88oMNVE7+ZnKGJJfw=
+			U8nfbreP5aKSqHmWzFNcPcLPG+s=
 			</data>
 			<key>hash2</key>
 			<data>
-			uMkkM4nbl00XPzCkryw5UiKzJRzLrQGUNO2V3aJXjP0=
+			HdUO2c3NVVb+dZoleR2OLAixmaNKYXbTIMRKKUcI/mI=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oM6xsx66NYe4CRKXu0huNrmSLrs=
+			ohZUx527kIi+aYsdxZBIwi8V260=
 			</data>
 			<key>hash2</key>
 			<data>
-			IMLl+n117cBltd8gbtnEuAxQHNdLDYK/S8AaMMFU2Vw=
+			klQiSu1MzF+7LTDY8l4ZudVeUYAc+rvN8tlVqov0Y0Y=
 			</data>
 		</dict>
 		<key>Modules/Crisp.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			guc2wZ3S/HJb387devvBanLs/oo=
+			fheStQuRLbTIRMWvNds4H0xjNdM=
 			</data>
 			<key>hash2</key>
 			<data>
-			AF1uV+UvUs6RHfTI7EdqEshTeEr/C01HNqBBrOhV8Pc=
+			Jkm0DMJeVEKVoftIYltx/QEVw6BvnLjal/PUy7PEsPc=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
