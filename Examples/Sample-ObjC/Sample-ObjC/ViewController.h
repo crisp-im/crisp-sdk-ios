@@ -1,0 +1,12 @@
+//
+//  ViewController.h
+//  Sample-ObjC
+//
+//  Created by Marc Bauer on 19.02.20.
+//  Copyright © 2020 Crisp IM SARL. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface ViewController : UIViewController
+@end
