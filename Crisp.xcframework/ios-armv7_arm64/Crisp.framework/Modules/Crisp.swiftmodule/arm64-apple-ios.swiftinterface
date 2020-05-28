@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.1.3 (swiftlang-1100.0.282.1 clang-1100.0.33.15)
+// swift-compiler-version: Apple Swift version 5.2.4 (swiftlang-1103.0.32.9 clang-1103.0.32.53)
 // swift-module-flags: -target arm64-apple-ios10.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Crisp
 import AVFoundation
 import AVKit
@@ -16,7 +16,7 @@ precedencegroup MonoidAppend {
   higherThan: AssignmentPrecedence
 }
 infix operator <> : MonoidAppend
-@objc final public class CrispSDK : ObjectiveC.NSObject {
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc final public class CrispSDK : ObjectiveC.NSObject {
   @objc public static func configure(websiteID: Swift.String)
   @objc public static var locale: Foundation.Locale
   @objc public static var user: Crisp.User
@@ -47,10 +47,10 @@ infix operator <> : MonoidAppend
   @objc final public func setBool(_ value: Swift.Bool, forKey key: Swift.String)
   @objc final public func setInt(_ value: Swift.Int, forKey key: Swift.String)
   @objc final public func setString(_ value: Swift.String, forKey key: Swift.String)
-  @objc override dynamic public init()
   @objc deinit
+  @objc override dynamic public init()
 }
-@objc(CRSPSession) @objcMembers final public class Session : ObjectiveC.NSObject {
+@_hasMissingDesignatedInitializers @objc(CRSPSession) @objcMembers final public class Session : ObjectiveC.NSObject {
   @objc final public var isOngoing: Swift.Bool {
     @objc get
   }
@@ -72,7 +72,7 @@ infix operator <> : MonoidAppend
   @objc override dynamic public init()
   @objc deinit
 }
-@objc(CRSPUser) @objcMembers final public class User : ObjectiveC.NSObject {
+@_hasMissingDesignatedInitializers @objc(CRSPUser) @objcMembers final public class User : ObjectiveC.NSObject {
   @objc final public var email: Swift.String? {
     @objc get
     @objc set
@@ -103,30 +103,30 @@ infix operator <> : MonoidAppend
   @objc final public let employment: Crisp.Employment?
   @objc final public let geolocation: Crisp.Geolocation?
   @objc public init(name: Swift.String?, url: Foundation.URL?, companyDescription: Swift.String?, employment: Crisp.Employment?, geolocation: Crisp.Geolocation?)
-  @objc override dynamic public init()
   @objc deinit
+  @objc override dynamic public init()
   public init(from decoder: Swift.Decoder) throws
-  public func encode(to encoder: Swift.Encoder) throws
+  final public func encode(to encoder: Swift.Encoder) throws
 }
 @objc(CRSPEmployment) @objcMembers final public class Employment : ObjectiveC.NSObject, Swift.Codable {
   @objc final public let title: Swift.String?
   @objc final public let role: Swift.String?
   @objc public init(title: Swift.String?, role: Swift.String?)
+  @objc deinit
   @objc override dynamic public init()
   public init(from decoder: Swift.Decoder) throws
-  public func encode(to encoder: Swift.Encoder) throws
-  @objc deinit
+  final public func encode(to encoder: Swift.Encoder) throws
 }
 @objc(CRSPGeolocation) @objcMembers final public class Geolocation : ObjectiveC.NSObject, Swift.Codable {
   @objc final public let city: Swift.String?
   @objc final public let country: Swift.String?
   @objc public init(city: Swift.String?, country: Swift.String?)
+  @objc deinit
   @objc override dynamic public init()
   public init(from decoder: Swift.Decoder) throws
-  public func encode(to encoder: Swift.Encoder) throws
-  @objc deinit
+  final public func encode(to encoder: Swift.Encoder) throws
 }
-@objc(CRSPChatViewController) final public class ChatViewController : UIKit.UINavigationController {
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(CRSPChatViewController) final public class ChatViewController : UIKit.UINavigationController {
   @objc dynamic public init()
   @available(*, unavailable)
   @objc override dynamic public init(navigationBarClass: Swift.AnyClass?, toolbarClass: Swift.AnyClass?)
