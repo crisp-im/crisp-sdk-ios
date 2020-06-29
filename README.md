@@ -1,187 +1,67 @@
-![Crisp](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/logo_blue.png)
+![Crisp](./.github/logo.png)
 
 Chat with app users, integrate your favorite tools, and deliver a great customer experience.
 
 # Crisp iOS SDK
 
-![Crisp screenshot](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/crisp_screenshot.png)
+<img src="./.github/screenshot.png" width="375" alt="Crisp screenshot">
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/Crisp.svg)](https://cocoapods.org/?q=crisp)
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Twitter](https://img.shields.io/badge/twitter-@crisp_im-blue.svg?style=flat)](http://twitter.com/crisp_im)
 
+## How to use
 
-## Installation
+### 1. Install Crisp iOS SDK
 
-### Cocoapods
+#### Option 1: Using [CocoaPods](http://cocoapods.org)
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
-
-```bash
-$ gem install cocoapods
-```
-
-To integrate Crisp into your Xcode project using CocoaPods, specify it in your Podfile:
+Add Crisp to your Podfile:
 
 ```ruby
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '9.0'
 use_frameworks!
 
-target '<Your Target Name>' do
-    pod 'Crisp'
+target :YourTargetName do
+  pod 'Crisp'
 end
 ```
 
-Then, run the following command:
+Then run  `pod install`
 
-```bash
-$ pod install
-```
+#### Option 2: Manual installation
 
-### Carthage
+1. Download and extract the [Crisp iOS SDK](https://github.com/crisp-im/crisp-sdk-ios/releases).
+2. Drag the `Crisp.xcframework` into your project, select `Copy items if needed` in the following dialog and click `Finish`.
 
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
+<img src="./.github/manual_install_1.png" width="443" alt="Drag framework to project">
+<img src="./.github/manual_install_2.png" width="698" alt="Copy items if needed">
 
-You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+3. Finally, configure the `Crisp.xcframework` to `Embed & Sign` in the `Frameworks, Libraries, and Embedded Content` section of your app's target settings.
 
-```bash
-$ brew update
-$ brew install carthage
-```
+<img src="./.github/manual_install_3.png" width="698" alt="Embed and Sign">
 
-To integrate Crisp into your Xcode project using Carthage, specify it in your `Cartfile`:
+### 2. Update your Info.plist
 
-```ogdl
-github "crisp-im/crisp-sdk-ios"
-```
+To enable your users to take and upload photos to the chat as well as download photos to their photo library, add the 
+`Privacy - Camera Usage Description` ([NSCameraUsageDescription](https://developer.apple.com/documentation/bundleresources/information_property_list/nscamerausagedescription)) and `Privacy - Photo Library Additions Usage Description` ([NSPhotoLibraryAddUsageDescription](https://developer.apple.com/documentation/bundleresources/information_property_list/nsphotolibraryaddusagedescription)) to your app's Info.plist.
 
-Run `carthage update` to build the framework and drag the built `Crisp.framework` into your Xcode project.
+<img src="./.github/update_info_plist.png" width="900" alt="Update Info.plist">
 
-**Ensure you embed binaries**
+### 3. Configure the Crisp iOS SDK
 
-![Embed binaries](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/docs/img/embed.jpg)
+Go to your Crisp dashboard (https://app.crisp.chat), copy your website id from the resulting URL and configure the `CrispSDK` in your app's `AppDelegate`.
 
+<img src="./.github/copy_website_id.png" width="583" alt="Copy website id">
 
-## Requirements
+<img src="./.github/configure_sdk.png" width="900" alt="Configure CrispSDK">
 
-⚠️ Adding Camera and Photo permissions is mandatory, `NSCameraUsageDescription` and `NSPhotoLibraryUsageDescription` in  `Info.plist`, to inform your users that you need to access to the Camera and Photo Library. You also have to enable **"iCloud Documents"** capability
+### 4. Present the `ChatViewController`
 
-## Get your website ID
-
-Your website ID can be found in the Crisp App URL:
-
-- https://app.crisp.chat/website/[WEBISTE_ID]/inbox/
-
-Crisp Website ID is an UUID like e30a04ee-f81c-4935-b8d8-5fa55831b1c0
-
-
-## Usage (Swift)
-
-Start using Crisp by adding the following code on your AppDelegate :
-
-```Swift
-import Crisp
-Crisp.initialize(websiteId: "YOUR_WEBSITE_ID")
-```
-
-You can add the Crisp view by adding in your view `CrispView()` :
-
-```Swift
-import UIKit
-import Crisp
-
-class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let crispView = CrispView()
-        crispView.bounds = view.bounds
-        crispView.center = view.center
-
-        view.addSubview(crispView)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-}
-
-```
-
-
-## Usage (Objective C)
-
-Start using Crisp by adding the following code on your AppDelegate :
-
-
-```objective-c
-#import "Crisp-Swift.h"
-
-[[CrispMain alloc] initializeWithWebsiteId:@"YOUR_WEBSITE_ID"];
-```
-
-You can add the Crisp view by adding in your view `CrispView()` :
-
-```objective-c
-#import "Crisp-Swift.h"
-
-@interface ViewController ()
-
-@end
-
-@implementation ViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    CrispView *crispView = [[CrispView alloc] init];
-    crispView.bounds = self.view.bounds;
-    crispView.center = self.view.center;
-    
-    [self.view addSubview:crispView];
-}
-
-```
-
-## API Usage (Swift):
-
-* `Crisp.tokenId = "XXXX"` sets your own token_id
-* `Crisp.locale = "it"` Overrides the Crisp locale with a custom one
-* `Crisp.user.set(email: "john.doe@gmail.com");`
-* `Crisp.user.set(nickname: "John Doe");`
-* `Crisp.user.set(phone: "003370123456789");`
-* `Crisp.user.set(avatar: "https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg");`
-* `Crisp.session.set(data: ["key" : "value"]);`
-* `Crisp.session.set(segment: "segment");`
-* `Crisp.session.set(segments: ["segment1", "segment2"]);`
-* `Crisp.session.pushEvent(name: "signup", ["key" : "value"], "blue");`
-* `Crisp.session.reset();`
-
-## API Usage (Objective C ):
-
-```
-UserInterface *user = [[UserInterface alloc] init];
-[user setWithEmail:@"user@gmail.com"];
-[user setWithNickname:@"John Doe"];
-[user setWithPhone:@"003370123456789"];
-[user setWithAvatar:@"https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg"];
-
-SessionInterface *session = [[SessionInterface alloc] init];
-
-NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-[dict setObject: @"Value"  forKey: @"Key"];
-
-[session setWithData:dict];
-[session setWithSegment:@"segment"];
-    
-```
+<img src="./.github/present_viewcontroller.png" width="900" alt="Present ChatViewController">
 
 ## Credits
 
-Crisp iOS SDk is owned and maintained by [Crisp IM, SARL](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
+Crisp iOS SDK is owned and maintained by [Crisp IM, SARL](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
 
 ## License
 
-Crisp iOS SDk is under Copyright license. see [LICENSE](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/LICENSE) for more details.
+Crisp iOS SDK is under Copyright license. see [LICENSE](https://raw.githubusercontent.com/crisp-im/crisp-sdk-ios/master/LICENSE) for more details.
