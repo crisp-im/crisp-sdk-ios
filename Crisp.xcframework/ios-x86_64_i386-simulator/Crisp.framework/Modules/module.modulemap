@@ -1,0 +1,11 @@
+framework module Crisp {
+  umbrella header "Crisp.h"
+
+  export *
+  module * { export * }
+}
+
+module Crisp.Swift {
+    header "Crisp-Swift.h"
+    requires objc
+}
