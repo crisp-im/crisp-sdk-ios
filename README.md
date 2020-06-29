@@ -4,10 +4,12 @@ Chat with app users, integrate your favorite tools, and deliver a great customer
 
 # Crisp iOS SDK
 
+
 <img src="./.github/screenshot.png" width="375" alt="Crisp screenshot">
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/Crisp.svg)](https://cocoapods.org/?q=crisp)
 [![Twitter](https://img.shields.io/badge/twitter-@crisp_im-blue.svg?style=flat)](http://twitter.com/crisp_im)
+
 
 ## How to use
 
@@ -50,14 +52,31 @@ To enable your users to take and upload photos to the chat as well as download p
 
 Go to your Crisp dashboard (https://app.crisp.chat), copy your website id from the resulting URL and configure the `CrispSDK` in your app's `AppDelegate`.
 
-<img src="./.github/copy_website_id.png" width="583" alt="Copy website id">
+<img src="./.github/copy_website_id.png" width="900" alt="Copy website id">
 
 <img src="./.github/configure_sdk.png" width="900" alt="Configure CrispSDK">
+
+```Swift
+import Crisp
+
+// In your func application()
+CrispSDK.configure(websiteID: "YOUR_WEBSITE_ID")
+```
 
 ### 4. Present the `ChatViewController`
 
 <img src="./.github/present_viewcontroller.png" width="900" alt="Present ChatViewController">
 
+```Swift
+import Crisp
+
+class ViewController: UIViewController {
+    @IBAction func startChat(_ sender: Any) {
+        self.present(ChatViewController(), animated: true)
+    }
+}
+
+```
 ## Credits
 
 Crisp iOS SDK is owned and maintained by [Crisp IM, SARL](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
