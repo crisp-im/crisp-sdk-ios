@@ -75,6 +75,7 @@ class ViewController: UIViewController {
         self.present(ChatViewController(), animated: true)
     }
 }
+```
 
 ## API Usage (Swift):
 
