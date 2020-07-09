@@ -43,7 +43,7 @@ Then run  `pod install`
 
 ### 2. Update your Info.plist
 
-To enable your users to take and upload photos to the chat as well as download photos to their photo library, add the 
+To enable your users to take and upload photos to the chat as well as download photos to their photo library, add the
 `Privacy - Camera Usage Description` ([NSCameraUsageDescription](https://developer.apple.com/documentation/bundleresources/information_property_list/nscamerausagedescription)) and `Privacy - Photo Library Additions Usage Description` ([NSPhotoLibraryAddUsageDescription](https://developer.apple.com/documentation/bundleresources/information_property_list/nsphotolibraryaddusagedescription)) to your app's Info.plist.
 
 <img src="./.github/update_info_plist.png" width="900" alt="Update Info.plist">
@@ -79,7 +79,6 @@ class ViewController: UIViewController {
 
 ## API Usage (Swift):
 
-
 * `CrispSDK.user.email = "john.doe@gmail.com"` Sets user email
 * `CrispSDK.user.nickname = "John Name"` Sets user name
 * `CrispSDK.user.phone = "003370123456789"` Sets user phone
@@ -91,8 +90,6 @@ class ViewController: UIViewController {
 * `CrispSDK.session.segment = app` Sets session segment
 * `CrispSDK.session.reset()` Reset session
 
-
-```
 ## Credits
 
 Crisp iOS SDK is owned and maintained by [Crisp IM, SARL](https://crisp.chat/en/). You can chat with us on [crisp](https://crisp.chat) or follow us on Twitter at [Crisp_im](http://twitter.com/crisp_im)
