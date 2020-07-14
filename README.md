@@ -79,6 +79,7 @@ class ViewController: UIViewController {
 
 ## API Usage (Swift):
 
+* `CrispSDK.setTokenID(tokenID: "A_CUSTOM_ID")` Assigns session with a token_id
 * `CrispSDK.user.email = "john.doe@gmail.com"` Sets user email
 * `CrispSDK.user.nickname = "John Name"` Sets user name
 * `CrispSDK.user.phone = "003370123456789"` Sets user phone
