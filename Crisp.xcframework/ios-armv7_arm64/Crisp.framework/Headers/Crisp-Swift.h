@@ -278,6 +278,7 @@ SWIFT_CLASS_NAMED("Company")
 SWIFT_CLASS("_TtC5Crisp8CrispSDK")
 @interface CrispSDK : NSObject
 + (void)configureWithWebsiteID:(NSString * _Nonnull)websiteID;
++ (void)setTokenIDWithTokenID:(NSString * _Nonnull)tokenID;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSLocale * _Nonnull locale;)
 + (NSLocale * _Nonnull)locale SWIFT_WARN_UNUSED_RESULT;
 + (void)setLocale:(NSLocale * _Nonnull)value;
@@ -700,6 +701,7 @@ SWIFT_CLASS_NAMED("Company")
 SWIFT_CLASS("_TtC5Crisp8CrispSDK")
 @interface CrispSDK : NSObject
 + (void)configureWithWebsiteID:(NSString * _Nonnull)websiteID;
++ (void)setTokenIDWithTokenID:(NSString * _Nonnull)tokenID;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSLocale * _Nonnull locale;)
 + (NSLocale * _Nonnull)locale SWIFT_WARN_UNUSED_RESULT;
 + (void)setLocale:(NSLocale * _Nonnull)value;

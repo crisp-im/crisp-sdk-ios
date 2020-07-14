@@ -18,6 +18,7 @@ precedencegroup MonoidAppend {
 infix operator <> : MonoidAppend
 @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc final public class CrispSDK : ObjectiveC.NSObject {
   @objc public static func configure(websiteID: Swift.String)
+  @objc public static func setTokenID(tokenID: Swift.String)
   @objc public static var locale: Foundation.Locale
   @objc public static var user: Crisp.User
   @objc public static var session: Crisp.Session
