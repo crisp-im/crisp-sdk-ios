@@ -86,7 +86,8 @@ class ViewController: UIViewController {
 * `CrispSDK.user.avatar = URL(string: "https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_400x400.jpg")` Sets user avatar
 * `CrispSDK.user.company = Company(name: "Acme", url: nil, companyDescription: nil, employment: nil, geolocation: nil)` Sets user compay
 
-* `CrispSDK.session.setValue("custom_value", forKey: "custom_key")` Sets session data
+* `CrispSDK.session.setString("custom_value", forKey: "custom_key")` Sets session data string
+* `CrispSDK.session.setInt(42, forKey: "custom_key")` Sets session data int
 * `CrispSDK.session.pushEvent(SessionEvent(name: "Signup", color: SessionEventColor.blue))` Sets Sends an event
 * `CrispSDK.session.segment = app` Sets session segment
 * `CrispSDK.session.reset()` Reset session
