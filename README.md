@@ -89,7 +89,7 @@ class ViewController: UIViewController {
 * `CrispSDK.session.setString("custom_value", forKey: "custom_key")` Sets session data string
 * `CrispSDK.session.setInt(42, forKey: "custom_key")` Sets session data int
 * `CrispSDK.session.pushEvent(SessionEvent(name: "Signup", color: SessionEventColor.blue))` Sets Sends an event
-* `CrispSDK.session.segment = app` Sets session segment
+* `CrispSDK.session.segment = "app"` Sets session segment
 * `CrispSDK.session.reset()` Reset session
 
 ## Credits
