@@ -15,7 +15,19 @@ Chat with app users, integrate your favorite tools, and deliver a great customer
 
 ### 1. Install Crisp iOS SDK
 
-#### Option 1: Using [CocoaPods](http://cocoapods.org)
+#### Option 1: Using SwiftPM
+
+To use the Crisp iOS SDK with SPM, add a dependency to your Package.swift file:
+
+```swift
+let package = Package(
+  dependencies: [
+    .package(url: "https://github.com/crisp-im/crisp-sdk-ios.git", ...)
+  ]
+)
+```
+
+#### Option 2: Using [CocoaPods](http://cocoapods.org)
 
 Add Crisp to your Podfile:
 
@@ -29,7 +41,7 @@ end
 
 Then run  `pod install`
 
-#### Option 2: Manual installation
+#### Option 3: Manual installation
 
 1. Download and extract the [Crisp iOS SDK](https://github.com/crisp-im/crisp-sdk-ios/releases).
 2. Drag the `Crisp.xcframework` into your project, select `Copy items if needed` in the following dialog and click `Finish`.
