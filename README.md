@@ -13,6 +13,15 @@ Chat with app users, integrate your favorite tools, and deliver a great customer
 
 ## How to use
 
+### Video tutorial
+
+
+<p align="left">
+  <a href="https://www.youtube.com/watch?v=vb1F23uRkEo">
+    <img alt="Play Introduction Video" src="https://img.youtube.com/vi/vb1F23uRkEo/0.jpg" width="560">
+  </a>
+</p>
+
 ### 1. Install Crisp iOS SDK
 
 #### Option 1: Using SwiftPM
