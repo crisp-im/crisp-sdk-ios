@@ -115,7 +115,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1130;
-				ORGANIZATIONNAME = "Crisp IM SARL";
+				ORGANIZATIONNAME = "Crisp IM SAS";
 				TargetAttributes = {
 					2CF0407B23FCC541008195FD = {
 						CreatedOnToolsVersion = 11.3.1;

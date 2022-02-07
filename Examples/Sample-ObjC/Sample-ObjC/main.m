@@ -3,7 +3,7 @@
 //  Sample-ObjC
 //
 //  Created by Marc Bauer on 19.02.20.
-//  Copyright © 2020 Crisp IM SARL. All rights reserved.
+//  Copyright © 2020 Crisp IM SAS. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

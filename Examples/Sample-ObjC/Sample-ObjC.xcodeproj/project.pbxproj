@@ -123,7 +123,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1130;
-				ORGANIZATIONNAME = "Crisp IM SARL";
+				ORGANIZATIONNAME = "Crisp IM SAS";
 				TargetAttributes = {
 					2CF0405623FCC299008195FD = {
 						CreatedOnToolsVersion = 11.3.1;
