@@ -1,0 +1,16 @@
+PODS:
+  - Crisp (1.1.0)
+
+DEPENDENCIES:
+  - Crisp (~> 1.0)
+
+SPEC REPOS:
+  trunk:
+    - Crisp
+
+SPEC CHECKSUMS:
+  Crisp: b88f081c87566254e603d885dcdbc97596ade755
+
+PODFILE CHECKSUM: 88430c8aebf1a95866bd93512452cc15ee66d478
+
+COCOAPODS: 1.11.2

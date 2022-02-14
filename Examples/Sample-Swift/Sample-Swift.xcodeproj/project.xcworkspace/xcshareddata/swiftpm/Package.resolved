@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Crisp",
+        "repositoryURL": "https://github.com/crisp-im/crisp-sdk-ios.git",
+        "state": {
+          "branch": null,
+          "revision": "b923ef9aa7ab9d2f024975e25e8bd4ca90348b4d",
+          "version": "1.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

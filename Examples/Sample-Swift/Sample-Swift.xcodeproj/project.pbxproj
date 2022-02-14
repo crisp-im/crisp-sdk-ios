@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2CB5710324192421002FD0BC /* Crisp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CB5710224192421002FD0BC /* Crisp.xcframework */; };
+		2CEF4F2F27BAB19900448503 /* Crisp in Frameworks */ = {isa = PBXBuildFile; productRef = 2CEF4F2E27BAB19900448503 /* Crisp */; };
 		2CF0408023FCC541008195FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0407F23FCC541008195FD /* AppDelegate.swift */; };
 		2CF0408223FCC541008195FD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0408123FCC541008195FD /* SceneDelegate.swift */; };
 		2CF0408423FCC541008195FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0408323FCC541008195FD /* ViewController.swift */; };
@@ -25,7 +25,6 @@
 		2C9586EB23FDB6E200EC3C81 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		2C9586EC23FDB6EC00EC3C81 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		2C9586ED23FDB6EC00EC3C81 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		2CB5710224192421002FD0BC /* Crisp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Crisp.xcframework; path = ../../Crisp.xcframework; sourceTree = "<group>"; };
 		2CF0407C23FCC541008195FD /* Sample-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sample-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF0407F23FCC541008195FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CF0408123FCC541008195FD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,27 +40,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CB5710324192421002FD0BC /* Crisp.xcframework in Frameworks */,
+				2CEF4F2F27BAB19900448503 /* Crisp in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		288FB7995D0B9EB3296D09F7 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		2CF0407323FCC541008195FD = {
 			isa = PBXGroup;
 			children = (
-				2CB5710224192421002FD0BC /* Crisp.xcframework */,
 				2CF0407E23FCC541008195FD /* Sample-Swift */,
 				2CF0407D23FCC541008195FD /* Products */,
-				288FB7995D0B9EB3296D09F7 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,6 +93,9 @@
 			dependencies = (
 			);
 			name = "Sample-Swift";
+			packageProductDependencies = (
+				2CEF4F2E27BAB19900448503 /* Crisp */,
+			);
 			productName = "Sample-Swift";
 			productReference = 2CF0407C23FCC541008195FD /* Sample-Swift.app */;
 			productType = "com.apple.product-type.application";
@@ -114,7 +107,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1320;
 				ORGANIZATIONNAME = "Crisp IM SAS";
 				TargetAttributes = {
 					2CF0407B23FCC541008195FD = {
@@ -135,6 +128,9 @@
 				"zh-Hans",
 			);
 			mainGroup = 2CF0407323FCC541008195FD;
+			packageReferences = (
+				2CEF4F2D27BAB19900448503 /* XCRemoteSwiftPackageReference "crisp-sdk-ios" */,
+			);
 			productRefGroup = 2CF0407D23FCC541008195FD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -225,6 +221,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -286,6 +283,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -374,6 +372,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2CEF4F2D27BAB19900448503 /* XCRemoteSwiftPackageReference "crisp-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/crisp-im/crisp-sdk-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2CEF4F2E27BAB19900448503 /* Crisp */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CEF4F2D27BAB19900448503 /* XCRemoteSwiftPackageReference "crisp-sdk-ios" */;
+			productName = Crisp;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2CF0407423FCC541008195FD /* Project object */;
 }
