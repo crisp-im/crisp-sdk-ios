@@ -10,8 +10,7 @@ let package = Package(
     .binaryTarget(
       name: "Crisp",
       url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/1.3.2/Crisp_1.3.2.zip",
-      checksum: "warning: Usage of /Users/mb/Library/org.swift.swiftpm/collections.json has been deprecated. Please delete it and use the new /Users/mb/Library/org.swift.swiftpm/configuration/collections.json instead.
-02bae47d1a03204665b4604fa9e385870b33a3ac0f7ed4693ee8b2b26f9e1537"
+      checksum: "02bae47d1a03204665b4604fa9e385870b33a3ac0f7ed4693ee8b2b26f9e1537"
     )
   ]
 )
