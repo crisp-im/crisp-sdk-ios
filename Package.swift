@@ -9,8 +9,8 @@ let package = Package(
   targets: [
     .binaryTarget(
       name: "Crisp",
-      url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/1.5.1/Crisp_1.5.1.zip",
-      checksum: "49565b2337d02a9723cf441a7d5798ebfeb210de927b4423d992baea1088ee96"
+      url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/1.5.2/Crisp_1.5.2.zip",
+      checksum: "f8c11c83d41a7a7eb224e4801bff4b2a6d3569a7382867d70a1e2b08a3dfd293"
     )
   ]
 )
