@@ -1,7 +1,0 @@
-use_frameworks!
-
-platform :ios, '13.0'
-
-target 'Sample-ObjC' do
-  pod 'Crisp', '~> 1.0'
-end
