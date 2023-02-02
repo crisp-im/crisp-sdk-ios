@@ -11,7 +11,7 @@ Chat with app users, integrate your favorite tools, and deliver a great customer
 
 ## Documentation
 
-👉 Please go to the Crisp Developer Hub to [access the documentation on the iOS SDK](https://docs.crisp.chat/guides/chatbox-sdks/ios-sdk/).
+:point_right: Please go to the Crisp Developer Hub to [access the documentation on the iOS SDK](https://docs.crisp.chat/guides/chatbox-sdks/ios-sdk/) or view our DocC documentation [here](https://crisp-im.github.io/crisp-sdk-ios/documentation/crisp/).
 
 ## Credits
 
