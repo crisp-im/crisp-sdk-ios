@@ -19,7 +19,7 @@ let package = Package(
       name: "CrispWebRTCTarget",
       dependencies: [
         .target(name: "CrispWebRTC"),
-        .target(name: "WebRTC")
+        .target(name: "WebRTCCore")
       ]
     ),
     .binaryTarget(
@@ -33,7 +33,7 @@ let package = Package(
       checksum: "14097b69253daaeeaa4a2e55fad7e71e45e0e9e27b8554a0f2a7d812fefffa60"
     ),
     .binaryTarget(
-      name: "WebRTC",
+      name: "WebRTCCore",
       url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/2.6.0/WebRTC_2.6.0.zip",
       checksum: "7c9214e39d1e6335b984aeb399aa2491218649aed30e7c96e18180ab8b5ff4fa"
     ),
