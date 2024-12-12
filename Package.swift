@@ -24,18 +24,18 @@ let package = Package(
     ),
     .binaryTarget(
       name: "Crisp",
-      url: "https://github.com/nesium/crisp-sdk-ios/releases/download/2.8.1/Crisp_2.8.1.zip",
-      checksum: "ce50979133746ff7f6084040ed2ca94fcbd9e805f39c824666b69947c9a96b03"
+      url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/2.8.1/Crisp_2.8.1.zip",
+      checksum: "91253f15ff8b5cc64f6719cfe9a45d9102527ba51f92e57ebc0a6d3ffee720b6"
     ),
     .binaryTarget(
       name: "CrispWebRTC",
-      url: "https://github.com/nesium/crisp-sdk-ios/releases/download/2.8.1/CrispWebRTC_2.8.1.zip",
-      checksum: "9fbb102b80d78936d71aac7b48c4f740a2de69d84bf3ea073635a0242f0bb8ab"
+      url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/2.8.1/CrispWebRTC_2.8.1.zip",
+      checksum: "fca9fe752b149c16d19abd7f6411e59df202ca961658ded126d996d28fb858db"
     ),
     .binaryTarget(
       name: "WebRTC",
-      url: "https://github.com/nesium/crisp-sdk-ios/releases/download/2.8.1/WebRTC_2.8.1.zip",
-      checksum: "8de8c1473122e973e6dbe6e246ad5b812d54ed6f83876e9ce4b2f14218c93fb8"
+      url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/2.8.1/WebRTC_2.8.1.zip",
+      checksum: "3e76976d3657cf6258b670fd93655ea97624d366656c233d80f607e6bb8694f8"
     ),
   ]
 )

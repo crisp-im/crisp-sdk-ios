@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
   spec.author              = "Crisp IM SAS"
   spec.platform            = :ios, "13.0"
   spec.license             = { :type => "Commercial" }
-  spec.source              = { :http => "https://github.com/nesium/crisp-sdk-ios/releases/download/2.8.1/Crisp_cocoapods_2.8.1.zip" }
+  spec.source              = { :http => "https://github.com/crisp-im/crisp-sdk-ios/releases/download/2.8.1/Crisp_cocoapods_2.8.1.zip" }
   
   spec.default_subspecs    = "Crisp"
   
