@@ -25,12 +25,12 @@ let package = Package(
     .binaryTarget(
       name: "Crisp",
       url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/2.9.0-beta.2/Crisp_2.9.0-beta.2.zip",
-      checksum: "6e60cbf2d96c5674584724aee4c4a409a8e4cf3c3503e654d02428bfea205abb"
+      checksum: "09c02e44e71153d0cc265102b0cf97ada30ee942202776851d09a923e70326ec"
     ),
     .binaryTarget(
       name: "CrispWebRTC",
       url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/2.9.0-beta.2/CrispWebRTC_2.9.0-beta.2.zip",
-      checksum: "967b32b89dae5529e3d37c6678a159af4b12ed95aabe27fd625467464a21570a"
+      checksum: "d1d6881e08095427dbb1939b585ea8efd6daae2a8d34fcae73f87896e8b44cfb"
     ),
     .binaryTarget(
       name: "WebRTC",
