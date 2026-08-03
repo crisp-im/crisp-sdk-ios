@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#MISE description="Pin a new crisp-client version and regenerate the strings catalog"
+#MISE alias="update-cc"
+#USAGE arg "[version]" help="npm version, range or dist-tag to update to. Defaults to 'latest'."
+
+# The pin and the strings catalog describe the same crisp-client release, so
+# they move together and this is the only task that moves them. Fetching the
+# dist and building the framework read the pin, they never write it, which keeps
+# a build from quietly rewriting tracked files.
+
+set -euo pipefail
+
+# shellcheck source=../lib/web-client.sh
+source "${PWD}/.mise/lib/web-client.sh"
+
+VERSION_FILE="${PWD}/.crisp-client-version"
+LOCALES_DIR="${BUILD_DIR}/crisp-client-locales"
+
+PREVIOUS=""
+if [[ -s "${VERSION_FILE}" ]]; then
+  PREVIOUS="$(tr -d '[:space:]' < "${VERSION_FILE}")"
+fi
+
+rm -rf "${LOCALES_DIR}"
+# Resolves a range or dist-tag to the version npm actually served, so the pin
+# never records a moving target like 'latest'.
+fetch_web_client_locales "${usage_version:-latest}" "${LOCALES_DIR}"
+
+printf '%s\n' "${WEB_CLIENT_VERSION}" > "${VERSION_FILE}"
+write_strings_catalog "${LOCALES_DIR}"
+
+if [[ "${PREVIOUS#v}" == "${WEB_CLIENT_VERSION}" ]]; then
+  echo "CrispClient stays pinned to ${WEB_CLIENT_VERSION}; catalog regenerated."
+else
+  echo "CrispClient ${PREVIOUS:-unpinned} -> ${WEB_CLIENT_VERSION}. Pin and strings catalog updated."
+  echo "Run 'mise run fetch-crisp-client' or 'mise run build-crisp-client-framework' to pick up the new client."
+fi

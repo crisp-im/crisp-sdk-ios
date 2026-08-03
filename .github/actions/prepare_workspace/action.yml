@@ -1,0 +1,26 @@
+name: Prepare Workspace
+description: Prepares the workspace for Xcode and Fastlane
+runs:
+  using: 'composite'
+  steps:
+    - name: Select Xcode
+      shell: bash
+      run: |
+        sudo xcodes select "$(cat .xcode-version)"
+
+    - name: Install Mise
+      shell: bash
+      run: brew install mise
+
+    - name: Install Mise Tools
+      shell: bash
+      run: |
+        mise settings experimental=true
+        mise install -q
+      env:
+        MISE_GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Auto-enable macros
+      shell: bash
+      run: |
+        defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES

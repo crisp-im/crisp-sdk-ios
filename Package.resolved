@@ -1,0 +1,15 @@
+{
+  "originHash" : "00cebf9d7ae5be31817a601f67018ac8cb6c422edc0dd08b0a86188f3f2e975d",
+  "pins" : [
+    {
+      "identity" : "crisp-utils-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/crisp-im/crisp-utils-ios.git",
+      "state" : {
+        "revision" : "55458c3bddc00b4d6dccf87ff933afb8d36b7a25",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}

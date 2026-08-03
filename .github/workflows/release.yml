@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'SDK version to release (e.g. 2.13.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Release XCFramework
+    runs-on: macos-26
+    environment: build-sdk
+
+    steps:
+      # Mint a short-lived token for the release GitHub App. It's on the develop/master
+      # ruleset bypass lists, so pushes made with it can write to and force-push those
+      # protected branches.
+      - name: Generate app token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: develop
+          # The release task rebuilds master from develop, so fetch both branches.
+          fetch-depth: 0
+          # Persist the app token so the release task's git pushes authenticate as the
+          # app (and thus bypass branch protection).
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Prepare Workspace
+        uses: ./.github/actions/prepare_workspace
+
+      - name: Setup certificate
+        uses: ./.github/actions/setup_certificates
+        with:
+          CERTIFICATE: ${{ secrets.CERTIFICATE }}
+
+      - name: Configure git identity
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          # Attribute release commits to the app's bot user. The numeric user id is needed
+          # so the noreply email links commits to that bot account.
+          USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+
+      - name: Cache CocoaPods spec repos
+        uses: actions/cache@v4
+        with:
+          path: ~/.cocoapods/repos
+          key: cocoapods-specs-${{ github.run_id }}
+          restore-keys: cocoapods-specs-
+
+      - name: Run release
+        run: mise run release "${{ inputs.version }}"
+        env:
+          FASTLANE_SKIP_UPDATE_CHECK: true
+          # Use the app token so `gh release create` (and any git operations that read it)
+          # run as the app, consistent with the pushes above.
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          NPM_PULL_TOKEN: ${{ secrets.NPM_PULL_TOKEN }}

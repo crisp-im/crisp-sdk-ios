@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#MISE description="Fetch the CrispClient dev bundle from the private npm registry"
+#MISE alias="fetch-cc"
+#USAGE arg "[version]" help="npm version, range or dist-tag to fetch. Defaults to the version pinned in .crisp-client-version."
+
+set -euo pipefail
+
+# shellcheck source=../lib/web-client.sh
+source "${PWD}/.mise/lib/web-client.sh"
+
+# Sources/CrispClient - the dev target's path (also where the xcframework lives
+# in local/release mode, so reset it first).
+OUTPUT_DIR="$(dirname "${CRISP_CLIENT_XCFRAMEWORK_DIR}")"
+DIST_DIR="${OUTPUT_DIR}/dist"
+
+VERSION="$(resolve_crisp_client_version "${usage_version:-}")"
+
+rm -rf "${OUTPUT_DIR}"
+mkdir -p "${OUTPUT_DIR}"
+
+fetch_web_client_dist "${VERSION}" "${DIST_DIR}"
+write_crisp_client_swift "${OUTPUT_DIR}"
+
+mise run set-crisp-client-target dev
+
+echo "Dev bundle ready: CrispClient v${WEB_CLIENT_VERSION}."

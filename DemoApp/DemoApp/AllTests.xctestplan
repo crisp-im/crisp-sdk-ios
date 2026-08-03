@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "0D7461CB-90BD-4214-80BE-C840F7FEA245",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "CrispChatBoxTests",
+        "name" : "CrispChatBoxTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "CrispChatBoxFFITests",
+        "name" : "CrispChatBoxFFITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:DemoApp.xcodeproj",
+        "identifier" : "2C6CDFC92FC4AA1400983901",
+        "name" : "DemoAppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#MISE description="Build & preview the DocC documentation"
+
+set -euo pipefail
+
+DERIVED_DATA="${BUILD_DIR}/Docs/DerivedData"
+DOC_ARCHIVE="Crisp.doccarchive"
+BUILT_PATH="$DERIVED_DATA/Build/Products/Debug-iphoneos/$DOC_ARCHIVE"
+OUTPUT_DIR="${BUILD_DIR}/Documentation"
+OUTPUT_PATH="$OUTPUT_DIR/$DOC_ARCHIVE"
+PORT=8080
+URL="http://localhost:$PORT/documentation/crisp/"
+
+xcrun xcodebuild docbuild \
+  -workspace CrispSDK.xcworkspace \
+  -scheme Crisp \
+  -destination 'generic/platform=iOS' \
+  -derivedDataPath "$DERIVED_DATA" \
+  OTHER_DOCC_FLAGS="--transform-for-static-hosting" \
+  | xcbeautify
+
+mkdir -p "$OUTPUT_DIR"
+rm -rf "$OUTPUT_PATH"
+cp -R "$BUILT_PATH" "$OUTPUT_PATH"
+
+echo
+echo "Serving $OUTPUT_PATH at $URL"
+echo "Press Ctrl-C to stop."
+
+python3 -m http.server -d "$OUTPUT_PATH" "$PORT" &
+SERVER_PID=$!
+trap 'kill "$SERVER_PID" 2>/dev/null' EXIT
+
+# Give http.server a moment to bind before opening the browser.
+sleep 2
+open "$URL"
+wait "$SERVER_PID"

@@ -1,0 +1,85 @@
+name: Tests
+on:
+  pull_request:
+    branches:
+      - develop
+    paths-ignore:
+      - 'release-notes/**'
+      - 'Sources/CrispChatBox/ChatBoxVersion.swift'
+  workflow_dispatch:
+
+jobs:
+  unit-test:
+    name: Run Unit Tests
+    runs-on: macos-26
+    environment: build-sdk
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Prepare Workspace
+        uses: ./.github/actions/prepare_workspace
+
+      - name: Check generated sources are up to date
+        run: |
+          mise run codegen
+          if [[ -n "$(git status --porcelain Sources)" ]]; then
+            echo "Generated sources are stale. Run 'mise run codegen' and commit the result."
+            git status --porcelain Sources
+            git diff -- Sources
+            exit 1
+          fi
+          echo "Generated sources are up to date."
+
+      - name: Check Swift formatting
+        run: mise run format --lint
+
+      - name: Lint Swift code
+        run: mise run lint
+
+      - name: Check strings catalog is up to date
+        run: |
+          mise run generate-strings-catalog
+          if [[ -n "$(git status --porcelain Sources/CrispChatBox/Assets .swiftpolyglot.json)" ]]; then
+            echo "Strings catalog does not match the version in .crisp-client-version."
+            echo "Run 'mise run generate-strings-catalog' and commit the result."
+            git diff -- Sources/CrispChatBox/Assets .swiftpolyglot.json
+            exit 1
+          fi
+          echo "Strings catalog is up to date."
+        env:
+          NPM_PULL_TOKEN: ${{ secrets.NPM_PULL_TOKEN }}
+
+      - name: Validate translations
+        run: mise run validate-translations
+
+      - name: Build crisp-client XCFramework
+        run: mise run build-crisp-client-framework
+        env:
+          NPM_PULL_TOKEN: ${{ secrets.NPM_PULL_TOKEN }}
+
+      # The unit tests build CrispClient from source, so populate it…
+      - name: Fetch crisp-client (dev source)
+        run: mise run fetch-crisp-client
+        env:
+          NPM_PULL_TOKEN: ${{ secrets.NPM_PULL_TOKEN }}
+
+      - name: Run Unit Tests
+        run: |
+          mise run test
+        env:
+          FASTLANE_SKIP_UPDATE_CHECK: true
+          # xcodebuild strips the TEST_RUNNER_ prefix and injects WEBSITE_ID into
+          # the UI test runner process, where the smoke test reads it.
+          TEST_RUNNER_WEBSITE_ID: ${{ secrets.WEBSITE_ID }}
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: unit-test-results
+          path: .build/Artifacts/UnitTests.xcresult
+          retention-days: 3
+          if-no-files-found: ignore
+          include-hidden-files: true

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#MISE description="Build a local CrispClient dev bundle from a crisp-client checkout"
+#MISE alias="bundle-cc"
+#USAGE arg "<path>" help="Path to a local crisp-client repo to build the web client from"
+
+set -euo pipefail
+
+# shellcheck source=../lib/web-client.sh
+source "${PWD}/.mise/lib/web-client.sh"
+
+SRC="${usage_path:?}"
+# Sources/CrispClient - the dev target's path (also where the xcframework lives
+# in local/release mode, so reset it first).
+OUTPUT_DIR="$(dirname "${CRISP_CLIENT_XCFRAMEWORK_DIR}")"
+DIST_DIR="${OUTPUT_DIR}/dist"
+
+if [[ ! -d "${SRC}" ]]; then
+  echo "Not a directory: ${SRC}" >&2
+  exit 1
+fi
+
+echo "Building CrispClient dev bundle from ${SRC}…"
+rm -rf "${OUTPUT_DIR}"
+mkdir -p "${OUTPUT_DIR}"
+
+build_web_client_dist "${SRC}" "${DIST_DIR}"
+write_crisp_client_swift "${OUTPUT_DIR}"
+
+mise run set-crisp-client-target dev
+
+echo "Dev bundle ready: CrispClient v${WEB_CLIENT_VERSION}."

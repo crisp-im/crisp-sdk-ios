@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+#MISE description="Create a new release"
+#MISE env={ GH_TOKEN = { required = true }, COCOAPODS_TRUNK_TOKEN = { required = true } }
+#USAGE arg "<version>" help="The version to release"
+
+set -euo pipefail
+
+VERSION="${usage_version:?}"
+
+VERSION_FILE="./Sources/CrispChatBox/ChatBoxVersion.swift"
+RELEASE_NOTES_FILE="./release-notes/${VERSION}.md"
+DEVELOP_BRANCH="develop"
+MASTER_BRANCH="master"
+FRAMEWORK_NAME="$(basename "${CRISP_CLIENT_XCFRAMEWORK_DIR}" .xcframework)"
+ZIP_PATH="${BUILD_DIR}/${FRAMEWORK_NAME}.xcframework.zip"
+ASSET_NAME="$(basename "${ZIP_PATH}")"
+URL="https://github.com/${CRISP_SDK_REPO}/releases/download/${VERSION}/${ASSET_NAME}"
+COCOAPODS_ZIP="${BUILD_DIR}/Crisp_cocoapods_${VERSION}.zip"
+
+# Ensure release notes exist
+if [[ ! -s "${RELEASE_NOTES_FILE}" ]]; then
+  echo "Missing release notes. Create ${RELEASE_NOTES_FILE} first." >&2
+  exit 1
+fi
+
+# Build framework (uses the ref pinned in .crisp-client-version)
+mise run build-crisp-client-framework --sign
+
+# Update version file
+sed -i '' \
+  -e "s|^package let chatBoxVersion = .*|package let chatBoxVersion = \"${VERSION}\"|" \
+  "${VERSION_FILE}"
+
+# Zip framework
+(
+  echo "Zipping framework…"
+  cd "$(dirname "${CRISP_CLIENT_XCFRAMEWORK_DIR}")"
+  zip -q -r -y "${ZIP_PATH}" "$(basename "${CRISP_CLIENT_XCFRAMEWORK_DIR}")"
+)
+
+# Generate checksum
+CHECKSUM="$(swift package compute-checksum "${ZIP_PATH}")"
+
+# Build the CocoaPods source archive plus the CrispClient xcframework
+echo "Building CocoaPods archive…"
+rm -f "${COCOAPODS_ZIP}"
+zip -q -r -y "${COCOAPODS_ZIP}" \
+  Sources/Crisp \
+  Sources/CrispChatBox \
+  Sources/CrispChatBoxFFI \
+  Sources/CrispClient/CrispClient.xcframework \
+  -x "*.DS_Store"
+
+# Commit the version bump on develop, which stays in local mode, and push it.
+echo "Committing version bump on ${DEVELOP_BRANCH}…"
+git add "${VERSION_FILE}"
+if git diff --cached --quiet; then
+  echo "Version is already ${VERSION}; nothing to commit on ${DEVELOP_BRANCH}."
+else
+  git commit -m "chore: Bump version to ${VERSION}"
+  git push origin "HEAD:${DEVELOP_BRANCH}"
+fi
+DEVELOP_REF="$(git rev-parse HEAD)"
+
+# Base master directly on develop, then flip Package.swift to release mode, so
+# master is always exactly one commit (the flip) ahead of develop and never
+# diverges. Each release rewrites master; past releases stay reachable via their
+# version tags, hence the force-push.
+echo "Updating ${MASTER_BRANCH}…"
+git fetch origin "${MASTER_BRANCH}"
+git checkout -B "${MASTER_BRANCH}" "${DEVELOP_REF}"
+mise run set-crisp-client-target release --url "${URL}" --checksum "${CHECKSUM}"
+git add -A
+git commit -m "chore: Release ${VERSION}"
+git push --force-with-lease origin "${MASTER_BRANCH}"
+
+# Create the GitHub release off master. Beta versions are published 
+# as pre-releases.
+echo "Creating GitHub release ${VERSION}…"
+prerelease_flag=()
+if grep -qi 'beta' <<< "${VERSION}"; then
+  prerelease_flag=(--prerelease)
+fi
+gh release create "${VERSION}" \
+  "${ZIP_PATH}" \
+  "${COCOAPODS_ZIP}" \
+  --repo "${CRISP_SDK_REPO}" \
+  --target "${MASTER_BRANCH}" \
+  --title "${VERSION}" \
+  --notes-file "${RELEASE_NOTES_FILE}" \
+  ${prerelease_flag[@]+"${prerelease_flag[@]}"}
+
+# Publish the pods to CocoaPods trunk, in dependency order.
+echo "Publishing pods to CocoaPods trunk…"
+export POD_VERSION="${VERSION}"
+
+pod_push_flags=(
+  --allow-warnings
+  --synchronous
+  --skip-import-validation
+)
+pod trunk push CrispChatBoxFFI.podspec "${pod_push_flags[@]}"
+pod trunk push CrispChatBox.podspec "${pod_push_flags[@]}"
+pod trunk push Crisp.podspec "${pod_push_flags[@]}"

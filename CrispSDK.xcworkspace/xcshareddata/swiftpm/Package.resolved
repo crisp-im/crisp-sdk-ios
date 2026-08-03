@@ -1,0 +1,24 @@
+{
+  "originHash" : "22e07482d346e7417147226c0fa8fd095c85a88ba0cde3b4217576e8298d26d9",
+  "pins" : [
+    {
+      "identity" : "crisp-utils-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/crisp-im/crisp-utils-ios.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "55458c3bddc00b4d6dccf87ff933afb8d36b7a25"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax",
+      "state" : {
+        "revision" : "79e4b74a295b6eb74a8b585e3a39d29e70c1dbd1",
+        "version" : "603.0.2"
+      }
+    }
+  ],
+  "version" : 3
+}

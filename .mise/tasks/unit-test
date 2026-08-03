@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#MISE description="Run unit tests"
+#MISE alias="test"
+
+set -euo pipefail
+
+DERIVED_DATA_PATH="${BUILD_DIR}/Tests/DerivedData"
+RESULT_BUNDLE_PATH="${BUILD_DIR}/Artifacts/UnitTests.xcresult"
+
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}" "$(dirname "${RESULT_BUNDLE_PATH}")"
+
+xcodebuild test \
+  -project DemoApp/DemoApp.xcodeproj \
+  -scheme DemoApp \
+  -testPlan AllTests \
+  -destination 'platform=iOS Simulator,name=iPhone 17' \
+  -skipMacroValidation \
+  -derivedDataPath "${DERIVED_DATA_PATH}" \
+  -resultBundlePath "${RESULT_BUNDLE_PATH}" \
+  | xcbeautify
+
+swift test --package-path codegen | xcbeautify

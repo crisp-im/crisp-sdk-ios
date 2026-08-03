@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#MISE description="Build & publish the documentation to Github pages."
+
+set -euo pipefail
+
+DERIVED_DATA="${BUILD_DIR}/Docs/DerivedData"
+DOC_ARCHIVE="Crisp.doccarchive"
+BUILT_PATH="$DERIVED_DATA/Build/Products/Debug-iphoneos/$DOC_ARCHIVE"
+OUTPUT_DIR="${BUILD_DIR}/Documentation"
+OUTPUT_PATH="$OUTPUT_DIR/$DOC_ARCHIVE"
+# Project Pages site is served at <owner>.github.io/crisp-sdk-ios/
+HOSTING_BASE_PATH="crisp-sdk-ios"
+
+xcrun xcodebuild docbuild \
+  -workspace CrispSDK.xcworkspace \
+  -scheme Crisp \
+  -destination 'generic/platform=iOS' \
+  -derivedDataPath "$DERIVED_DATA" \
+  OTHER_DOCC_FLAGS="--transform-for-static-hosting --hosting-base-path $HOSTING_BASE_PATH" \
+  | xcbeautify
+
+mkdir -p "$OUTPUT_DIR"
+rm -rf "$OUTPUT_PATH"
+cp -R "$BUILT_PATH" "$OUTPUT_PATH"
+
+echo "Built documentation at $OUTPUT_PATH"

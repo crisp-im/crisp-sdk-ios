@@ -1,0 +1,45 @@
+name: Setup signing certificates
+description: Imports certificates for signing the framework into the macOS Keychain
+inputs:
+  CERTIFICATE:
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Add certificate to keychain
+      shell: bash
+      run: |
+        # Create and configure keychain
+        security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+        security default-keychain -s build.keychain
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+        security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+
+        # Import certificate
+        echo $CERTIFICATE | base64 --decode > certificate.p12
+        security import certificate.p12 -k build.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+
+        # Check certificate expiration
+        CERT_INFO=$(security find-certificate -a -p build.keychain 2>/dev/null | openssl x509 -text -noout 2>/dev/null)
+        NOT_AFTER=$(echo "$CERT_INFO" | grep "Not After" | sed 's/.*Not After : //')
+
+        if [ -n "$NOT_AFTER" ]; then
+          CERT_EXPIRY=$(date -j -f "%b %d %H:%M:%S %Y %Z" "$NOT_AFTER" "+%s" 2>/dev/null || echo "0")
+          CURRENT_TIME=$(date "+%s")
+          
+          if [ "$CERT_EXPIRY" -le "$CURRENT_TIME" ]; then
+            echo "❌ ERROR: Certificate expired on $NOT_AFTER"
+            echo "Please renew your Apple Development certificate and update the CERTIFICATE secret."
+            exit 1
+          else
+            echo "✅ Certificate is valid until $NOT_AFTER"
+          fi
+        fi
+
+        # Clean up
+        rm -f certificate.p12
+      env:
+        CERTIFICATE: ${{ inputs.CERTIFICATE }}
+        CERTIFICATE_PASSWORD: ''
+        KEYCHAIN_PASSWORD: 'temp_keychain_password'

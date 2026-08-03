@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#MISE description="Regenerate the CrispChatBox strings catalog from the crisp-client locale files"
+#MISE alias="gen-strings"
+#USAGE arg "[version]" help="npm version, range or dist-tag to read locales from. Defaults to the version pinned in .crisp-client-version."
+
+# Regenerates the catalog against the pinned version, without moving the pin.
+# To move it, use update-crisp-client, which does both.
+
+set -euo pipefail
+
+# shellcheck source=../lib/web-client.sh
+source "${PWD}/.mise/lib/web-client.sh"
+
+VERSION="$(resolve_crisp_client_version "${usage_version:-}")"
+
+LOCALES_DIR="${BUILD_DIR}/crisp-client-locales"
+rm -rf "${LOCALES_DIR}"
+fetch_web_client_locales "${VERSION}" "${LOCALES_DIR}"
+
+write_strings_catalog "${LOCALES_DIR}"

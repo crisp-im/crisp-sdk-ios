@@ -1,0 +1,11 @@
+--stripunusedargs "closure-only"
+--indent 2
+--wraparguments before-first
+--wrapcollections before-first
+--swiftversion 6.1
+--self insert
+--maxwidth 100
+--header strip
+--disable wrapSingleLineComments
+--someAny false
+--exclude fastlane

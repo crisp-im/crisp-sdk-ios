@@ -1,0 +1,47 @@
+name: Publish documentation
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Build & Publish Documentation
+    runs-on: macos-26
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # Publish docs from the develop branch.
+          ref: develop
+
+      - name: Prepare Workspace
+        uses: ./.github/actions/prepare_workspace
+
+      - name: Fetch crisp-client (dev source)
+        run: mise run fetch-crisp-client
+        env:
+          NPM_PULL_TOKEN: ${{ secrets.NPM_PULL_TOKEN }}
+
+      - name: Build documentation
+        run: mise run build-docs
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .build/Documentation/Crisp.doccarchive
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

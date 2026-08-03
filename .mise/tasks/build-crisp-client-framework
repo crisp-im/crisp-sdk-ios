@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+#MISE description="Build crisp-client XCFramework"
+#MISE alias="build-cc"
+#USAGE arg "[version]" help="npm version, range or dist-tag to build. Defaults to the version pinned in .crisp-client-version."
+#USAGE flag "--sign" help="Whether to sign the built framework."
+
+set -euo pipefail
+
+# shellcheck source=../lib/web-client.sh
+source "${PWD}/.mise/lib/web-client.sh"
+
+# User inputs
+SIGN_FRAMEWORK="${usage_sign:-false}"
+VERSION="$(resolve_crisp_client_version "${usage_version:-}")"
+
+# Constants
+FRAMEWORK_NAME="$(basename "${CRISP_CLIENT_XCFRAMEWORK_DIR}" .xcframework)"
+OUTPUT_PACKAGE_DIR="$(dirname "${CRISP_CLIENT_XCFRAMEWORK_DIR}")"
+
+PRIVACY_MANIFEST_FILE="$PWD/Sources/PrivacyInfo.xcprivacy"
+PACKAGE_NAME="crisp-client"
+
+INPUT_PACKAGE_DIR="${BUILD_DIR}/${PACKAGE_NAME}"
+INPUT_SOURCES_DIR="${INPUT_PACKAGE_DIR}/Sources/${FRAMEWORK_NAME}"
+INPUT_DIST_DIR="${INPUT_SOURCES_DIR}/dist"
+
+XCODEBUILD_DIR="${BUILD_DIR}/XCFrameworkBuild"
+DERIVED_DATA_DIR="${XCODEBUILD_DIR}/DerivedData"
+ARCHIVE_PRODUCTS_DIR="${DERIVED_DATA_DIR}/Build/Intermediates.noindex/ArchiveIntermediates/${FRAMEWORK_NAME}/BuildProductsPath"
+ARCHIVE_INTERMEDIATES_DIR="${DERIVED_DATA_DIR}/Build/Intermediates.noindex/ArchiveIntermediates/${FRAMEWORK_NAME}/IntermediateBuildFilesPath"
+
+prepare_input_swift_package() {
+  write_crisp_client_swift "${INPUT_SOURCES_DIR}"
+
+  cat <<EOF > "${INPUT_PACKAGE_DIR}/Package.swift"
+// swift-tools-version:6.1
+
+import PackageDescription
+
+let package = Package(
+  name: "${FRAMEWORK_NAME}",
+  platforms: [.iOS(.v13), .macOS(.v13), .macCatalyst(.v14)],
+  products: [
+    .library(name: "${FRAMEWORK_NAME}", type: .dynamic, targets: ["${FRAMEWORK_NAME}"]),
+  ],
+  targets: [
+    .target(
+      name: "${FRAMEWORK_NAME}",
+      resources: [.copy("dist")],
+    ),
+  ],
+)
+
+EOF
+}
+
+archive_framework() {
+  local archive_name=$1
+  local destination=$2
+  local configuration=$3
+
+  local archive_path="${XCODEBUILD_DIR}/Archives/${archive_name}.xcarchive"
+
+  xcrun xcodebuild archive \
+    -workspace "${PACKAGE_NAME}" \
+    -scheme "${FRAMEWORK_NAME}" \
+    -destination "generic/platform=${destination}" \
+    -archivePath "${archive_path}" \
+    -derivedDataPath "${DERIVED_DATA_DIR}" \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SWIFT_SERIALIZE_DEBUGGING_OPTIONS=NO \
+    SKIP_INSTALL=NO | xcbeautify
+
+  local framework_path="${archive_path}/Products/usr/local/lib/${FRAMEWORK_NAME}.framework"
+  local modules_path="${framework_path}/Modules"
+  local headers_path="${framework_path}/Headers"
+  local platform=$(echo "${configuration}" | cut -d'-' -f2)
+
+  # Copy swiftmodules
+  mkdir -p "${modules_path}"
+  cp -a "${ARCHIVE_PRODUCTS_DIR}/${configuration}/${FRAMEWORK_NAME}.swiftmodule" "${modules_path}"
+  cp -r "${ARCHIVE_PRODUCTS_DIR}/${configuration}/"*.bundle "${framework_path}"
+
+  # Copy headers
+  mkdir -p "${headers_path}"
+  cp "${ARCHIVE_INTERMEDIATES_DIR}/GeneratedModuleMaps-${platform}/${FRAMEWORK_NAME}-Swift.h" "${headers_path}"
+
+  local resources_path
+
+  if [[ "${destination}" == "macOS"* ]]; then
+    # https://developer.apple.com/documentation/bundleresources/placing_content_in_a_bundle#3875930
+    resources_path="${framework_path}/Versions/A/Resources"
+  else
+    resources_path="${framework_path}"
+  fi
+
+  # Copy Privacy Manifest
+  mkdir -p "${resources_path}"
+  cp "${PRIVACY_MANIFEST_FILE}" "${resources_path}"
+}
+
+create_xcframework() {
+  local xcodebuild_args=(-create-xcframework -output "${CRISP_CLIENT_XCFRAMEWORK_DIR}")
+
+  local target_ios="CrispClient-iOS"
+  local target_simulator="CrispClient-iOS-Simulator"
+
+  archive_framework "${target_ios}" "iOS" "Release-iphoneos"
+  archive_framework "${target_simulator}" "iOS Simulator" "Release-iphonesimulator"
+
+  xcodebuild_args+=(
+    -framework "${XCODEBUILD_DIR}/Archives/${target_ios}.xcarchive/Products/usr/local/lib/${FRAMEWORK_NAME}.framework"
+    -debug-symbols "${XCODEBUILD_DIR}/Archives/${target_ios}.xcarchive/dSYMs/${FRAMEWORK_NAME}.framework.dSYM"
+    -framework "${XCODEBUILD_DIR}/Archives/${target_simulator}.xcarchive/Products/usr/local/lib/${FRAMEWORK_NAME}.framework"
+    -debug-symbols "${XCODEBUILD_DIR}/Archives/${target_simulator}.xcarchive/dSYMs/${FRAMEWORK_NAME}.framework.dSYM"
+  )
+
+  local target_catalyst="CrispClient-macOS-Catalyst"
+
+  archive_framework "${target_catalyst}" "macOS,variant=Mac Catalyst" "Release-maccatalyst"
+
+  xcodebuild_args+=(
+    -framework "${XCODEBUILD_DIR}/Archives/${target_catalyst}.xcarchive/Products/usr/local/lib/${FRAMEWORK_NAME}.framework"
+    -debug-symbols "${XCODEBUILD_DIR}/Archives/${target_catalyst}.xcarchive/dSYMs/${FRAMEWORK_NAME}.framework.dSYM"
+  )
+
+  # Build framework
+  xcrun xcodebuild "${xcodebuild_args[@]}"
+}
+
+rm -rf "${BUILD_DIR}"
+rm -rf "${OUTPUT_PACKAGE_DIR}"
+mkdir -p "${INPUT_DIST_DIR}"
+
+fetch_web_client_dist "${VERSION}" "${INPUT_DIST_DIR}"
+
+prepare_input_swift_package
+(cd "${BUILD_DIR}" && create_xcframework)
+
+if [[ "${SIGN_FRAMEWORK}" = "true" ]]; then
+  echo "Signing framework with identity '${SIGNING_IDENTITY:?}'…"
+  codesign --timestamp -v --sign "${SIGNING_IDENTITY}" "${CRISP_CLIENT_XCFRAMEWORK_DIR}"
+fi
+
+# Point Package.swift at the freshly built local xcframework.
+mise run set-crisp-client-target local

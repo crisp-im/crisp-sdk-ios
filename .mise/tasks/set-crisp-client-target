@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+#MISE description="Rewrite the CrispClient target in Package.swift (local | dev | release)"
+#MISE hide=true
+#USAGE arg "<mode>" help="Which CrispClient target to write into Package.swift" { choices "local" "dev" "release" }
+#USAGE flag "--url <url>" help="Released asset URL (required for release mode)"
+#USAGE flag "--checksum <checksum>" help="XCFramework checksum (required for release mode)"
+
+set -euo pipefail
+
+MODE="${usage_mode:?}"
+URL="${usage_url:-}"
+CHECKSUM="${usage_checksum:-}"
+PACKAGE_FILE="./Package.swift"
+
+case "${MODE}" in
+  local)
+    SNIPPET='    .binaryTarget(
+      name: "CrispClient",
+      path: "Sources/CrispClient/CrispClient.xcframework",
+    ),'
+    ;;
+  dev)
+    SNIPPET='    .target(
+      name: "CrispClient",
+      path: "Sources/CrispClient",
+      resources: [.copy("dist")],
+    ),'
+    ;;
+  release)
+    : "${URL:?--url is required for release mode}"
+    : "${CHECKSUM:?--checksum is required for release mode}"
+    SNIPPET="    .binaryTarget(
+      name: \"CrispClient\",
+      url: \"${URL}\",
+      checksum: \"${CHECKSUM}\",
+    ),"
+    ;;
+  *)
+    echo "Unknown mode '${MODE}' (expected: local | dev | release)." >&2
+    exit 1
+    ;;
+esac
+
+# Replace everything between the markers with the chosen snippet. The snippet is
+# fed through a temp file because macOS awk rejects multiline -v values.
+SNIPPET_FILE="$(mktemp)"
+printf '%s\n' "${SNIPPET}" > "${SNIPPET_FILE}"
+awk -v snippetfile="${SNIPPET_FILE}" '
+  /mise:crisp-client-target:begin/ {
+    print
+    while ((getline line < snippetfile) > 0) print line
+    close(snippetfile)
+    skip = 1
+    next
+  }
+  /mise:crisp-client-target:end/ { skip = 0; print; next }
+  skip { next }
+  { print }
+' "${PACKAGE_FILE}" > "${PACKAGE_FILE}.tmp" && mv "${PACKAGE_FILE}.tmp" "${PACKAGE_FILE}"
+rm -f "${SNIPPET_FILE}"
+
+echo "Package.swift CrispClient target set to '${MODE}' mode."

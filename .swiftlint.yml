@@ -1,0 +1,69 @@
+only_rules:
+  - fatal_error_message
+  - force_cast
+  - force_try
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - legacy_cggeometry_functions
+  - legacy_constant
+  - legacy_constructor
+  - legacy_nsgeometry_functions
+  - unused_optional_binding
+  - unowned_variable_capture
+  - superfluous_disable_command
+  - invalid_swiftlint_command
+  - custom_rules
+
+excluded:
+  - .build
+  - codegen/.build
+  - .DerivedData
+  - Build
+  - fastlane
+
+indentation: 2
+
+force_unwrapping:
+  severity: error
+
+implicitly_unwrapped_optional:
+  severity: error
+
+custom_rules:
+  no_direct_standard_out_logs:
+    name: 'Writing log messages directly to standard out is disallowed'
+    regex: "(\\bprint|\\bdebugPrint|\\bdump|Swift\\.print|Swift\\.debugPrint|Swift\\.dump|_printChanges)\\s*\\("
+    match_kinds:
+      - identifier
+    message: "Don't commit `print(…)`, `debugPrint(…)`, `dump(…)`, or `_printChanges()` as they write to standard out in release. Use the shared `log` instance from the `CrispLogging` module instead — `log.debug(…)`, `log.info(…)`, `log.warn(…)`, or `log.error(…)` — which routes through registered log handlers and respects the configured log level. For debug-only scenarios where standard out really is what you want, silence this warning explicitly using `// swiftlint:disable:next no_direct_standard_out_logs`."
+    severity: error
+  no_file_literal:
+    name: '#file is disallowed'
+    regex: "(\\b#file\\b)"
+    match_kinds:
+      - identifier
+    message: 'Instead of #file, use #fileID'
+    severity: error
+  no_filepath_literal:
+    name: '#filePath is disallowed'
+    regex: "(\\b#filePath\\b)"
+    match_kinds:
+      - identifier
+    message: 'Instead of #filePath, use #fileID.'
+    severity: error
+  no_unchecked_sendable:
+    name: '`@unchecked Sendable` is discouraged.'
+    regex: '@unchecked Sendable'
+    match_kinds:
+      - attribute.builtin
+      - typeidentifier
+    message: 'Instead of using `@unchecked Sendable`, consider a safe alternative like a standard `Sendable` conformance or using `@preconcurrency import`. If you really must use `@unchecked Sendable`, you can add a `// swiftlint:disable:next no_unchecked_sendable` annotation with an explanation for how we know the type is thread-safe, and why we have to use @unchecked Sendable instead of Sendable. More explanation and suggested safe alternatives are available at https://github.com/airbnb/swift#unchecked-sendable.'
+    severity: error
+  no_public_outside_crisp:
+    name: '`public`/`open` is disallowed outside the Crisp target'
+    regex: '\b(public|open)\b'
+    excluded: ['.*/Sources/Crisp/.*', 'DemoApp']
+    match_kinds:
+      - attribute.builtin
+    message: 'Only the `Crisp` target exposes API to SDK consumers. In every other target use `package` instead of `public`/`open` so symbols stay invisible outside this package while remaining usable by `Crisp`. If a symbol genuinely must be `public`/`open` here, silence this explicitly with `// swiftlint:disable:next no_public_outside_crisp` and a note explaining why.'
+    severity: error
