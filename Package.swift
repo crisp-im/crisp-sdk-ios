@@ -41,10 +41,10 @@ let package = Package(
       resources: [.copy("index.html")],
     ),
     // mise:crisp-client-target:begin
-    .target(
+    .binaryTarget(
       name: "CrispClient",
-      path: "Sources/CrispClient",
-      resources: [.copy("dist")],
+      url: "https://github.com/crisp-im/crisp-sdk-ios/releases/download/3.0.0-beta.1/CrispClient.xcframework.zip",
+      checksum: "14e1eac3c204e6eb6fa2bbba3c7c49a1817be65d0f9705eec88181444e2e69e2",
     ),
     // mise:crisp-client-target:end
 
