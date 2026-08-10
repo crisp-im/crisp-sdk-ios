@@ -57,8 +57,8 @@ jobs:
           git config user.name "${APP_SLUG}[bot]"
           git config user.email "${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
 
-      - name: Cache CocoaPods spec repos
-        uses: actions/cache@v4
+      - name: Restore CocoaPods spec repo cache
+        uses: actions/cache/restore@v4
         with:
           path: ~/.cocoapods/repos
           key: cocoapods-specs-${{ github.run_id }}
@@ -73,3 +73,10 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
           NPM_PULL_TOKEN: ${{ secrets.NPM_PULL_TOKEN }}
+
+      - name: Save CocoaPods spec repo cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cocoapods/repos
+          key: cocoapods-specs-${{ github.run_id }}
