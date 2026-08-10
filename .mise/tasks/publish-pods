@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+#MISE description="Publish the podspecs to CocoaPods trunk"
+#USAGE arg "<version>" help="The version to publish"
+set -euo pipefail
+
+VERSION="${usage_version:?}"
+
+# The podspecs read the version from the environment.
+export POD_VERSION="${VERSION}"
+
+# Dependency order: CrispChatBox depends on CrispChatBoxFFI, Crisp on CrispChatBox.
+PODS=(CrispChatBoxFFI CrispChatBox Crisp)
+
+MAX_ATTEMPTS=4
+INITIAL_RETRY_DELAY=20
+PROPAGATION_TIMEOUT=300
+
+POD_PUSH_FLAGS=(
+  --allow-warnings
+  --synchronous
+  --skip-import-validation
+)
+
+# Succeeds when <pod> <version> is live on trunk and its Specs commit has
+# landed. A successful lookup carries a non-null data_url.
+published() {
+  local body
+  body="$(curl -s --max-time 30 "https://trunk.cocoapods.org/api/v1/pods/${1}/versions/${2}" 2>/dev/null)" || return 1
+  grep -q '"data_url" *: *"http' <<<"${body}"
+}
+
+# Waits for the Specs commit for <pod> <version> to land.
+wait_until_published() {
+  local pod=$1 version=$2
+  local deadline=$((SECONDS + PROPAGATION_TIMEOUT))
+  until published "${pod}" "${version}"; do
+    if ((SECONDS >= deadline)); then
+      echo "Warning: ${pod} ${version} not visible on trunk after ${PROPAGATION_TIMEOUT}s;" \
+        "continuing — the next push will fail on its own if the spec truly isn't there." >&2
+      return 0
+    fi
+    sleep 10
+  done
+}
+
+is_fatal_push_error() {
+  grep -qiE 'did not pass validation|You need to register a session|Unauthorized|\[!\] *401' "$1"
+}
+
+# Trunk's answer when the version already exists.
+is_duplicate_entry() {
+  grep -qi 'duplicate entry' "$1"
+}
+
+# Pushes one pod, retrying transient trunk failures.
+push_pod() {
+  local pod=$1
+  local podspec="${pod}.podspec"
+  local delay=${INITIAL_RETRY_DELAY}
+  local attempt output
+  output="$(mktemp)"
+  trap 'rm -f "${output}"' RETURN
+
+  for ((attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)); do
+    if published "${pod}" "${VERSION}"; then
+      echo "${pod} ${VERSION} is already on trunk; skipping."
+      return 0
+    fi
+    echo "Pushing ${pod} ${VERSION} (attempt ${attempt}/${MAX_ATTEMPTS})…"
+    if pod trunk push "${podspec}" "${POD_PUSH_FLAGS[@]}" 2>&1 | tee "${output}"; then
+      return 0
+    fi
+    # A push can land and still report an error, in which case retrying would
+    # only fail on the duplicate. Ask trunk what actually happened.
+    if published "${pod}" "${VERSION}"; then
+      echo "${pod} ${VERSION} reached trunk despite the reported error; continuing."
+      return 0
+    fi
+    if is_duplicate_entry "${output}"; then
+      echo "Trunk reports ${pod} ${VERSION} already exists; treating as published."
+      return 0
+    fi
+    if is_fatal_push_error "${output}"; then
+      echo "Push of ${pod} ${VERSION} failed with a non-transient error; not retrying." >&2
+      return 1
+    fi
+    if ((attempt < MAX_ATTEMPTS)); then
+      echo "Push of ${pod} ${VERSION} failed. Retrying in ${delay}s…" >&2
+      sleep "${delay}"
+      delay=$((delay * 2))
+    fi
+  done
+  echo "Giving up on ${pod} ${VERSION} after ${MAX_ATTEMPTS} attempts." >&2
+  return 1
+}
+
+echo "Checking trunk session…"
+if ! pod trunk me >/dev/null 2>&1; then
+  echo "No usable CocoaPods trunk session ('pod trunk me' failed). Set COCOAPODS_TRUNK_TOKEN," \
+    "or run 'pod trunk register' to store credentials in ~/.netrc." >&2
+  exit 1
+fi
+
+for pod in "${PODS[@]}"; do
+  if [[ ! -f "${pod}.podspec" ]]; then
+    echo "Missing ${pod}.podspec in $(pwd)." >&2
+    exit 1
+  fi
+done
+
+echo "Publishing pods to CocoaPods trunk…"
+for pod in "${PODS[@]}"; do
+  push_pod "${pod}"
+  wait_until_published "${pod}" "${VERSION}"
+done
+echo "All pods published at ${VERSION}."

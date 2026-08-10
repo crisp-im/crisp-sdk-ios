@@ -90,15 +90,7 @@ gh release create "${VERSION}" \
   --notes-file "${RELEASE_NOTES_FILE}" \
   ${prerelease_flag[@]+"${prerelease_flag[@]}"}
 
-# Publish the pods to CocoaPods trunk, in dependency order.
-echo "Publishing pods to CocoaPods trunk…"
-export POD_VERSION="${VERSION}"
-
-pod_push_flags=(
-  --allow-warnings
-  --synchronous
-  --skip-import-validation
-)
-pod trunk push CrispChatBoxFFI.podspec "${pod_push_flags[@]}"
-pod trunk push CrispChatBox.podspec "${pod_push_flags[@]}"
-pod trunk push Crisp.podspec "${pod_push_flags[@]}"
+# Publish the pods to CocoaPods trunk, in dependency order. Split out so a run
+# that dies partway through the pods can be resumed on its own, without
+# rebuilding and re-uploading everything above.
+mise run publish-pods "${VERSION}"
