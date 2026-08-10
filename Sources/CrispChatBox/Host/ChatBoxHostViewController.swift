@@ -275,6 +275,17 @@ extension ChatBoxHostViewController: WKNavigationDelegate {
   }
 
   func webView(
+    _ webView: WKWebView,
+    decidePolicyFor navigationAction: WKNavigationAction,
+  ) async -> WKNavigationActionPolicy {
+    if navigationAction.navigationType == .linkActivated, let url = navigationAction.request.url {
+      self.model.onExternalLinkTapped(url: url)
+      return .cancel
+    }
+    return .allow
+  }
+
+  func webView(
     _: WKWebView,
     decidePolicyFor navigationResponse: WKNavigationResponse,
   ) async
