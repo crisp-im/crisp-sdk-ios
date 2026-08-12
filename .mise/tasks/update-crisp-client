@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #MISE description="Pin a new crisp-client version and regenerate the strings catalog"
-#MISE alias="update-cc"
+#MISE alias="up"
 #USAGE arg "[version]" help="npm version, range or dist-tag to update to. Defaults to 'latest'."
 #USAGE flag "-c --commit" help="Commit the updated pin and strings catalog"
 
