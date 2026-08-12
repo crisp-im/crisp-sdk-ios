@@ -2,6 +2,7 @@
 #MISE description="Pin a new crisp-client version and regenerate the strings catalog"
 #MISE alias="update-cc"
 #USAGE arg "[version]" help="npm version, range or dist-tag to update to. Defaults to 'latest'."
+#USAGE flag "-c --commit" help="Commit the updated pin and strings catalog"
 
 # The pin and the strings catalog describe the same crisp-client release, so
 # they move together and this is the only task that moves them. Fetching the
@@ -34,4 +35,16 @@ if [[ "${PREVIOUS#v}" == "${WEB_CLIENT_VERSION}" ]]; then
 else
   echo "CrispClient ${PREVIOUS:-unpinned} -> ${WEB_CLIENT_VERSION}. Pin and strings catalog updated."
   echo "Run 'mise run fetch-crisp-client' or 'mise run build-crisp-client-framework' to pick up the new client."
+fi
+
+if [[ "${usage_commit:-false}" == "true" ]]; then
+  COMMIT_PATHS=("${VERSION_FILE}" "${CRISP_STRINGS_CATALOG}" "${CRISP_STRINGS_POLYGLOT}")
+
+  if git diff --quiet -- "${COMMIT_PATHS[@]}" &&
+    git diff --cached --quiet -- "${COMMIT_PATHS[@]}"; then
+    echo "Nothing to commit; the pin and catalog already matched ${WEB_CLIENT_VERSION}."
+  else
+    git commit -q -m "chore: Update crisp-client to ${WEB_CLIENT_VERSION}" -- "${COMMIT_PATHS[@]}"
+    echo "Committed $(git log -1 --format='%h %s')."
+  fi
 fi
