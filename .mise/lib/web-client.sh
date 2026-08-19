@@ -32,6 +32,12 @@ write_npmrc() {
   local dest_file=$1
 
   if [[ -n "${NPM_PULL_TOKEN:-}" ]]; then
+    # NPM_PULL_TOKEN is the .npmrc contents, not a bare token
+    if [[ "${NPM_PULL_TOKEN}" != *_auth* ]]; then
+      echo "NPM_PULL_TOKEN does not look like an .npmrc: no '_auth' line." >&2
+      echo "It must hold the file contents, e.g. '//registry.npmjs.org/:_authToken=<token>'." >&2
+      exit 1
+    fi
     printf '%s\n' "${NPM_PULL_TOKEN}" > "${dest_file}"
     chmod 600 "${dest_file}"
     echo "Using npm credentials from NPM_PULL_TOKEN."
@@ -72,14 +78,22 @@ pull_web_client_package() {
   local spec="${CRISP_CLIENT_NPM_PACKAGE:?}@${version}"
   echo "Fetching ${spec}…"
 
-  local tarball
-  tarball="$(npm pack "${spec}" \
+  local pack_json
+  if ! pack_json="$(npm pack "${spec}" \
     --userconfig "${WEB_CLIENT_TMP_DIR}/.npmrc" \
     --pack-destination "${WEB_CLIENT_TMP_DIR}" \
-    --silent --json | jq -r '.[0].filename')"
+    --silent --json)"; then
+    echo "npm pack failed for ${spec}. npm reported:" >&2
+    printf '%s\n' "${pack_json}" >&2
+    exit 1
+  fi
+
+  local tarball
+  tarball="$(jq -r 'if type == "array" then (.[0].filename // empty) else empty end' <<< "${pack_json}")"
 
   if [[ -z "${tarball}" || ! -f "${WEB_CLIENT_TMP_DIR}/${tarball}" ]]; then
-    echo "npm pack produced no tarball for ${spec}." >&2
+    echo "npm pack produced no tarball for ${spec}. npm reported:" >&2
+    printf '%s\n' "${pack_json}" >&2
     exit 1
   fi
 
