@@ -17,7 +17,6 @@
 		2C7D576A2FACE55500D956D7 /* AllTests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 2C7D57692FACE55500D956D7 /* AllTests.xctestplan */; };
 		2C8E99F42A0E81F400ADCD8D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C8E99F62A0E81F400ADCD8D /* Localizable.strings */; };
 		2C992D122FBB72F700C88797 /* Crisp in Frameworks */ = {isa = PBXBuildFile; productRef = 2C992D112FBB72F700C88797 /* Crisp */; };
-		2C992D132FBB72F700C88797 /* Crisp in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 2C992D112FBB72F700C88797 /* Crisp */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +36,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2C992D132FBB72F700C88797 /* Crisp in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;

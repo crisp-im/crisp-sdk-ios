@@ -7,7 +7,7 @@ let package = Package(
   defaultLocalization: "en",
   platforms: [.iOS(.v14), .macOS(.v11), .macCatalyst(.v14)],
   products: [
-    .library(name: "Crisp", type: .dynamic, targets: ["Crisp"]),
+    .library(name: "Crisp", targets: ["Crisp"]),
   ],
   dependencies: [
     .package(
