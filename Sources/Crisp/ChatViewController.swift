@@ -3,8 +3,9 @@ import UIKit
 
 /// The ViewController that hosts the Crisp chat (UIKit).
 ///
-/// - Important: Make sure that you have configured your Website ID before you present the
-/// `ChatViewController`. See: ``CrispSDK/configure(websiteID:)``.
+/// - Important: Make sure that you have configured your Website ID and the required Info.plist
+/// keys before you present the `ChatViewController`. See: ``CrispSDK/configure(websiteID:)`` and
+/// <doc:ConfigureProject>.
 ///
 /// You can present the `ChatViewController` like you would present any other `UIViewController`.
 ///
@@ -27,39 +28,6 @@ import UIKit
 
   /// Initializes the `ChatViewController`.
   public init(configuration: ChatViewConfiguration = .default) {
-    if
-      UIImagePickerController.isSourceTypeAvailable(.camera),
-      !Bundle.main.crisp_hasCameraUsageDescription
-    {
-      // swiftlint:disable:next no_direct_standard_out_logs
-      print(
-        """
-
-        ***
-        To enable receiving video calls in the Crisp chat, please configure \
-        the `NSCameraUsageDescription` entry in your app's Info.plist.
-        For more information see: https://developer.apple.com/library/archive/qa/qa1937/_index.html.
-        ***
-
-        """,
-      )
-    }
-
-    if !Bundle.main.crisp_hasMicrophoneUsageDescription {
-      // swiftlint:disable:next no_direct_standard_out_logs
-      print(
-        """
-
-        ***
-        To enable receiving audio or video calls in the Crisp chat, please configure \
-        the `NSMicrophoneUsageDescription` entry in your app's Info.plist.
-        For more information see: https://developer.apple.com/library/archive/qa/qa1937/_index.html.
-        ***
-
-        """,
-      )
-    }
-
     self.rootViewController = ChatBoxViewController(
       model: ChatBoxModel(api: CrispSDK.apiModel),
       configuration: configuration.chatBoxConfiguration,

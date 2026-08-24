@@ -318,6 +318,38 @@ import UIKit
     CrispSDK.apiModel.configureShouldPromptForNotificationsPermission(flag)
   }
 
+  /// Lets the chat start even though `NSCameraUsageDescription` or `NSMicrophoneUsageDescription`
+  /// are missing from your app's Info.plist.
+  ///
+  /// By default the SDK refuses to show the chat and displays a configuration error screen when
+  /// either key is missing, because iOS terminates your app the moment the chat accesses the
+  /// camera or the microphone without one. See <doc:ConfigureProject>.
+  ///
+  /// Call this method before you present the chat to opt out of that screen:
+  ///
+  /// ```swift
+  /// CrispSDK.unsafeDisableMissingUsageDescriptionWarnings()
+  /// ```
+  ///
+  /// - Warning: This does not make the chat safe to use without the Info.plist keys, it only
+  /// stops the SDK from telling you about them. Your app will still be terminated by iOS if any
+  /// of the following happens:
+  ///   - A user takes a photo to upload from the chatbox. Requires
+  ///     `NSCameraUsageDescription`, unless "Allow files to be sent from the chatbox" is turned
+  ///     off for your website.
+  ///   - A user records a voice message. Requires `NSMicrophoneUsageDescription`, unless "Allow
+  ///     audio recordings to be sent from the chatbox" is turned off for your website.
+  ///   - One of your operators starts an audio or a video call. Requires
+  ///     `NSMicrophoneUsageDescription` and, for video calls, `NSCameraUsageDescription`. There
+  ///     is no website setting that prevents this, an operator can start a call at any time.
+  ///
+  ///   Those website settings live in your Crisp dashboard and can be changed without a new app
+  ///   release, so a change of a setting would affect an app that is already deployed to
+  ///   the App Store.
+  @objc public static func unsafeDisableMissingUsageDescriptionWarnings() {
+    CrispSDK.apiModel.unsafeDisableMissingUsageDescriptionWarnings()
+  }
+
   @available(*, deprecated, message: "locale is no longer available")
   @objc public nonisolated(unsafe) static var locale = Locale.current
 

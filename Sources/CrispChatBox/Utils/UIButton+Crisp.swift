@@ -1,10 +1,9 @@
 import UIKit
 
 extension UIButton {
-  static func crisp_roundedButton(title: String, target: Any?, action: Selector) -> UIButton {
-    let button = UIButton(type: .roundedRect)
+  static func crisp_roundedButton(title: String, primaryAction: UIAction?) -> UIButton {
+    let button = UIButton(type: .roundedRect, primaryAction: primaryAction)
     button.setTitle(title, for: .normal)
-    button.addTarget(target, action: action, for: .touchUpInside)
 
     button.translatesAutoresizingMaskIntoConstraints = false
     button.layer.borderWidth = 1

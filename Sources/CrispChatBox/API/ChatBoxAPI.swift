@@ -10,6 +10,7 @@ package final class ChatBoxAPI: Sendable {
     package fileprivate(set) var websiteId: WebsiteId?
     package fileprivate(set) var tokenId: TokenId?
     package fileprivate(set) var shouldPromptForPermission = true
+    package fileprivate(set) var missingUsageDescriptionWarningsDisabled = false
     package fileprivate(set) var defaultLogHandlerAdded = false
 
     package var sessionId: SessionId?
@@ -48,6 +49,12 @@ package extension ChatBoxAPI {
   func configureShouldPromptForNotificationsPermission(_ flag: Bool) {
     self.state.withValue {
       $0.shouldPromptForPermission = flag
+    }
+  }
+
+  func unsafeDisableMissingUsageDescriptionWarnings() {
+    self.state.withValue {
+      $0.missingUsageDescriptionWarningsDisabled = true
     }
   }
 
