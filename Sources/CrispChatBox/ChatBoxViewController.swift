@@ -25,8 +25,10 @@ package final class ChatBoxViewController: ContainerViewController {
     self.view.preservesSuperviewLayoutMargins = true
 
     switch self.model.route {
-    case .missingWebsiteId:
-      self.contentViewController = MissingWebsiteIdViewController()
+    case let .missingConfiguration(missingConfiguration):
+      self.contentViewController = MissingConfigurationViewController(
+        missingConfiguration: missingConfiguration,
+      )
     case let .fullyConfigured(model):
       self.contentViewController = ChatBoxHostViewController(
         model: model,

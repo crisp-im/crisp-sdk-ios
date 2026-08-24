@@ -19,9 +19,7 @@ final class FailureViewController: UIViewController {
     self.view.backgroundColor = .systemBackground
 
     let font = UIFont.preferredFont(forTextStyle: .body)
-    let boldFont = font.fontDescriptor
-      .withSymbolicTraits(.traitBold)
-      .map { UIFont(descriptor: $0, size: 0) } ?? font
+    let boldFont = UIFont.crisp_boldFont(forTextStyle: .body)
 
     let titleLabel = UILabel()
     titleLabel.text = NSLocalizedString(
@@ -52,8 +50,9 @@ final class FailureViewController: UIViewController {
         value: "Try again",
         comment: "Retry button on the chat failure screen",
       ),
-      target: self,
-      action: #selector(self.retryButtonTapped),
+      primaryAction: .init { [model] _ in
+        model.retryButtonTapped()
+      },
     )
     retryButton.isHidden = !self.model.canRetry
 
@@ -64,8 +63,9 @@ final class FailureViewController: UIViewController {
         value: "Cancel",
         comment: "Cancel button on the chat failure screen",
       ),
-      target: self,
-      action: #selector(self.cancelButtonTapped),
+      primaryAction: .init { [model] _ in
+        model.cancelButtonTapped()
+      },
     )
     cancelButton.isHidden = !self.model.canCancel
 
@@ -87,13 +87,5 @@ final class FailureViewController: UIViewController {
       vStack.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor),
       vStack.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor),
     ])
-  }
-
-  @objc func retryButtonTapped() {
-    self.model.retryButtonTapped()
-  }
-
-  @objc func cancelButtonTapped() {
-    self.model.cancelButtonTapped()
   }
 }

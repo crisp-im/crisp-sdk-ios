@@ -3,8 +3,9 @@ import SwiftUI
 
 /// The View that hosts the Crisp chat (SwiftUI).
 ///
-/// - Important: Make sure that you have configured your Website ID before you present the
-/// `ChatView`. See: ``CrispSDK/configure(websiteID:)``.
+/// - Important: Make sure that you have configured your Website ID and the required Info.plist
+/// keys before you present the `ChatView`. See: ``CrispSDK/configure(websiteID:)`` and
+/// <doc:ConfigureProject>.
 ///
 /// You can present the `ChatView` like you would present any other `View`.
 ///

@@ -30,8 +30,9 @@ final class LoadingViewController: UIViewController {
         value: "Cancel",
         comment: "Cancel button on the loading screen",
       ),
-      target: self,
-      action: #selector(self.cancelButtonTapped),
+      primaryAction: .init { [model] _ in
+        model.cancelButtonTapped()
+      },
     )
     cancelButton.isHidden = !self.model.canCancel
     self.view.addSubview(cancelButton)
@@ -44,9 +45,5 @@ final class LoadingViewController: UIViewController {
       cancelButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
       cancelButton.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor),
     ])
-  }
-
-  @objc func cancelButtonTapped() {
-    self.model.cancelButtonTapped()
   }
 }

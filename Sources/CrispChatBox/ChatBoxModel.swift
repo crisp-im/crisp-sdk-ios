@@ -5,7 +5,7 @@ import Foundation
 @MainActor
 package final class ChatBoxModel {
   enum Route {
-    case missingWebsiteId
+    case missingConfiguration(MissingConfiguration)
     case fullyConfigured(ChatBoxHostModel)
   }
 
@@ -14,11 +14,19 @@ package final class ChatBoxModel {
 
   let route: Route
 
-  package init(api: ChatBoxAPI, env: Environment = .live) {
+  package init(api: ChatBoxAPI, env: Environment = .live, bundle: Bundle = .main) {
     self.api = api
 
-    guard let websiteId = api.websiteId else {
-      self.route = .missingWebsiteId
+    var missingConfiguration = MissingConfiguration(websiteId: api.websiteId, bundle: bundle)
+
+    if api.missingUsageDescriptionWarningsDisabled {
+      missingConfiguration.subtract(
+        [.cameraUsageDescription, .microphoneUsageDescription],
+      )
+    }
+
+    guard let websiteId = api.websiteId, missingConfiguration.isEmpty else {
+      self.route = .missingConfiguration(missingConfiguration)
       return
     }
 
