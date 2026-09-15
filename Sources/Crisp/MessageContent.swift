@@ -1,7 +1,7 @@
 import Foundation
 
 public extension Message {
-  /// A message to show locally. See ``CrispSDK/showMessage(_:)``
+  /// A message to show locally. See ``CrispSDK/showMessage(with:)``
   enum Content: Equatable, Sendable {
     case animation(ImageFile)
     case audio(AudioFile)
