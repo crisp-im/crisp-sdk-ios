@@ -142,6 +142,12 @@
             "value": "Annuler"
           }
         },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cealaigh"
+          }
+        },
         "gu": {
           "stringUnit": {
             "state": "translated",
@@ -529,6 +535,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Copier"
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cóipeáil"
           }
         },
         "gu": {
@@ -920,6 +932,12 @@
             "value": "Non, merci"
           }
         },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No, GRMA"
+          }
+        },
         "gu": {
           "stringUnit": {
             "state": "translated",
@@ -1307,6 +1325,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Activer les notifications"
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ceadaigh fógraí"
           }
         },
         "gu": {
@@ -1698,6 +1722,12 @@
             "value": "Réessayez"
           }
         },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bain triail arís as?"
+          }
+        },
         "gu": {
           "stringUnit": {
             "state": "translated",
@@ -2085,6 +2115,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nous n'avons pas pu vous connecter au chat. Veuillez réessayer plus tard."
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ní fhéadfainn nascadh le comhrá.  Bain triail arís anois as."
           }
         },
         "gu": {
@@ -2476,6 +2512,12 @@
             "value": "Erreur lors du lancement du chat"
           }
         },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fadhb le tosú comhrá"
+          }
+        },
         "gu": {
           "stringUnit": {
             "state": "translated",
@@ -2730,55 +2772,55 @@
         "af": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laai…"
+            "value": "Laai..."
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "جاري التحميل…"
+            "value": "جاري التحميل..."
           }
         },
         "ar-AE": {
           "stringUnit": {
             "state": "translated",
-            "value": "جاري التحميل…"
+            "value": "جاري التحميل..."
           }
         },
         "ar-SA": {
           "stringUnit": {
             "state": "translated",
-            "value": "جاري التحميل…"
+            "value": "جاري التحميل..."
           }
         },
         "ar-YE": {
           "stringUnit": {
             "state": "translated",
-            "value": "جاري التحميل…"
+            "value": "جاري التحميل..."
           }
         },
         "az": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yüklənir…"
+            "value": "Yüklənir..."
           }
         },
         "bg": {
           "stringUnit": {
             "state": "translated",
-            "value": "Зареждане…"
+            "value": "Зареждане..."
           }
         },
         "bn": {
           "stringUnit": {
             "state": "translated",
-            "value": "লোড হচ্ছে…"
+            "value": "লোড হচ্ছে..."
           }
         },
         "ca": {
           "stringUnit": {
             "state": "translated",
-            "value": "Carregant…"
+            "value": "Carregant..."
           }
         },
         "ckb": {
@@ -2790,67 +2832,67 @@
         "cs": {
           "stringUnit": {
             "state": "translated",
-            "value": "Načítání…"
+            "value": "Načítání..."
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Indlæser…"
+            "value": "Indlæser..."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wird geladen…"
+            "value": "Wird geladen..."
           }
         },
         "el": {
           "stringUnit": {
             "state": "translated",
-            "value": "Φόρτωση…"
+            "value": "Φόρτωση..."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Loading…"
+            "value": "Loading..."
           }
         },
         "eo": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ŝarĝante…"
+            "value": "Ŝarĝante..."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cargando…"
+            "value": "Cargando..."
           }
         },
         "et": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laadimine…"
+            "value": "Laadimine..."
           }
         },
         "eu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kargatzen…"
+            "value": "Kargatzen..."
           }
         },
         "fa": {
           "stringUnit": {
             "state": "translated",
-            "value": "در حال بارگذاری…"
+            "value": "در حال بارگذاری..."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ladataan…"
+            "value": "Ladataan..."
           }
         },
         "fo": {
@@ -2862,91 +2904,97 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chargement en cours…"
+            "value": "Chargement en cours..."
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ag lódáil. . ."
           }
         },
         "gu": {
           "stringUnit": {
             "state": "translated",
-            "value": "લોડ થઈ રહ્યું છે…"
+            "value": "લોડ થઈ રહ્યું છે..."
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "טוען…"
+            "value": "טוען..."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "लोड हो रहा है…"
+            "value": "लोड हो रहा है..."
           }
         },
         "hr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Učitavanje…"
+            "value": "Učitavanje..."
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Betöltés…"
+            "value": "Betöltés..."
           }
         },
         "hy": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ցուցադրվում է…"
+            "value": "Ցուցադրվում է..."
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sedang dimuat…"
+            "value": "Sedang dimuat..."
           }
         },
         "is": {
           "stringUnit": {
             "state": "translated",
-            "value": "Að hlaða…"
+            "value": "Að hlaða..."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Caricamento in corso…"
+            "value": "Caricamento in corso..."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "読み込み中…"
+            "value": "読み込み中..."
           }
         },
         "ka": {
           "stringUnit": {
             "state": "translated",
-            "value": "იტვირთება…"
+            "value": "იტვირთება..."
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "로딩 중…"
+            "value": "로딩 중..."
           }
         },
         "lt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Įkeliama…"
+            "value": "Įkeliama..."
           }
         },
         "lv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ielādējas…"
+            "value": "Ielādējas..."
           }
         },
         "ml": {
@@ -2958,37 +3006,37 @@
         "mn": {
           "stringUnit": {
             "state": "translated",
-            "value": "Бүртгэж байна…"
+            "value": "Бүртгэж байна..."
           }
         },
         "ms": {
           "stringUnit": {
             "state": "translated",
-            "value": "Memuat…"
+            "value": "Memuat..."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bezig met laden…"
+            "value": "Bezig met laden..."
           }
         },
         "nl-BE": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bezig met laden…"
+            "value": "Bezig met laden..."
           }
         },
         "no": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laster inn…"
+            "value": "Laster inn..."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ładowanie…"
+            "value": "Ładowanie..."
           }
         },
         "ps": {
@@ -3000,61 +3048,61 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "A carregar…"
+            "value": "A carregar..."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Carregando…"
+            "value": "Carregando..."
           }
         },
         "ro": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se încarcă…"
+            "value": "Se încarcă..."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Загрузка…"
+            "value": "Загрузка..."
           }
         },
         "sk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Načítava sa…"
+            "value": "Načítava sa..."
           }
         },
         "sl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nalaganje…"
+            "value": "Nalaganje..."
           }
         },
         "sr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Učitavanje…"
+            "value": "Učitavanje..."
           }
         },
         "sr-Cyrl-CS": {
           "stringUnit": {
             "state": "translated",
-            "value": "Учитавање…"
+            "value": "Учитавање..."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laddar…"
+            "value": "Laddar..."
           }
         },
         "ta": {
           "stringUnit": {
             "state": "translated",
-            "value": "ஏற்றுகிறது…"
+            "value": "ஏற்றுகிறது..."
           }
         },
         "th": {
@@ -3066,49 +3114,49 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yükleniyor…"
+            "value": "Yükleniyor..."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Завантаження…"
+            "value": "Завантаження..."
           }
         },
         "uz": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yuklanmoqda…"
+            "value": "Yuklanmoqda..."
           }
         },
         "uz-Cyrl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Юкланмоқда…"
+            "value": "Юкланмоқда..."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Đang tải…"
+            "value": "Đang tải..."
           }
         },
         "zh": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在加载……"
+            "value": "正在加载..."
           }
         },
         "zh-HK": {
           "stringUnit": {
             "state": "translated",
-            "value": "載入中…"
+            "value": "載入中..."
           }
         },
         "zh-TW": {
           "stringUnit": {
             "state": "translated",
-            "value": "載入中…"
+            "value": "載入中..."
           }
         }
       }
@@ -3252,6 +3300,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nous pouvons vous envoyer une notification lorsque nous vous répondons"
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is féidir linn fógra a chur chugat nuair a fhreagraímid."
           }
         },
         "gu": {
@@ -3641,6 +3695,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Au cas où vous quitteriez la page et que nous répondions plus tard :"
+          }
+        },
+        "ga": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ar eagla go bhfágann tú nó go bhfreagraímid níos déanaí"
           }
         },
         "gu": {
