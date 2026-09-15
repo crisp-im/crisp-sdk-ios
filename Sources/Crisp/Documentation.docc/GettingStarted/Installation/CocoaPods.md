@@ -2,7 +2,7 @@
 
 Integrate Crisp SDK via CocoaPods
 
-- Warning: We will stop publishing to CocoaPods at the end of September 2026. We recommend migrating to <doc:SwiftPM> or manually installing the [pre-built XCFramework from GitHub releases](https://github.com/crisp-im/crisp-sdk-ios/releases/latest). 
+- Warning: We will stop publishing to CocoaPods at the end of September 2026. We recommend migrating to <doc:SwiftPM>.
 
 To integrate the Crisp SDK into your project add `Crisp` to your Podfile:
 

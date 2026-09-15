@@ -6,4 +6,3 @@
 
 - <doc:SwiftPM>
 - <doc:CocoaPods>
-- <doc:Manual>
