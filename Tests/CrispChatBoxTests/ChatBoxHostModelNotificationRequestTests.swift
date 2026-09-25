@@ -45,7 +45,7 @@ import TestMocks
 
     #expect(storage.current?.settings.pushNotificationsPermissionRequested == true)
 
-    try await self.wait()
+    await waitUntil { recorder.permissionRequestCount == 1 }
 
     #expect(recorder.permissionRequestCount == 1)
   }
