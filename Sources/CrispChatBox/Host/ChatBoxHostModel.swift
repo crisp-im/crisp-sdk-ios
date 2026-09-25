@@ -399,7 +399,7 @@ private extension ChatBoxHostModel {
 
       self.api.callbacks.handleSessionLoaded(sessionId: sessionId)
       self.flushCommandQueue()
-      self.api.commands.setOnAppendHandler { [weak self] in
+      self.api.commands.setOnAppendHandler { [weak self = self] in
         Task { @MainActor in
           self?.flushCommandQueue()
         }
