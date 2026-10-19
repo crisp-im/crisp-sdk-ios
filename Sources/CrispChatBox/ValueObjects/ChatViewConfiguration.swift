@@ -1,4 +1,7 @@
+import CrispChatBoxFFI
 import Foundation
+
+package typealias ColorMode = CrispChatBoxFFI.ColorMode
 
 /// Configuration options that control the appearance and behavior of a ChatViewController.
 package struct ChatViewConfiguration {
@@ -7,7 +10,10 @@ package struct ChatViewConfiguration {
   /// the ChatViewController is presented. Default value is `false`.
   package var activatesTextFieldOnAppear: Bool
 
-  package init(activatesTextFieldOnAppear: Bool = true) {
+  package var colorMode: ColorMode?
+
+  package init(activatesTextFieldOnAppear: Bool = true, colorMode: ColorMode? = nil) {
     self.activatesTextFieldOnAppear = activatesTextFieldOnAppear
+    self.colorMode = colorMode
   }
 }

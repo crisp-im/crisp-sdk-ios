@@ -60,6 +60,8 @@ package struct CrispClient {
   package func setUserCompany(name: String, company: Company?) async throws
   package func getUserCompany() async throws -> Company?
 
+  package func configColorMode(_ mode: ColorMode) async throws
+
   @JSEvent
   package func onInterfaceLifecycle(
     _ handler: @MainActor @escaping (InterfaceLifecycleEvent) -> Void,
