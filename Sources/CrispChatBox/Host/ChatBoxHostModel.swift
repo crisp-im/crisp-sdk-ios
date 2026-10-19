@@ -34,6 +34,8 @@ package final class ChatBoxHostModel {
   private var notificationPermission = NotificationPermission.notDetermined
   private var widgetReadyTimeoutTask: Task<Void, Never>?
 
+  var colorMode: ColorMode?
+
   var onStateChange: (() -> Void)?
   var onRouteChange: (() -> Void)?
   var onClose: (() -> Void)?
@@ -243,7 +245,22 @@ extension ChatBoxHostModel {
 
 extension ChatBoxHostModel {
   func onInterfaceLifecycle(event: CrispClient.InterfaceLifecycleEvent) {
-    if event.state == .ready {
+    guard event.state == .ready else {
+      return
+    }
+
+    guard let client, let colorMode else {
+      self.widgetIsReady()
+      return
+    }
+
+    // Applied before revealing the chatbox so that it never flashes in the website's color mode
+    Task {
+      do {
+        try await client.configColorMode(colorMode)
+      } catch {
+        log.error("Failed to set color mode. \(error.localizedDescription)")
+      }
       self.widgetIsReady()
     }
   }

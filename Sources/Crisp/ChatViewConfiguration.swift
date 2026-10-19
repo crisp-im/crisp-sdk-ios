@@ -5,6 +5,7 @@ import Foundation
 public final class ChatViewConfiguration: Sendable {
   private struct Inner {
     var activatesTextFieldOnAppear: Bool
+    var colorMode: ColorMode?
   }
 
   private let inner: LockIsolated<Inner>
@@ -17,19 +18,32 @@ public final class ChatViewConfiguration: Sendable {
     set { self.inner.withValue { $0.activatesTextFieldOnAppear = newValue } }
   }
 
-  private init(activatesTextFieldOnAppear: Bool) {
-    self.inner = .init(.init(activatesTextFieldOnAppear: activatesTextFieldOnAppear))
+  /// Overrides the color mode set in the Crisp dashboard. Default value is `nil`.
+  public var colorMode: ColorMode? {
+    get { self.inner.colorMode }
+    set { self.inner.withValue { $0.colorMode = newValue } }
+  }
+
+  private init(activatesTextFieldOnAppear: Bool, colorMode: ColorMode?) {
+    self.inner = .init(.init(
+      activatesTextFieldOnAppear: activatesTextFieldOnAppear,
+      colorMode: colorMode,
+    ))
   }
 }
 
 public extension ChatViewConfiguration {
   static let `default` = ChatViewConfiguration(
     activatesTextFieldOnAppear: true,
+    colorMode: nil,
   )
 }
 
 extension ChatViewConfiguration {
   var chatBoxConfiguration: CrispChatBox.ChatViewConfiguration {
-    .init(activatesTextFieldOnAppear: self.activatesTextFieldOnAppear)
+    .init(
+      activatesTextFieldOnAppear: self.activatesTextFieldOnAppear,
+      colorMode: self.colorMode?.chatBoxColorMode,
+    )
   }
 }
