@@ -62,6 +62,8 @@ package struct CrispClient {
 
   package func reset() async throws
 
+  package func configColorMode(_ mode: ColorMode) async throws
+
   @JSEvent
   package func onInterfaceLifecycle(
     _ handler: @MainActor @escaping (InterfaceLifecycleEvent) -> Void,

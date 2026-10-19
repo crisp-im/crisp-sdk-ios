@@ -21,6 +21,8 @@ final class ChatBoxHostViewController: ContainerViewController {
     self.model = model
     self.config = config
 
+    model.colorMode = config.colorMode
+
     super.init()
 
     NotificationCenter.default.addObserver(
