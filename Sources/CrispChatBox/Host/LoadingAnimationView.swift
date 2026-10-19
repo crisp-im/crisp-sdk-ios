@@ -1,11 +1,12 @@
 import UIKit
 
 package final class LoadingAnimationView: UIView {
-  private static let dotSize = CGFloat(12)
-  private static let dotSpacing = CGFloat(6)
-  private static let dotAnimationOffset = CGFloat(12)
-  private static let dotAnimationDuration = TimeInterval(1.2)
-  private static let dotDelay = TimeInterval(0.25)
+  private static let dotSize = CGFloat(10)
+  private static let dotSpacing = CGFloat(8)
+  private static let dotAnimationDuration = TimeInterval(0.6)
+  private static let dotDelay = TimeInterval(0.2)
+  private static let dotMinScale = CGFloat(0.6)
+  private static let dotMinOpacity = Float(0.2)
   private static let numberOfDots = 3
 
   private let dots: [UIView]
@@ -14,8 +15,10 @@ package final class LoadingAnimationView: UIView {
   override package init(frame: CGRect) {
     self.dots = (0 ..< Self.numberOfDots).map { _ in
       let dot = UIView()
+      dot.bounds = CGRect(x: 0, y: 0, width: Self.dotSize, height: Self.dotSize)
       dot.layer.cornerRadius = Self.dotSize / 2
-      dot.backgroundColor = .label
+      dot.layer.opacity = Self.dotMinOpacity
+      dot.backgroundColor = .secondaryLabel
       return dot
     }
     super.init(frame: frame)
@@ -34,21 +37,33 @@ package final class LoadingAnimationView: UIView {
 
     self.isAnimating = true
 
-    let delay = Self.dotDelay * TimeInterval(self.dots.count)
     let curve = CAMediaTimingFunction(name: .easeInEaseOut)
-    let startYPosition = Self.dotAnimationOffset + Self.dotSize / 2
-    let endYPosition = Self.dotSize / 2
+    let shouldScale = !UIAccessibility.isReduceMotionEnabled
 
     for (idx, dot) in self.dots.enumerated() {
-      let animation = CAKeyframeAnimation()
-      animation.keyPath = "position.y"
-      animation.values = [startYPosition, endYPosition, startYPosition]
-      animation.keyTimes = [0.5, 0.75, 1]
-      animation.duration = Self.dotAnimationDuration
-      animation.repeatCount = Float.greatestFiniteMagnitude
-      animation.beginTime = CACurrentMediaTime() + delay - Self.dotDelay * TimeInterval(idx + 1)
-      animation.timingFunctions = [curve, curve, curve]
-      dot.layer.add(animation, forKey: "bounce")
+      var animations = [CABasicAnimation]()
+
+      let opacity = CABasicAnimation(keyPath: "opacity")
+      opacity.fromValue = Self.dotMinOpacity
+      opacity.toValue = Float(1)
+      animations.append(opacity)
+
+      if shouldScale {
+        let scale = CABasicAnimation(keyPath: "transform.scale")
+        scale.fromValue = Self.dotMinScale
+        scale.toValue = CGFloat(1)
+        animations.append(scale)
+      }
+
+      let group = CAAnimationGroup()
+      group.animations = animations
+      group.duration = Self.dotAnimationDuration
+      group.autoreverses = true
+      group.repeatCount = Float.greatestFiniteMagnitude
+      group.timingFunction = curve
+      group.fillMode = .backwards
+      group.beginTime = CACurrentMediaTime() + Self.dotDelay * TimeInterval(idx)
+      dot.layer.add(group, forKey: "pulse")
     }
   }
 
@@ -57,20 +72,17 @@ package final class LoadingAnimationView: UIView {
       return
     }
     self.isAnimating = false
-    self.dots.forEach { $0.layer.removeAnimation(forKey: "bounce") }
+    self.dots.forEach { $0.layer.removeAnimation(forKey: "pulse") }
   }
 
   override package func layoutSubviews() {
     super.layoutSubviews()
-    let firstFrame = CGRect(
-      x: 0,
-      y: Self.dotAnimationOffset,
-      width: Self.dotSize,
-      height: Self.dotSize,
-    )
-    _ = self.dots.reduce(firstFrame) { frame, dot in
-      dot.frame = frame
-      return frame.offsetBy(dx: frame.width + Self.dotSpacing, dy: 0)
+    // Use `center` rather than `frame` so layout stays valid while the dots are scaled
+    for (idx, dot) in self.dots.enumerated() {
+      dot.center = CGPoint(
+        x: Self.dotSize / 2 + CGFloat(idx) * (Self.dotSize + Self.dotSpacing),
+        y: Self.dotSize / 2,
+      )
     }
   }
 
@@ -78,7 +90,7 @@ package final class LoadingAnimationView: UIView {
     CGSize(
       width: CGFloat(self.dots.count) * Self.dotSize +
         CGFloat(self.dots.count - 1) * Self.dotSpacing,
-      height: Self.dotSize + Self.dotAnimationOffset,
+      height: Self.dotSize,
     )
   }
 

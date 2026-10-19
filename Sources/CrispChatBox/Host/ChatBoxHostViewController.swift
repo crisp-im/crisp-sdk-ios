@@ -106,13 +106,46 @@ private extension ChatBoxHostViewController {
       self.webView?.alpha = 0
 
     case .loaded:
-      self.contentViewController = nil
-      self.webView?.alpha = 1
+      self.revealWebView()
 
     case let .error(model):
       self.contentViewController = FailureViewController(model: model)
       self.webView?.alpha = 0
     }
+  }
+
+  func revealWebView() {
+    guard
+      let loadingCtrl = self.contentViewController as? LoadingViewController,
+      self.view.window != nil,
+      !UIAccessibility.isReduceMotionEnabled
+    else {
+      self.contentViewController = nil
+      self.webView?.alpha = 1
+      return
+    }
+
+    UIView.animate(
+      withDuration: 0.25,
+      delay: 0,
+      options: [.curveEaseInOut, .allowUserInteraction],
+      animations: {
+        self.webView?.alpha = 1
+        loadingCtrl.view.alpha = 0
+      },
+      completion: { [weak self, weak loadingCtrl] _ in
+        // Skip if the state changed meanwhile, the overlay has then already been replaced
+        guard
+          let self,
+          let loadingCtrl,
+          self.contentViewController === loadingCtrl,
+          self.model.state == .loaded
+        else {
+          return
+        }
+        self.contentViewController = nil
+      },
+    )
   }
 
   func handleRouteChange() {
