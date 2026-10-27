@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "crisp-sdk-ios",
   defaultLocalization: "en",
-  platforms: [.iOS(.v14), .macOS(.v11), .macCatalyst(.v14)],
+  platforms: [.iOS(.v14), .macCatalyst(.v14)],
   products: [
     .library(name: "Crisp", targets: ["Crisp"]),
   ],
