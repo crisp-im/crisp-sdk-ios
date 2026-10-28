@@ -1,7 +1,7 @@
 min_version = "2025.9.23"
 
 [env]
-CRISP_CLIENT_NPM_PACKAGE = "@crisp/crisp-client"
+CRISP_CLIENT_NPM_PACKAGE = "@crisp-im/crisp-client"
 CRISP_CLIENT_OP_ITEM = "Crisp SDK npm Pull Token"
 CRISP_SDK_REPO = "crisp-im/crisp-sdk-ios"
 SIGNING_IDENTITY = "Apple Distribution: Crisp IM SARL (26V2WGBKY3)"
