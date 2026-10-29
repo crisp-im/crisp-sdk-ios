@@ -32,6 +32,10 @@ package final class ChatBoxHostModel {
   private var didAppear = false
   private var isPresented = false
   private var notificationPermission = NotificationPermission.notDetermined
+  /// The reset the current boot applies by starting with cleared web storage. Resets are never
+  /// run in a loaded widget: its runtime reset re-initializes without the token, which would
+  /// replace e.g. the user's token session right after login with an empty one.
+  private(set) var bootReset: ResetRequest?
   private var widgetReadyTimeoutTask: Task<Void, Never>?
 
   var onStateChange: (() -> Void)?
@@ -87,10 +91,13 @@ extension ChatBoxHostModel {
       throw .invalidAssetsURL
     }
 
+    self.bootReset = self.api.commands.pendingReset
+
     let session = self.env.session.load(self.websiteId)
 
     // Inject prior session if needed…
-    let injectedSessionId = session?.settings.injectedSessionHandedOff == true
+    let injectedSessionId = self.bootReset != nil
+      || session?.settings.injectedSessionHandedOff == true
       ? nil
       : session?.sessionId
 
@@ -98,6 +105,7 @@ extension ChatBoxHostModel {
       websiteId: self.websiteId,
       sessionId: injectedSessionId,
       tokenId: self.api.tokenId,
+      resetsSession: self.bootReset != nil,
       locales: self.env.locales,
       presentation: self.isPresented ? .sheet : .default,
       assetsURL: assetsURL,
@@ -356,6 +364,21 @@ private extension ChatBoxHostModel {
     self.widgetReadyTimeoutTask?.cancel()
     self.widgetReadyTimeoutTask = nil
 
+    if let bootReset = self.bootReset {
+      self.bootReset = nil
+      self.api.commands.completeReset(bootReset)
+      self.env.session.reset()
+    }
+
+    // A reset requested while booting makes the session this boot joined obsolete already. The
+    // template was generated with the values current at that time (e.g. the token ID), so a newer
+    // reset, such as a login (setTokenID + reset) while the chat is loading, can only be applied by
+    // regenerating the template and reloading the widget.
+    guard self.api.commands.pendingReset == nil else {
+      self.reloadForPendingReset()
+      return
+    }
+
     self.withClient { client in
       let sessionId: SessionId
 
@@ -400,6 +423,13 @@ private extension ChatBoxHostModel {
   }
 
   func flushCommandQueue() {
+    guard self.state == .loaded else { return }
+
+    guard self.api.commands.pendingReset == nil else {
+      self.reloadForPendingReset()
+      return
+    }
+
     let commands = self.api.commands.dequeueCoalesced()
     guard !commands.isEmpty else { return }
 
@@ -487,7 +517,7 @@ private extension ChatBoxHostModel {
     }
   }
 
-  func performReload() {
+  func performReload(after prelude: (@MainActor () async -> Void)? = nil) {
     let model = LoadingViewModel(
       onCancel: isPresented
         ? { [weak self] in self?.onClose?() }
@@ -496,7 +526,33 @@ private extension ChatBoxHostModel {
 
     self.state = .loading(model)
     self.startWidgetTimeoutTask()
-    self.onRetry?()
+
+    guard let prelude else {
+      self.onRetry?()
+      return
+    }
+
+    Task { [weak self] in
+      await prelude()
+      self?.onRetry?()
+    }
+  }
+
+  /// Reboots the loaded widget so that the pending reset is applied on boot. The device is
+  /// deregistered from the session being left first, since it can't be reached afterwards.
+  func reloadForPendingReset() {
+    guard let client = self.client, let deviceToken = self.storedDeviceToken else {
+      self.performReload()
+      return
+    }
+
+    self.performReload {
+      do {
+        try await client.unregisterNotification(deviceToken: deviceToken.description)
+      } catch {
+        log.error("Failed to unset device token before reset. \(error.localizedDescription)")
+      }
+    }
   }
 
   var storedDeviceToken: DeviceToken? {

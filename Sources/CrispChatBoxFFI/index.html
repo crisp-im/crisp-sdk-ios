@@ -82,6 +82,24 @@
       })()
     </script>
 
+    <script>
+      // Equivalent of the web client's own session reset, applied before it boots: it restores
+      // the session from these stores, and its runtime reset re-initializes without the token.
+      // sessionStorage must go too, as it survives reloading the same web view. Cookies need no
+      // clearing: WebKit doesn't store them for our custom scheme, so the web client falls back
+      // to localStorage. Clearing natively isn't an option either: WebKit lists no data record
+      // for the custom scheme, so only wiping the app's entire default data store would reach it.
+      if ('{{RESET_SESSION}}' === 'true') {
+        for (const storage of ['localStorage', 'sessionStorage']) {
+          try {
+            window[storage].clear()
+          } catch (err) {
+            console.error(`[CrispFFI] Failed to clear ${storage}`, err)
+          }
+        }
+      }
+    </script>
+
     <script type="module">
       import {
         connectLogger,

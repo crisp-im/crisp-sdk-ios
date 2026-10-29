@@ -51,8 +51,6 @@ extension [Command] {
         later
       case (.open, .open):
         later
-      case (.reset, .reset):
-        later
       // showMessage is never coalesced
       case (.showMessage, .showMessage):
         nil

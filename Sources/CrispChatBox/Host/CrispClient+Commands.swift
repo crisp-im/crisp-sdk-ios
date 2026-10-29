@@ -8,9 +8,6 @@ package extension CrispClient {
     case let .injectMessage(message):
       try await self.injectMessage(message)
 
-    case .reset:
-      try await self.reset()
-
     case let .setSessionData(data):
       try await self.setSessionData(data.map { key, value in
         Tuple(key: key, value: value)

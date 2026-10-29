@@ -4,7 +4,6 @@ import Foundation
 
 package enum Command {
   // Session
-  case reset
   case setSessionData([String: any Encodable & Sendable])
   case setSegments(segments: [String], overwrite: Bool)
   case pushEvents([SessionEvent])
@@ -38,7 +37,6 @@ extension Command {
   /// Discriminant used by coalescing to identify commands of the same kind.
   var kind: Kind {
     switch self {
-    case .reset: .reset
     case .setSessionData: .setSessionData
     case .setSegments: .setSegments
     case .pushEvents: .pushEvents
@@ -56,7 +54,6 @@ extension Command {
   }
 
   enum Kind: Hashable {
-    case reset
     case setSessionData
     case setSegments
     case pushEvents
