@@ -8,10 +8,10 @@ import TestMocks
 @Suite("Session tests")
 @MainActor struct ChatBoxHostModelSessionTests {
   /// Loading a fresh session while a previous session still has a registered
-  /// device token should front-queue an `unsetDeviceToken` for the *old* token
-  /// (so it doesn't clobber any user-issued `setDeviceToken` for the new launch)
-  /// and then call `resetPrevious`.
-  @Test func resetsPreviousSession() async {
+  /// device token should carry that token over to the new session. It's
+  /// front-queued so that a user-issued `setDeviceToken` for the new launch
+  /// still wins, and `resetPrevious` is called.
+  @Test func carriesDeviceTokenFromPreviousSession() async {
     let previousToken: DeviceToken = "device-0"
     let newToken: DeviceToken = "device-1"
 
@@ -39,13 +39,13 @@ import TestMocks
 
     #expect(commands.count == 2)
     guard
-      case let .unsetDeviceToken(unsetToken) = commands.first,
+      case let .setDeviceToken(carriedToken) = commands.first,
       case let .setDeviceToken(setToken) = commands.last
     else {
-      Issue.record("Expected [unsetDeviceToken, setDeviceToken]; got \(commands)")
+      Issue.record("Expected [setDeviceToken, setDeviceToken]; got \(commands)")
       return
     }
-    #expect(unsetToken == previousToken)
+    #expect(carriedToken == previousToken)
     #expect(setToken == newToken)
 
     #expect(storage.previous == nil)
@@ -53,9 +53,9 @@ import TestMocks
   }
 
   /// If the persisted current session has a different `sessionId` than the one
-  /// we just got from JS, it's stale — front-queue an `unsetDeviceToken` for
-  /// its registered token, reset the saved session, then save a fresh entry
-  /// keyed by the new `sessionId`.
+  /// we just got from JS, it's stale — carry its registered token over to the
+  /// new session, reset the saved session, then save a fresh entry keyed by the
+  /// new `sessionId`.
   @Test func resetsStaleSession() async throws {
     let staleToken: DeviceToken = "device-0"
     let newToken: DeviceToken = "device-1"
@@ -87,13 +87,13 @@ import TestMocks
 
     #expect(commands.count == 2)
     guard
-      case let .unsetDeviceToken(unsetToken) = commands.first,
+      case let .setDeviceToken(carriedToken) = commands.first,
       case let .setDeviceToken(setToken) = commands.last
     else {
-      Issue.record("Expected [unsetDeviceToken, setDeviceToken]; got \(commands)")
+      Issue.record("Expected [setDeviceToken, setDeviceToken]; got \(commands)")
       return
     }
-    #expect(unsetToken == staleToken)
+    #expect(carriedToken == staleToken)
     #expect(setToken == newToken)
 
     // Wait until the setDeviceToken command has been dispatched through the JS
@@ -168,7 +168,7 @@ import TestMocks
   }
 
   /// Re-loading the same session that's already persisted is a no-op: no
-  /// `unsetDeviceToken` should be enqueued and the saved session should be left
+  /// device token should be carried over and the saved session should be left
   /// alone (token included).
   @Test func doesNothingForSameSessionId() async {
     let token: DeviceToken = "device-0"

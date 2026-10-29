@@ -33,10 +33,13 @@ final class CommandQueue: Sendable {
     }
   }
 
-  func resetAndEnqueue(_ command: Command) {
+  /// Replaces all pending session-scoped commands with a single `.reset`. Commands that belong to
+  /// the app install rather than to the session (see ``Command/outlivesReset``) are kept and
+  /// queued after the reset so that they apply to the new session.
+  func enqueueReset() {
     self.state.withValue {
-      $0.commands.removeAll()
-      $0.commands.append(command)
+      $0.commands.removeAll { !$0.outlivesReset }
+      $0.commands.insert(.reset, at: 0)
       $0.onAppend?()
     }
   }

@@ -49,9 +49,6 @@ package extension CrispClient {
     case let .setDeviceToken(token):
       try await self.registerNotification(deviceToken: token.description)
 
-    case let .unsetDeviceToken(token):
-      try await self.unregisterNotification(deviceToken: token.description)
-
     case let .showMessage(fingerprint, content):
       try await self.messageShow(
         type: content.type,

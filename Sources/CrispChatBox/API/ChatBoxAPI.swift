@@ -69,7 +69,7 @@ package extension ChatBoxAPI {
 
 package extension ChatBoxAPI {
   func resetSession() {
-    self.commands.resetAndEnqueue(.reset)
+    self.commands.enqueueReset()
   }
 
   func setSessionData(_ data: [String: any Encodable & Sendable]) {
@@ -110,10 +110,6 @@ package extension ChatBoxAPI {
 
   func setDeviceToken(_ token: DeviceToken) {
     self.commands.enqueue(.setDeviceToken(token))
-  }
-
-  func unsetDeviceToken(_ token: DeviceToken) {
-    self.commands.enqueue(.unsetDeviceToken(token))
   }
 
   func showMessage(fingerprint: MessageFingerprint?, content: ConversationMessageContent) {
