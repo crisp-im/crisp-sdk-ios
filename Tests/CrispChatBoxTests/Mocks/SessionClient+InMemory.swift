@@ -23,7 +23,14 @@ extension SessionClient {
       save: { newSession in storage.lock.withValue { $0.current = newSession } },
       load: { _ in storage.current },
       loadPrevious: { _ in storage.previous },
-      reset: { storage.lock.withValue { $0.current = nil } },
+      reset: {
+        storage.lock.withValue {
+          if let current = $0.current {
+            $0.previous = current
+          }
+          $0.current = nil
+        }
+      },
       resetPrevious: { storage.lock.withValue { $0.previous = nil } },
       modifySettings: { _, handler in
         storage.lock.withValue {

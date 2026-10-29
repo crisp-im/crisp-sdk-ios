@@ -366,28 +366,14 @@ private extension ChatBoxHostModel {
         return
       }
 
-      // If we had a previous saved session with a registered device push token we're going to
-      // deregister the token. We insert at index 0 so that we don't accidentally deregister
-      // after a new - or the same - token is registered. Ideally the backend route would accept
-      // a sessionId parameter so that we can remove a device from a session but that is not
-      // the case yet.
-      if let previousSessionDeviceToken =
-        self.env.session.loadPrevious(self.websiteId)?.settings.deviceToken
-      {
-        self.api.commands.enqueueFront(.unsetDeviceToken(previousSessionDeviceToken))
-        self.env.session.resetPrevious()
-      }
-
-      if
-        let session = self.env.session.load(self.websiteId),
-        session.sessionId != sessionId,
-        let deviceToken = session.settings.deviceToken
-      {
-        self.api.commands.enqueueFront(.unsetDeviceToken(deviceToken))
+      if self.env.session.load(self.websiteId)?.sessionId != sessionId {
+        // The push registration belongs to the device rather than to the session, so carry it
+        // over to the new session. Front-queued so that a token the app registered meanwhile wins.
+        if let deviceToken = self.storedDeviceToken {
+          self.api.commands.enqueueFront(.setDeviceToken(deviceToken))
+        }
         self.env.session.reset()
-      }
-
-      if self.env.session.load(self.websiteId) == nil {
+        self.env.session.resetPrevious()
         self.env.session.save(Session(websiteId: self.websiteId, sessionId: sessionId))
       }
 
@@ -422,14 +408,10 @@ private extension ChatBoxHostModel {
         do {
           try await client.execute(command)
 
-          switch command {
-          case let .setDeviceToken(deviceToken):
+          if case let .setDeviceToken(deviceToken) = command {
             session.modifySettings(websiteId) { settings in
               settings.deviceToken = deviceToken
             }
-
-          default:
-            break
           }
 
         } catch {
@@ -515,6 +497,11 @@ private extension ChatBoxHostModel {
     self.state = .loading(model)
     self.startWidgetTimeoutTask()
     self.onRetry?()
+  }
+
+  var storedDeviceToken: DeviceToken? {
+    self.env.session.load(self.websiteId)?.settings.deviceToken
+      ?? self.env.session.loadPrevious(self.websiteId)?.settings.deviceToken
   }
 
   func startWidgetTimeoutTask() {

@@ -47,8 +47,6 @@ extension [Command] {
         .setCompany(v)
       case let (.setDeviceToken, .setDeviceToken(v)):
         .setDeviceToken(v)
-      case let (.unsetDeviceToken, .unsetDeviceToken(v)):
-        .unsetDeviceToken(v)
       case (.runBotScenario, .runBotScenario):
         later
       case (.open, .open):

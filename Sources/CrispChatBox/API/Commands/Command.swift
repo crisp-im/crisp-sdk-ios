@@ -17,9 +17,7 @@ package enum Command {
   case setAvatar(URL)
   case setCompany(CrispChatBoxFFI.Company)
 
-  // Notifications
   case setDeviceToken(DeviceToken)
-  case unsetDeviceToken(DeviceToken)
 
   // UI
   case injectMessage(Message)
@@ -28,6 +26,15 @@ package enum Command {
 }
 
 extension Command {
+  /// Whether the command survives a session reset. Device registration belongs to the app
+  /// install, not to the chat session, so it must not be discarded on logout or login.
+  var outlivesReset: Bool {
+    switch self {
+    case .setDeviceToken: true
+    default: false
+    }
+  }
+
   /// Discriminant used by coalescing to identify commands of the same kind.
   var kind: Kind {
     switch self {
@@ -42,7 +49,6 @@ extension Command {
     case .setAvatar: .setAvatar
     case .setCompany: .setCompany
     case .setDeviceToken: .setDeviceToken
-    case .unsetDeviceToken: .unsetDeviceToken
     case .showMessage: .showMessage
     case .open: .open
     case .injectMessage: .injectMessage
@@ -61,7 +67,6 @@ extension Command {
     case setAvatar
     case setCompany
     case setDeviceToken
-    case unsetDeviceToken
     case showMessage
     case open
     case injectMessage
