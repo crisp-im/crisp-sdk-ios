@@ -250,14 +250,6 @@ package struct CrispClient {
     return try await caller()
   }
 
-  @MainActor package func reset() async throws {
-    let caller = JSCaller(
-      funcName: "\(Self._jsClassName).reset",
-      evaluator: self.evaluator,
-    )
-    return try await caller()
-  }
-
   @MainActor package func onInterfaceLifecycle(
     _ handler: @MainActor @escaping (InterfaceLifecycleEvent) -> Void,
   ) {
@@ -318,7 +310,6 @@ package struct CrispClient {
     onInterfaceAction,
     onInterfaceLifecycle,
     registerNotification,
-    reset,
     setSessionData,
     setSessionEvent,
     setSessionSegments,
@@ -350,7 +341,6 @@ package struct CrispClient {
     isSessionOngoing,
     messageShow,
     registerNotification,
-    reset,
     setSessionData,
     setSessionEvent,
     setSessionSegments,

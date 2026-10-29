@@ -11,6 +11,7 @@ package func loadIndexHTML(
   websiteId: WebsiteId,
   sessionId: SessionId?,
   tokenId: TokenId?,
+  resetsSession: Bool,
   locales: [LocaleId],
   presentation: Presentation,
   assetsURL: URL,
@@ -28,6 +29,7 @@ package func loadIndexHTML(
       .replacingOccurrences(of: "{{WEBSITE_ID}}", with: websiteId.rawValue)
       .replacingOccurrences(of: "{{SESSION_ID}}", with: sessionId?.rawValue ?? "")
       .replacingOccurrences(of: "{{TOKEN_ID}}", with: tokenId?.rawValue ?? "")
+      .replacingOccurrences(of: "{{RESET_SESSION}}", with: resetsSession ? "true" : "false")
       .replacingOccurrences(of: "{{USER_LOCALES}}", with: "[\(locales)]")
       .replacingOccurrences(of: "{{PRESENTATION}}", with: presentation.rawValue)
       .replacingOccurrences(of: "{{MOBILE_SDK_ENABLED}}", with: "true")

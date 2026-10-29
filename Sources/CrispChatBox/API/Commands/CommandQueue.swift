@@ -1,9 +1,17 @@
 import CrispUtils
 import Foundation
 
+/// Identifies one `enqueueReset()` call, so that a boot only completes the reset it applied and
+/// not one requested while it was underway.
+struct ResetRequest: Equatable {
+  fileprivate let id: Int
+}
+
 final class CommandQueue: Sendable {
   private struct State {
     var commands = [Command]()
+    var pendingReset: ResetRequest?
+    var resetCount = 0
     var onAppend: (() -> Void)?
   }
 
@@ -33,14 +41,29 @@ final class CommandQueue: Sendable {
     }
   }
 
-  /// Replaces all pending session-scoped commands with a single `.reset`. Commands that belong to
-  /// the app install rather than to the session (see ``Command/outlivesReset``) are kept and
-  /// queued after the reset so that they apply to the new session.
+  /// Requests a session reset and discards the pending session-scoped commands. Commands that
+  /// belong to the app install rather than to the session (see ``Command/outlivesReset``) are
+  /// kept so that they apply to the new session.
+  ///
+  /// The reset stays pending until a boot that applied it calls ``completeReset(_:)``.
   func enqueueReset() {
     self.state.withValue {
       $0.commands.removeAll { !$0.outlivesReset }
-      $0.commands.insert(.reset, at: 0)
+      $0.resetCount += 1
+      $0.pendingReset = ResetRequest(id: $0.resetCount)
       $0.onAppend?()
+    }
+  }
+
+  var pendingReset: ResetRequest? {
+    self.state.withValue { $0.pendingReset }
+  }
+
+  func completeReset(_ request: ResetRequest) {
+    self.state.withValue {
+      if $0.pendingReset == request {
+        $0.pendingReset = nil
+      }
     }
   }
 
