@@ -53,9 +53,9 @@ import UIKit
   /// to a different token (if you use the token system).
   ///
   /// - Important:
-  ///   - `setTokenID` should be called before the chat has been presented. If you want to change
-  ///     the token after the chat has been presented you need to call ``Session/reset()`` on
-  ///     ``CrispSDK/session`` for the new token to come into effect.
+  ///   - Whenever you change the token, e.g. when users log in, call ``Session/reset()`` on
+  ///     ``CrispSDK/session`` afterwards for the new token to come into effect. Setting the token
+  ///     at launch, before the chat has been presented, doesn't need a reset.
   ///
   ///   - When users logout from their account in your app, make sure to clear the token by calling
   ///     `setTokenID(nil)` and then reset their local session by calling ``Session/reset()`` on

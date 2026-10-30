@@ -173,12 +173,13 @@ public enum SessionEventColor: Int, Sendable {
 
   /// Initiates a new chat session by resetting the chatbox.
   ///
-  /// This method should be invoked when the user logs out in your application.
+  /// Invoke this method when the user logs out of your application. If you use tokens, also invoke
+  /// it after changing the token with ``CrispSDK/setTokenID(tokenID:)`` at runtime, e.g. when the
+  /// user logs in, so that the chat switches to the session that belongs to the new token.
   ///
   /// - Important:
-  ///   If you have associated a token with the current chat session by calling
-  ///   ``CrispSDK/setTokenID(tokenID:)`` you need to reset the token first before calling this
-  ///   method, otherwise the user's chat session would be restored.
+  ///   On logout, clear the token before calling this method. Otherwise the new chat session would
+  ///   still be bound to the logged-out user's token, and their conversation would be restored.
   ///
   ///   **Example of logout handling, if a token was configured:**
   ///   ```swift
