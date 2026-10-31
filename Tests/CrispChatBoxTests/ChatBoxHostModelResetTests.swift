@@ -116,6 +116,86 @@ import TestMocks
     #expect(storage.current?.settings.deviceToken == "device-0")
   }
 
+  /// If deregistering hangs until the widget timeout fires, the reload must not go ahead
+  /// behind the error screen once the call returns.
+  @Test func doesNotReloadAfterTimeoutDuringResetPrelude() async throws {
+    let storage = SessionStorage(
+      current: Session(
+        websiteId: .mock,
+        sessionId: "session-1",
+        settings: .init(deviceToken: "device-0"),
+      ),
+    )
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api, widgetReadyTimeout: NSEC_PER_MSEC * 50) {
+      $0.session = .inMemory(storage: storage)
+    }
+    var didReload = false
+    model.onRetry = { didReload = true }
+
+    let evaluator = RecordingJSEvaluator { js in
+      if js.contains("CrispClient.unregisterNotification") {
+        try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 200)
+      }
+      return js.contains("CrispClient.getSessionIdentifier()") ? "session-1" : nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    api.resetSession()
+
+    try await evaluator.waitForCall { $0.contains("CrispClient.unregisterNotification") }
+    try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 400)
+
+    guard case .error = model.state else {
+      Issue.record("Expected error state; got \(model.state)")
+      return
+    }
+    #expect(!didReload)
+  }
+
+  /// The old web view is still live while the reset prelude runs. A script error from it must not
+  /// stop the reload that replaces it.
+  @Test func ignoresScriptErrorsDuringResetPrelude() async throws {
+    let storage = SessionStorage(
+      current: Session(
+        websiteId: .mock,
+        sessionId: "session-1",
+        settings: .init(deviceToken: "device-0"),
+      ),
+    )
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: storage)
+    }
+    var didReload = false
+    model.onRetry = { didReload = true }
+
+    let evaluator = RecordingJSEvaluator { js in
+      if js.contains("CrispClient.unregisterNotification") {
+        try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
+      }
+      return js.contains("CrispClient.getSessionIdentifier()") ? "session-1" : nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    api.resetSession()
+
+    try await evaluator.waitForCall { $0.contains("CrispClient.unregisterNotification") }
+    publisher.onScriptError(message: "boom")
+
+    await waitUntil { didReload }
+    #expect(didReload)
+    #expect(model.state.isLoading)
+  }
+
   /// Completing a boot reset discards the stored native session with its settings, and the
   /// device token is carried over to the new session.
   @Test func replacesStoredSessionOnBootReset() async {

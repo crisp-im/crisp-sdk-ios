@@ -37,6 +37,7 @@ package final class ChatBoxHostModel {
   /// replace e.g. the user's token session right after login with an empty one.
   private(set) var bootReset: ResetRequest?
   private var widgetReadyTimeoutTask: Task<Void, Never>?
+  private var reloadPreludeTask: Task<Void, Never>?
 
   var onStateChange: (() -> Void)?
   var onRouteChange: (() -> Void)?
@@ -140,6 +141,17 @@ extension ChatBoxHostModel {
       // anywhere like trying to play an .ogg which Safari doesn't support.
       return
     }
+
+    if case .scriptError = error, self.reloadPreludeTask != nil {
+      // The web view still running during a reload prelude is about to be replaced, so its
+      // errors don't affect the boot that follows.
+      return
+    }
+
+    // A reload still running its prelude (e.g. a hanging unregister call that ran into the
+    // timeout) must not reload the web view behind the error screen.
+    self.reloadPreludeTask?.cancel()
+    self.reloadPreludeTask = nil
 
     let retry: (() -> Void)? = switch error {
     case .widgetTimeout:
@@ -526,15 +538,19 @@ private extension ChatBoxHostModel {
 
     self.state = .loading(model)
     self.startWidgetTimeoutTask()
+    self.reloadPreludeTask?.cancel()
+    self.reloadPreludeTask = nil
 
     guard let prelude else {
       self.onRetry?()
       return
     }
 
-    Task { [weak self] in
+    self.reloadPreludeTask = Task { [weak self] in
       await prelude()
-      self?.onRetry?()
+      guard !Task.isCancelled, let self else { return }
+      self.reloadPreludeTask = nil
+      self.onRetry?()
     }
   }
 
