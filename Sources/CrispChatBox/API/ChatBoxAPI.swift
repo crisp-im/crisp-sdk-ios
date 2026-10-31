@@ -21,9 +21,11 @@ package final class ChatBoxAPI: Sendable {
   private let state = LockIsolated(State())
 
   let callbacks = CallbackRegistry()
-  let commands = CommandQueue()
+  let commands: CommandQueue
 
-  package init() {}
+  package init(session: SessionClient) {
+    self.commands = CommandQueue(session: session)
+  }
 
   package subscript<T: Sendable>(dynamicMember keyPath: KeyPath<State, T>) -> T {
     self.state[dynamicMember: keyPath]

@@ -9,6 +9,7 @@ package extension SessionClient {
 
     let currentSessionKey = "session"
     let previousSessionKey = "previous_session"
+    let resetPendingKey = "session_reset_pending"
 
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
@@ -61,6 +62,17 @@ package extension SessionClient {
       },
       resetPrevious: {
         userDefaults.removeObject(forKey: previousSessionKey)
+        userDefaults.synchronize()
+      },
+      isResetPending: {
+        userDefaults.bool(forKey: resetPendingKey)
+      },
+      setResetPending: { isPending in
+        if isPending {
+          userDefaults.set(true, forKey: resetPendingKey)
+        } else {
+          userDefaults.removeObject(forKey: resetPendingKey)
+        }
         userDefaults.synchronize()
       },
       modifySettings: { websiteId, modify in

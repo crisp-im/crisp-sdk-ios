@@ -51,6 +51,45 @@ import TestMocks
     #expect(model.bootReset != nil)
   }
 
+  /// Logout followed by the app being killed before the chat was opened: the reset is persisted,
+  /// so the next launch still boots with cleared storage instead of restoring the old session.
+  @Test func appliesPersistedResetAfterRelaunch() async throws {
+    let storage = SessionStorage()
+    ChatBoxAPI(session: .inMemory(storage: storage)).resetSession()
+    #expect(storage.isResetPending)
+
+    let api = ChatBoxAPI(session: .inMemory(storage: storage))
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: storage)
+    }
+    let html = try model.loadBaseHTML()
+
+    #expect(model.bootReset != nil)
+    #expect(html.contains("if ('true' === 'true')"))
+
+    let publisher = initializeClient(model: model, sessionId: "session-1")
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    #expect(api.commands.pendingReset == nil)
+    #expect(!storage.isResetPending)
+  }
+
+  /// A boot that started before a newer reset doesn't complete it, so the marker survives too.
+  @Test func keepsPersistedMarkerForNewerReset() throws {
+    let storage = SessionStorage()
+    let api = ChatBoxAPI(session: .inMemory(storage: storage))
+    api.resetSession()
+    let applied = try #require(api.commands.pendingReset)
+
+    api.resetSession()
+    api.commands.completeReset(applied)
+
+    #expect(api.commands.pendingReset != nil)
+    #expect(storage.isResetPending)
+  }
+
   @Test func bootsWithoutResetWhenNoneIsPending() throws {
     let model = ChatBoxHostModel(api: ChatBoxAPI())
     _ = try model.loadBaseHTML()

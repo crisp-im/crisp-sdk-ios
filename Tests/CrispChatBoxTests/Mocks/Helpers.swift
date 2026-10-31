@@ -23,6 +23,12 @@ extension DeviceToken: ExpressibleByStringLiteral {
   }
 }
 
+extension ChatBoxAPI {
+  convenience init() {
+    self.init(session: .noop)
+  }
+}
+
 extension ChatBoxHostModel {
   convenience init(
     websiteId: WebsiteId = .mock,
