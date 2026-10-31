@@ -7,6 +7,8 @@ package struct SessionClient {
   package var loadPrevious: @Sendable (WebsiteId) -> Session?
   package var reset: @Sendable () -> Void
   package var resetPrevious: @Sendable () -> Void
+  package var isResetPending: @Sendable () -> Bool
+  package var setResetPending: @Sendable (Bool) -> Void
   package var modifySettings: @Sendable (
     WebsiteId,
     @Sendable (inout Session.Settings) -> Void
@@ -18,6 +20,8 @@ package struct SessionClient {
     loadPrevious: @Sendable @escaping (WebsiteId) -> Session?,
     reset: @Sendable @escaping () -> Void,
     resetPrevious: @Sendable @escaping () -> Void,
+    isResetPending: @Sendable @escaping () -> Bool,
+    setResetPending: @Sendable @escaping (Bool) -> Void,
     modifySettings: @Sendable @escaping (
       WebsiteId,
       @Sendable (inout Session.Settings) -> Void
@@ -28,6 +32,8 @@ package struct SessionClient {
     self.loadPrevious = loadPrevious
     self.reset = reset
     self.resetPrevious = resetPrevious
+    self.isResetPending = isResetPending
+    self.setResetPending = setResetPending
     self.modifySettings = modifySettings
   }
 }
@@ -40,6 +46,8 @@ package struct SessionClient {
       loadPrevious: { _ in nil },
       reset: {},
       resetPrevious: {},
+      isResetPending: { false },
+      setResetPending: { _ in },
       modifySettings: { _, _ in },
     )
   }

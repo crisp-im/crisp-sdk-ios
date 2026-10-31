@@ -15,9 +15,21 @@ final class CommandQueue: Sendable {
     var onAppend: (() -> Void)?
   }
 
-  private let state = LockIsolated(State())
+  private let state: LockIsolated<State>
+  private let session: SessionClient
 
-  init() {}
+  init(session: SessionClient) {
+    // Restore a reset that was still pending when the app was terminated, so that e.g. a logout
+    // right before the app was killed is still applied on the next boot.
+    let isResetPending = session.isResetPending()
+    self.state = LockIsolated(
+      State(
+        pendingReset: isResetPending ? ResetRequest(id: 1) : nil,
+        resetCount: isResetPending ? 1 : 0,
+      ),
+    )
+    self.session = session
+  }
 
   func enqueue(_ command: Command) {
     self.state.withValue {
@@ -51,6 +63,7 @@ final class CommandQueue: Sendable {
       $0.commands.removeAll { !$0.outlivesReset }
       $0.resetCount += 1
       $0.pendingReset = ResetRequest(id: $0.resetCount)
+      self.session.setResetPending(true)
       $0.onAppend?()
     }
   }
@@ -63,6 +76,7 @@ final class CommandQueue: Sendable {
     self.state.withValue {
       if $0.pendingReset == request {
         $0.pendingReset = nil
+        self.session.setResetPending(false)
       }
     }
   }
