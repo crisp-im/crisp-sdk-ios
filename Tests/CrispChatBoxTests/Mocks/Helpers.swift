@@ -23,6 +23,13 @@ extension DeviceToken: ExpressibleByStringLiteral {
   }
 }
 
+extension String {
+  /// Whether a generated chatbox template clears the web client's storage before it boots.
+  var clearsWebStorage: Bool {
+    self.contains("if ('true' === 'true')")
+  }
+}
+
 extension ChatBoxAPI {
   convenience init() {
     self.init(session: .noop)
@@ -37,8 +44,24 @@ extension ChatBoxHostModel {
     env: (inout Environment) -> Void = { _ in },
   ) {
     var environment = Environment.live
+    environment.notifications = .noop
     env(&environment)
     self.init(websiteId: .mock, api: api, env: environment, widgetReadyTimeout: widgetReadyTimeout)
+  }
+
+  /// Lets the model appear the way the view does, which starts the first boot, and returns the
+  /// template that boot loads.
+  @discardableResult
+  func appear() -> String? {
+    let onLoadTemplate = self.onLoadTemplate
+    var template: String?
+    self.onLoadTemplate = {
+      template = $0
+      onLoadTemplate?($0)
+    }
+    self.onAppear(isPresented: false)
+    self.onLoadTemplate = onLoadTemplate
+    return template
   }
 }
 
@@ -54,6 +77,24 @@ func initializeClient(model: ChatBoxHostModel, sessionId: SessionId = .mock) -> 
   model.onClientInitialized(CrispClient(evaluator: evaluator, events: bus))
 
   return publisher
+}
+
+/// Holds async work until the test opens it, to order events without relying on timing.
+@MainActor
+final class Gate {
+  private var isOpen = false
+  private var waiters = [CheckedContinuation<Void, Never>]()
+
+  func wait() async {
+    guard !self.isOpen else { return }
+    await withCheckedContinuation { self.waiters.append($0) }
+  }
+
+  func open() {
+    self.isOpen = true
+    self.waiters.forEach { $0.resume() }
+    self.waiters.removeAll()
+  }
 }
 
 /// Polls `condition` on the main actor until it holds or the timeout elapses.
@@ -73,8 +114,11 @@ func waitUntil(
 @MainActor @discardableResult
 func waitForSessionLoadedEvent(api: ChatBoxAPI, body: () -> Void) async -> [Command] {
   var commands = [Command]()
+  let callbackId = CallbackId()
   await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
-    api.addCallback(.sessionLoaded(SessionIdHandler { _ in
+    api.addCallback(.sessionLoaded(SessionIdHandler(id: callbackId) { _ in
+      // One-shot: a later session load (e.g. after a reboot) must not resume this wait again.
+      api.removeCallback(callbackId)
       commands = api.commands.commands
       cont.resume()
     }))
