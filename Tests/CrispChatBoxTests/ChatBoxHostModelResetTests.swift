@@ -19,9 +19,9 @@ import TestMocks
     let model = ChatBoxHostModel(api: api) {
       $0.session = .inMemory(storage: SessionStorage())
     }
-    let html = try model.loadBaseHTML()
+    let html = try #require(model.appear())
 
-    #expect(model.bootReset != nil)
+    #expect(html.clearsWebStorage)
     #expect(html.contains("token-id='user-token'"))
 
     let evaluator = RecordingJSEvaluator { js in
@@ -34,7 +34,6 @@ import TestMocks
     try await evaluator.waitForCall { $0.contains("CrispClient.setUserEmail") }
     #expect(!evaluator.calls.contains { $0.contains("CrispClient.reset") })
     #expect(api.commands.pendingReset == nil)
-    #expect(model.bootReset == nil)
   }
 
   /// The reset stays pending until a boot completes, so a retry after a failed boot (or a new
@@ -43,12 +42,11 @@ import TestMocks
     let api = ChatBoxAPI()
     api.resetSession()
 
-    _ = try ChatBoxHostModel(api: api).loadBaseHTML()
+    ChatBoxHostModel(api: api).appear()
     #expect(api.commands.pendingReset != nil)
 
-    let model = ChatBoxHostModel(api: api)
-    _ = try model.loadBaseHTML()
-    #expect(model.bootReset != nil)
+    let html = try #require(ChatBoxHostModel(api: api).appear())
+    #expect(html.clearsWebStorage)
   }
 
   /// Logout followed by the app being killed before the chat was opened: the reset is persisted,
@@ -62,10 +60,9 @@ import TestMocks
     let model = ChatBoxHostModel(api: api) {
       $0.session = .inMemory(storage: storage)
     }
-    let html = try model.loadBaseHTML()
+    let html = try #require(model.appear())
 
-    #expect(model.bootReset != nil)
-    #expect(html.contains("if ('true' === 'true')"))
+    #expect(html.clearsWebStorage)
 
     let publisher = initializeClient(model: model, sessionId: "session-1")
     await waitForSessionLoadedEvent(api: api) {
@@ -91,33 +88,82 @@ import TestMocks
   }
 
   @Test func bootsWithoutResetWhenNoneIsPending() throws {
-    let model = ChatBoxHostModel(api: ChatBoxAPI())
-    _ = try model.loadBaseHTML()
+    let html = try #require(ChatBoxHostModel(api: ChatBoxAPI()).appear())
 
-    #expect(model.bootReset == nil)
+    #expect(!html.clearsWebStorage)
   }
 
   /// A reset requested while the widget boots (e.g. login while the chat is loading) makes the
   /// joined session obsolete, so the widget reboots instead of reporting it as loaded.
-  @Test func rebootsWhenResetArrivesDuringBoot() async throws {
+  @Test func rebootsWhenResetArrivesDuringBoot() async {
     let storage = SessionStorage()
     let api = ChatBoxAPI()
     let model = ChatBoxHostModel(api: api) {
       $0.session = .inMemory(storage: storage)
     }
-    var didReload = false
-    model.onRetry = { didReload = true }
+    model.appear()
+    var reloadedTemplate: String?
+    model.onLoadTemplate = { reloadedTemplate = $0 }
 
-    _ = try model.loadBaseHTML()
     let publisher = initializeClient(model: model)
     api.resetSession()
     publisher.onInterfaceLifecycle(.ready)
 
-    await waitUntil { didReload }
-    #expect(didReload)
+    await waitUntil { reloadedTemplate != nil }
     #expect(storage.current == nil)
-    _ = try model.loadBaseHTML()
-    #expect(model.bootReset != nil)
+    #expect(reloadedTemplate?.clearsWebStorage == true)
+  }
+
+  /// A login while the reset reload is still deregistering the device (setTokenID + reset during
+  /// the prelude) goes into the template that reload loads, so it boots straight into the new
+  /// token's session instead of booting stale and rebooting.
+  @Test func appliesChangesFromDuringPreludeToReloadedTemplate() async throws {
+    let storage = SessionStorage(
+      current: Session(
+        websiteId: .mock,
+        sessionId: "session-1",
+        settings: .init(deviceToken: "device-0"),
+      ),
+    )
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: storage)
+    }
+    var templates = [String]()
+    model.onLoadTemplate = { templates.append($0) }
+
+    let unregisterGate = Gate()
+    let evaluator = RecordingJSEvaluator { js in
+      if js.contains("CrispClient.unregisterNotification") {
+        await unregisterGate.wait()
+      }
+      return js.contains("CrispClient.getSessionIdentifier()") ? "session-1" : nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    api.resetSession()
+    try await evaluator.waitForCall(
+      matching: { $0.contains("CrispClient.unregisterNotification") },
+      timeout: NSEC_PER_SEC * 5,
+    )
+    api.configureTokenId("other-token")
+    api.resetSession()
+    #expect(templates.isEmpty)
+    unregisterGate.open()
+
+    await waitUntil { !templates.isEmpty }
+    let template = try #require(templates.first)
+    #expect(template.clearsWebStorage)
+    #expect(template.contains("token-id='other-token'"))
+
+    // A stale template would leave the second reset pending, which reboots right away.
+    publisher.onInterfaceLifecycle(.ready)
+    #expect(api.commands.pendingReset == nil)
+    #expect(model.state == .loaded)
   }
 
   /// An already loaded (e.g. embedded) chat deregisters the device from the session it leaves,
@@ -135,7 +181,7 @@ import TestMocks
       $0.session = .inMemory(storage: storage)
     }
     var didReload = false
-    model.onRetry = { didReload = true }
+    model.onLoadTemplate = { _ in didReload = true }
 
     let evaluator = RecordingJSEvaluator { js in
       js.contains("CrispClient.getSessionIdentifier()") ? "session-1" : nil
@@ -170,11 +216,12 @@ import TestMocks
       $0.session = .inMemory(storage: storage)
     }
     var didReload = false
-    model.onRetry = { didReload = true }
+    model.onLoadTemplate = { _ in didReload = true }
 
+    let unregisterGate = Gate()
     let evaluator = RecordingJSEvaluator { js in
       if js.contains("CrispClient.unregisterNotification") {
-        try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 200)
+        await unregisterGate.wait()
       }
       return js.contains("CrispClient.getSessionIdentifier()") ? "session-1" : nil
     }
@@ -186,14 +233,27 @@ import TestMocks
 
     api.resetSession()
 
-    try await evaluator.waitForCall { $0.contains("CrispClient.unregisterNotification") }
-    try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 400)
-
+    try await evaluator.waitForCall(
+      matching: { $0.contains("CrispClient.unregisterNotification") },
+      timeout: NSEC_PER_SEC * 5,
+    )
+    await waitUntil {
+      if case .error = model.state { return true }
+      return false
+    }
     guard case .error = model.state else {
       Issue.record("Expected error state; got \(model.state)")
       return
     }
+
+    unregisterGate.open()
+
+    // Nothing may happen now, which can't be awaited: give a wrong reload a chance to show up.
+    await waitUntil(timeout: NSEC_PER_MSEC * 200) { didReload }
     #expect(!didReload)
+    if case .error = model.state {} else {
+      Issue.record("Expected error state; got \(model.state)")
+    }
   }
 
   /// The old web view is still live while the reset prelude runs. A script error from it must not
@@ -211,11 +271,12 @@ import TestMocks
       $0.session = .inMemory(storage: storage)
     }
     var didReload = false
-    model.onRetry = { didReload = true }
+    model.onLoadTemplate = { _ in didReload = true }
 
+    let unregisterGate = Gate()
     let evaluator = RecordingJSEvaluator { js in
       if js.contains("CrispClient.unregisterNotification") {
-        try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
+        await unregisterGate.wait()
       }
       return js.contains("CrispClient.getSessionIdentifier()") ? "session-1" : nil
     }
@@ -227,9 +288,14 @@ import TestMocks
 
     api.resetSession()
 
-    try await evaluator.waitForCall { $0.contains("CrispClient.unregisterNotification") }
+    try await evaluator.waitForCall(
+      matching: { $0.contains("CrispClient.unregisterNotification") },
+      timeout: NSEC_PER_SEC * 5,
+    )
     publisher.onScriptError(message: "boom")
+    #expect(model.state.isLoading)
 
+    unregisterGate.open()
     await waitUntil { didReload }
     #expect(didReload)
     #expect(model.state.isLoading)
@@ -255,7 +321,7 @@ import TestMocks
       $0.session = .inMemory(storage: storage)
     }
 
-    _ = try? model.loadBaseHTML()
+    model.appear()
     let publisher = initializeClient(model: model, sessionId: "session-1")
     let commands = await waitForSessionLoadedEvent(api: api) {
       publisher.onInterfaceLifecycle(.ready)
@@ -284,7 +350,7 @@ import TestMocks
       $0.session = .inMemory(storage: storage)
     }
 
-    let html = try model.loadBaseHTML()
+    let html = try #require(model.appear())
 
     #expect(html.contains("session-id=''"))
   }

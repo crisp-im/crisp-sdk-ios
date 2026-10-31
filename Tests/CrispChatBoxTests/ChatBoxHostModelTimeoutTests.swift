@@ -35,13 +35,27 @@ import TestMocks
   /// and the state stays `.loaded` even past the original deadline.
   @Test func cancelsTimeoutWhenWidgetBecomesReadyInTime() async throws {
     let model = ChatBoxHostModel(widgetReadyTimeout: NSEC_PER_MSEC * 50)
+    model.appear()
     let publisher = initializeClient(model: model)
+    #expect(model.state.isLoading)
 
     publisher.onInterfaceLifecycle(.ready)
     #expect(model.state == .loaded)
 
     try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 200)
     #expect(model.state == .loaded)
+  }
+
+  /// Initializing the client doesn't affect the timeout of the boot in progress.
+  @Test func reloadThenClientInitializedDoesNotTimeOutEarly() async throws {
+    let model = ChatBoxHostModel(widgetReadyTimeout: NSEC_PER_SEC * 2)
+    initializeClient(model: model).onInterfaceLifecycle(.ready)
+
+    model.onWebContentProcessTerminated()
+    initializeClient(model: model)
+
+    try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 300)
+    #expect(model.state.isLoading)
   }
 
   /// If iOS reaps the WebView's rendering process, the model recovers by returning to
@@ -54,7 +68,7 @@ import TestMocks
     #expect(model.state == .loaded)
 
     var didReload = false
-    model.onRetry = { didReload = true }
+    model.onLoadTemplate = { _ in didReload = true }
 
     model.onWebContentProcessTerminated()
 

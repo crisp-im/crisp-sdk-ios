@@ -140,7 +140,7 @@ import TestMocks
       $0.session = .inMemory(storage: storage)
     }
 
-    let html = try model.loadBaseHTML()
+    let html = try #require(model.appear())
 
     #expect(html.contains("session-id='migrated-session'"))
   }
@@ -161,7 +161,7 @@ import TestMocks
       $0.session = .inMemory(storage: storage)
     }
 
-    let html = try model.loadBaseHTML()
+    let html = try #require(model.appear())
 
     #expect(html.contains("session-id=''"))
     #expect(!html.contains("migrated-session"))

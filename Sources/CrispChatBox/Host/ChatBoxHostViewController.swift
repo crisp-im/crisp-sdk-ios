@@ -11,7 +11,6 @@ final class ChatBoxHostViewController: ContainerViewController {
   private let model: ChatBoxHostModel
   private let config: ChatViewConfiguration
   private var webView: ChatWebView?
-  private var didAppear = false
 
   private var overlayViewController: UIViewController?
 
@@ -52,9 +51,9 @@ final class ChatBoxHostViewController: ContainerViewController {
       self?.dismiss(animated: true)
     }
 
-    self.model.onRetry = { [weak self, weak model] in
+    self.model.onLoadTemplate = { [weak self, weak model] template in
       do throws(CrispHostError) {
-        try self?.loadHTML()
+        try self?.load(template: template)
       } catch {
         model?.onError(error)
       }
@@ -64,8 +63,9 @@ final class ChatBoxHostViewController: ContainerViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    // We have to wait until viewWillAppear to load the HTML since we need to know if we're being
-    // presented or not to properly configure the JS widget. The same goes for updating the state:
+    // We have to wait until viewWillAppear to start the chat (which loads the HTML) since we need
+    // to know if we're being presented or not to properly configure the JS widget. The same goes
+    // for updating the state:
     // The Loading- and FailureViewControllers show a cancel button conditionally if we're being
     // presented, since these buttons otherwise wouldn't do anything because we have no means of
     // dismissing a non(-modally)-presented ViewController.
@@ -77,16 +77,6 @@ final class ChatBoxHostViewController: ContainerViewController {
     }
 
     self.handleStateChange()
-
-    if !self.didAppear {
-      self.didAppear = true
-
-      do {
-        try self.loadHTML()
-      } catch {
-        self.model.onError(error)
-      }
-    }
   }
 }
 
@@ -242,16 +232,9 @@ private extension ChatBoxHostViewController {
     ])
   }
 
-  func loadHTML() throws(CrispHostError) {
+  func load(template: String) throws(CrispHostError) {
     guard let webView else {
       throw .webViewNotInstalled
-    }
-
-    let htmlString: String
-    do {
-      htmlString = try self.model.loadBaseHTML()
-    } catch {
-      throw .client(error)
     }
 
     guard let baseURL = URL(string: "\(LocalFileSchemeHandler.scheme)://file/") else {
@@ -259,7 +242,7 @@ private extension ChatBoxHostViewController {
     }
 
     // We introduce our own URL scheme to prevent CORS errors
-    webView.loadHTMLString(htmlString, baseURL: baseURL)
+    webView.loadHTMLString(template, baseURL: baseURL)
   }
 
   @objc func copyMessage() {

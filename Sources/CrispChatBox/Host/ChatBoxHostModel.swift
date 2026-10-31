@@ -32,24 +32,28 @@ package final class ChatBoxHostModel {
   private var didAppear = false
   private var isPresented = false
   private var notificationPermission = NotificationPermission.notDetermined
-  /// The reset the current boot applies by starting with cleared web storage. Resets are never
-  /// run in a loaded widget: its runtime reset re-initializes without the token, which would
-  /// replace e.g. the user's token session right after login with an empty one.
-  private(set) var bootReset: ResetRequest?
-  private var widgetReadyTimeoutTask: Task<Void, Never>?
-  private var reloadPreludeTask: Task<Void, Never>?
 
   var onStateChange: (() -> Void)?
   var onRouteChange: (() -> Void)?
   var onClose: (() -> Void)?
-  var onRetry: (() -> Void)?
+  /// Loads a boot's template into the web view.
+  var onLoadTemplate: ((String) -> Void)?
 
-  private(set) var state = State.pending {
+  /// The model's lifecycle. Leaving a boot, whether it completes, fails or is replaced by a
+  /// reload, cancels its pending work.
+  private var phase = Phase.pending {
     didSet {
-      if let handler = self.onStateChange, self.state != oldValue {
+      if case let .booting(boot) = oldValue, boot !== self.currentBoot {
+        boot.cancel()
+      }
+      if let handler = self.onStateChange, self.state != oldValue.state {
         handler()
       }
     }
+  }
+
+  var state: State {
+    self.phase.state
   }
 
   private(set) var route: Route? {
@@ -87,34 +91,7 @@ package final class ChatBoxHostModel {
 }
 
 extension ChatBoxHostModel {
-  func loadBaseHTML() throws(CrispClientError) -> String {
-    guard let assetsURL = URL(string: "\(LocalFileSchemeHandler.scheme)://file") else {
-      throw .invalidAssetsURL
-    }
-
-    self.bootReset = self.api.commands.pendingReset
-
-    let session = self.env.session.load(self.websiteId)
-
-    // Inject prior session if needed…
-    let injectedSessionId = self.bootReset != nil
-      || session?.settings.injectedSessionHandedOff == true
-      ? nil
-      : session?.sessionId
-
-    return try loadIndexHTML(
-      websiteId: self.websiteId,
-      sessionId: injectedSessionId,
-      tokenId: self.api.tokenId,
-      resetsSession: self.bootReset != nil,
-      locales: self.env.locales,
-      presentation: self.isPresented ? .sheet : .default,
-      assetsURL: assetsURL,
-    )
-  }
-
   func onClientInitialized(_ client: CrispClient) {
-    self.widgetReadyTimeoutTask?.cancel()
     self.client = client
 
     client.onInterfaceLifecycle { [weak self] in self?.onInterfaceLifecycle(event: $0) }
@@ -129,29 +106,20 @@ extension ChatBoxHostModel {
     client.onEventError { [weak self] channel, error in
       self?.onError(.eventDecodingFailed(channel: channel, underlying: error))
     }
-
-    self.startWidgetTimeoutTask()
   }
 
   func onError(_ error: CrispHostError) {
     log.error(error)
 
-    if case .scriptError = error, !self.state.isLoading {
+    if case .scriptError = error {
       // Ignore script errors after the ChatBox was initialized, because these can come from
       // anywhere like trying to play an .ogg which Safari doesn't support.
-      return
-    }
+      guard let boot = self.currentBoot else { return }
 
-    if case .scriptError = error, self.reloadPreludeTask != nil {
       // The web view still running during a reload prelude is about to be replaced, so its
       // errors don't affect the boot that follows.
-      return
+      guard boot.preludeTask == nil else { return }
     }
-
-    // A reload still running its prelude (e.g. a hanging unregister call that ran into the
-    // timeout) must not reload the web view behind the error screen.
-    self.reloadPreludeTask?.cancel()
-    self.reloadPreludeTask = nil
 
     let retry: (() -> Void)? = switch error {
     case .widgetTimeout:
@@ -162,7 +130,7 @@ extension ChatBoxHostModel {
       nil
     }
 
-    self.state = .error(
+    self.phase = .failed(
       FailureViewModel(
         error: error,
         onRetry: retry,
@@ -188,14 +156,8 @@ extension ChatBoxHostModel {
       return
     }
 
-    let model = LoadingViewModel(
-      onCancel: isPresented
-        ? { [weak self] in self?.onClose?() }
-        : nil,
-    )
-
-    self.state = .loading(model)
     self.didAppear = true
+    self.beginBoot()
 
     let lifecycle = self.env.lifecycle
     let notifications = self.env.notifications
@@ -371,14 +333,11 @@ extension ChatBoxHostModel {
 
 private extension ChatBoxHostModel {
   func widgetIsReady() {
-    self.state = .loaded
+    let boot = self.currentBoot
+    self.phase = .loaded
 
-    self.widgetReadyTimeoutTask?.cancel()
-    self.widgetReadyTimeoutTask = nil
-
-    if let bootReset = self.bootReset {
-      self.bootReset = nil
-      self.api.commands.completeReset(bootReset)
+    if let reset = boot?.reset {
+      self.api.commands.completeReset(reset)
       self.env.session.reset()
     }
 
@@ -401,23 +360,7 @@ private extension ChatBoxHostModel {
         return
       }
 
-      if self.env.session.load(self.websiteId)?.sessionId != sessionId {
-        // The push registration belongs to the device rather than to the session, so carry it
-        // over to the new session. Front-queued so that a token the app registered meanwhile wins.
-        if let deviceToken = self.storedDeviceToken {
-          self.api.commands.enqueueFront(.setDeviceToken(deviceToken))
-        }
-        self.env.session.reset()
-        self.env.session.resetPrevious()
-        self.env.session.save(Session(websiteId: self.websiteId, sessionId: sessionId))
-      }
-
-      // One-time handoff complete: the web client now owns this session, so we stop injecting the
-      // session id on subsequent loads.
-      self.env.session.modifySettings(self.websiteId) { settings in
-        settings.injectedSessionHandedOff = true
-      }
-
+      self.adoptLoadedSession(sessionId)
       self.api.callbacks.handleSessionLoaded(sessionId: sessionId)
       self.flushCommandQueue()
       self.api.commands.setOnAppendHandler { [weak self = self] in
@@ -431,6 +374,26 @@ private extension ChatBoxHostModel {
       } catch {
         log.error("Failed to prompt for notification permission. \(error.localizedDescription)")
       }
+    }
+  }
+
+  /// Makes the session the web client loaded the stored native session.
+  func adoptLoadedSession(_ sessionId: SessionId) {
+    if self.env.session.load(self.websiteId)?.sessionId != sessionId {
+      // The push registration belongs to the device rather than to the session, so carry it
+      // over to the new session. Front-queued so that a token the app registered meanwhile wins.
+      if let deviceToken = self.storedDeviceToken {
+        self.api.commands.enqueueFront(.setDeviceToken(deviceToken))
+      }
+      self.env.session.reset()
+      self.env.session.resetPrevious()
+      self.env.session.save(Session(websiteId: self.websiteId, sessionId: sessionId))
+    }
+
+    // One-time handoff complete: the web client now owns this session, so we stop injecting the
+    // session id on subsequent loads.
+    self.env.session.modifySettings(self.websiteId) { settings in
+      settings.injectedSessionHandedOff = true
     }
   }
 
@@ -530,28 +493,7 @@ private extension ChatBoxHostModel {
   }
 
   func performReload(after prelude: (@MainActor () async -> Void)? = nil) {
-    let model = LoadingViewModel(
-      onCancel: isPresented
-        ? { [weak self] in self?.onClose?() }
-        : nil,
-    )
-
-    self.state = .loading(model)
-    self.startWidgetTimeoutTask()
-    self.reloadPreludeTask?.cancel()
-    self.reloadPreludeTask = nil
-
-    guard let prelude else {
-      self.onRetry?()
-      return
-    }
-
-    self.reloadPreludeTask = Task { [weak self] in
-      await prelude()
-      guard !Task.isCancelled, let self else { return }
-      self.reloadPreludeTask = nil
-      self.onRetry?()
-    }
+    self.beginBoot(after: prelude)
   }
 
   /// Reboots the loaded widget so that the pending reset is applied on boot. The device is
@@ -576,14 +518,135 @@ private extension ChatBoxHostModel {
       ?? self.env.session.loadPrevious(self.websiteId)?.settings.deviceToken
   }
 
-  func startWidgetTimeoutTask() {
-    self.widgetReadyTimeoutTask?.cancel()
-    self.widgetReadyTimeoutTask = Task { [weak self, timeout = self.widgetReadyTimeout] in
-      try? await Task.sleep(nanoseconds: timeout)
-      guard let self, !Task.isCancelled else { return }
-      if self.state.isLoading {
-        self.onError(.widgetTimeout)
+  var currentBoot: Boot? {
+    if case let .booting(boot) = self.phase {
+      return boot
+    }
+    return nil
+  }
+
+  /// Starts a new boot, replacing (and thereby cancelling) the current one, and loads its template
+  /// once the prelude (if any) has finished.
+  func beginBoot(after prelude: (@MainActor () async -> Void)? = nil) {
+    let boot = Boot(
+      loadingModel: LoadingViewModel(
+        onCancel: self.isPresented
+          ? { [weak self] in self?.onClose?() }
+          : nil,
+      ),
+      timeout: self.widgetReadyTimeout,
+    ) { [weak self] boot in
+      guard let self, self.currentBoot === boot else { return }
+      self.onError(.widgetTimeout)
+    }
+    self.phase = .booting(boot)
+
+    guard let prelude else {
+      self.loadTemplate(of: boot)
+      return
+    }
+
+    boot.preludeTask = Task { [weak self, weak boot] in
+      await prelude()
+      guard let self, let boot, self.currentBoot === boot else { return }
+      boot.preludeTask = nil
+      self.loadTemplate(of: boot)
+    }
+  }
+
+  /// Generates the boot's template and loads it. Generating it only now, after any prelude, picks
+  /// up a reset or token change that arrived meanwhile, instead of booting stale and rebooting.
+  func loadTemplate(of boot: Boot) {
+    let reset = self.api.commands.pendingReset
+
+    let template: String
+    do {
+      template = try self.makeTemplate(resetsSession: reset != nil)
+    } catch {
+      // Moves the phase to `.failed`, which cancels the boot.
+      self.onError(.client(error))
+      return
+    }
+
+    boot.reset = reset
+    self.onLoadTemplate?(template)
+  }
+
+  func makeTemplate(resetsSession: Bool) throws(CrispClientError) -> String {
+    guard let assetsURL = URL(string: "\(LocalFileSchemeHandler.scheme)://file") else {
+      throw .invalidAssetsURL
+    }
+
+    let session = self.env.session.load(self.websiteId)
+
+    // Inject prior session if needed…
+    let injectedSessionId = resetsSession
+      || session?.settings.injectedSessionHandedOff == true
+      ? nil
+      : session?.sessionId
+
+    return try loadIndexHTML(
+      websiteId: self.websiteId,
+      sessionId: injectedSessionId,
+      tokenId: self.api.tokenId,
+      resetsSession: resetsSession,
+      locales: self.env.locales,
+      presentation: self.isPresented ? .sheet : .default,
+      assetsURL: assetsURL,
+    )
+  }
+}
+
+extension ChatBoxHostModel {
+  enum Phase {
+    case pending
+    case booting(Boot)
+    case loaded
+    case failed(FailureViewModel)
+
+    var state: State {
+      switch self {
+      case .pending: .pending
+      case let .booting(boot): .loading(boot.loadingModel)
+      case .loaded: .loaded
+      case let .failed(model): .error(model)
       }
+    }
+  }
+
+  /// One attempt to boot the widget, from entering the loading state until the widget reports
+  /// ready or the boot fails. Its ready timeout starts with it. Templates are only generated for a
+  /// boot (see `loadTemplate(of:)`), so the reset a template applies always has a boot to complete
+  /// it.
+  @MainActor
+  final class Boot {
+    /// The reset this boot applies by starting with cleared web storage, set when its template is
+    /// generated. Resets are never run in a loaded widget: its runtime reset re-initializes without
+    /// the token, which would replace e.g. the user's token session right after login with an
+    /// empty one.
+    fileprivate(set) var reset: ResetRequest?
+    let loadingModel: LoadingViewModel
+    /// Work that has to finish before the template is reloaded, e.g. deregistering the device
+    /// from the session being left.
+    var preludeTask: Task<Void, Never>?
+    private var timeoutTask: Task<Void, Never>?
+
+    init(
+      loadingModel: LoadingViewModel,
+      timeout: UInt64,
+      onTimeout: @escaping @MainActor (Boot) -> Void,
+    ) {
+      self.loadingModel = loadingModel
+      self.timeoutTask = Task { [weak self] in
+        try? await Task.sleep(nanoseconds: timeout)
+        guard !Task.isCancelled, let self else { return }
+        onTimeout(self)
+      }
+    }
+
+    func cancel() {
+      self.timeoutTask?.cancel()
+      self.preludeTask?.cancel()
     }
   }
 }
@@ -605,77 +668,5 @@ extension ChatBoxHostModel.State: Equatable {
       return true
     }
     return false
-  }
-}
-
-enum NotificationPermissionSelection: String {
-  case enable
-  case skip
-}
-
-extension MessageFingerprint {
-  static let requestPushNotificationsPermissionMessageFingerprint = MessageFingerprint(-10006)
-}
-
-extension LocalMessageFingerprint {
-  static let identityPromptMessageFingerprint = Self.local("$identity")
-}
-
-extension Message {
-  static func requestPushNotificationsPermissionMessage(isStandalone: Bool) -> Self {
-    var messageText = NSLocalizedString(
-      "sdk.prompt_notification_ask",
-      bundle: .module,
-      value: "We can send you a notification when we reply",
-      comment: "Body of the message offering to send push notifications",
-    )
-
-    if isStandalone {
-      let intro = NSLocalizedString(
-        "sdk.prompt_notification_reply",
-        bundle: .module,
-        value: "Just in case you leave or we reply later:",
-        comment: "Standalone-mode intro shown above the push-notification offer",
-      )
-      // crisp-client ships both strings as plain text, so the emphasis is
-      // applied here rather than baked into the translations.
-      messageText = "**\(intro)**\n_\(messageText)_"
-    }
-
-    return Message(
-      content: .picker(.init(
-        id: "",
-        text: messageText,
-        choices: [
-          .init(
-            label: NSLocalizedString(
-              "sdk.action_notifications_enable",
-              bundle: .module,
-              value: "Enable Notifications",
-              comment: "Push-notification opt-in choice",
-            ),
-            selected: false,
-            value: NotificationPermissionSelection.enable.rawValue,
-          ),
-          .init(
-            label: NSLocalizedString(
-              "sdk.action_deny",
-              bundle: .module,
-              value: "No, thanks",
-              comment: "Push-notification opt-out choice",
-            ),
-            selected: false,
-            value: NotificationPermissionSelection.skip.rawValue,
-          ),
-        ],
-        required: false,
-      )),
-      origin: .chat,
-      timestamp: Date(),
-      fingerprint: .requestPushNotificationsPermissionMessageFingerprint,
-      from: .operator,
-      user: .init(nickname: "System"),
-      automated: true,
-    )
   }
 }
