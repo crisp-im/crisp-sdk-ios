@@ -104,6 +104,43 @@ import TestMocks
     #expect(storage.current?.settings.deviceToken == newToken)
   }
 
+  /// The carried-over token is stored with the new session right away, so a failed registration
+  /// (e.g. while offline) doesn't lose it.
+  @Test func keepsCarriedDeviceTokenWhenRegistrationFails() async throws {
+    struct Offline: Error {}
+
+    let storage = SessionStorage(
+      current: Session(
+        websiteId: .mock,
+        sessionId: "session-1",
+        settings: .init(deviceToken: "device-0"),
+      ),
+    )
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: storage)
+    }
+
+    let evaluator = RecordingJSEvaluator { js in
+      if js.contains("CrispClient.registerNotification") {
+        throw Offline()
+      }
+      return js.contains("CrispClient.getSessionIdentifier()") ? "session-2" : nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    try await evaluator.waitForCall(
+      matching: { $0.contains("CrispClient.registerNotification") },
+      timeout: NSEC_PER_SEC * 5,
+    )
+    #expect(storage.current?.sessionId == "session-2")
+    #expect(storage.current?.settings.deviceToken == "device-0")
+  }
+
   /// First load with no persisted state: nothing to unset or reset, just save
   /// a fresh session keyed by the supplied `sessionId`. That freshly saved
   /// session must also be marked as handed off — otherwise the id would be

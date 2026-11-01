@@ -16,7 +16,7 @@ package extension Environment {
     locales: Locales.live,
     openURL: .live,
     notifications: .live,
-    session: .live(userDefaults: .standard),
+    session: .standard,
     lifecycle: .live(),
     pasteboard: .live(),
   )
