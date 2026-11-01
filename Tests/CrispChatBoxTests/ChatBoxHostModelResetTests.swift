@@ -104,6 +104,8 @@ import TestMocks
     model.appear()
     var reloadedTemplate: String?
     model.onLoadTemplate = { reloadedTemplate = $0 }
+    var states = [ChatBoxHostModel.State]()
+    model.onStateChange = { states.append(model.state) }
 
     let publisher = initializeClient(model: model)
     api.resetSession()
@@ -112,6 +114,156 @@ import TestMocks
     await waitUntil { reloadedTemplate != nil }
     #expect(storage.current == nil)
     #expect(reloadedTemplate?.clearsWebStorage == true)
+    // The obsolete session is never revealed, not even briefly.
+    #expect(!states.contains(.loaded))
+  }
+
+  /// Logout, then a login while the chat loads: the boot applying the logout joins a fresh
+  /// anonymous session and reboots for the login straight away. The device was never registered
+  /// with that session and the one holding it can't be reached, so nothing is deregistered.
+  @Test func doesNotDeregisterFromSessionItNeverAdopted() async {
+    let storage = SessionStorage(
+      current: Session(
+        websiteId: .mock,
+        sessionId: "session-1",
+        settings: .init(deviceToken: "device-0"),
+      ),
+    )
+    let api = ChatBoxAPI()
+    api.resetSession()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: storage)
+    }
+    model.appear()
+    var reloadedTemplate: String?
+    model.onLoadTemplate = { reloadedTemplate = $0 }
+
+    let evaluator = RecordingJSEvaluator { js in
+      js.contains("CrispClient.getSessionIdentifier()") ? "anonymous-session" : nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+
+    api.configureTokenId("user-token")
+    api.resetSession()
+    publisher.onInterfaceLifecycle(.ready)
+
+    await waitUntil { reloadedTemplate != nil }
+    #expect(reloadedTemplate?.contains("token-id='user-token'") == true)
+    #expect(!evaluator.calls.contains { $0.contains("CrispClient.unregisterNotification") })
+  }
+
+  /// A host that resets in its session-loaded callback reboots the widget right away. The load
+  /// that ended this way must not go on to check for the push prompt on the page being replaced.
+  @Test func stopsLoadWorkWhenItRebootsItself() async {
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    var reloadedTemplate: String?
+    model.onLoadTemplate = { reloadedTemplate = $0 }
+    api.addCallback(.sessionLoaded(SessionIdHandler { _ in api.resetSession() }))
+
+    let evaluator = RecordingJSEvaluator { js in
+      js.contains("CrispClient.getSessionIdentifier()") ? "session-1" : nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    publisher.onInterfaceLifecycle(.ready)
+
+    await waitUntil { reloadedTemplate != nil }
+    #expect(reloadedTemplate?.clearsWebStorage == true)
+
+    // Nothing may happen now, which can't be awaited: give a wrong prompt check a chance to run.
+    await waitUntil(timeout: NSEC_PER_MSEC * 200) {
+      evaluator.calls.contains { $0.contains("CrispClient.getMessages") }
+    }
+    #expect(!evaluator.calls.contains { $0.contains("CrispClient.getMessages") })
+  }
+
+  /// The web client may report ready again while loaded. A reset that arrives before the new load
+  /// has adopted the session again still deregisters the device from that session.
+  @Test func keepsJoinedSessionAcrossRepeatedReady() async throws {
+    let storage = SessionStorage(
+      current: Session(
+        websiteId: .mock,
+        sessionId: "session-1",
+        settings: .init(deviceToken: "device-0"),
+      ),
+    )
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: storage)
+    }
+
+    let holdsSessionId = LockIsolated(false)
+    let sessionIdGate = Gate()
+    let evaluator = RecordingJSEvaluator { js in
+      guard js.contains("CrispClient.getSessionIdentifier()") else { return nil }
+      if holdsSessionId.value {
+        await sessionIdGate.wait()
+      }
+      return "session-1"
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    holdsSessionId.setValue(true)
+    publisher.onInterfaceLifecycle(.ready)
+    api.resetSession()
+
+    try await evaluator.waitForCall(
+      matching: { $0.contains("CrispClient.unregisterNotification") },
+      timeout: NSEC_PER_SEC * 2,
+    )
+    sessionIdGate.open()
+  }
+
+  /// A reset while a reload is still asking the web client for its session supersedes that load,
+  /// so the session it reports must not be adopted or announced.
+  @Test func doesNotAdoptSessionOfSupersededLoad() async {
+    let storage = SessionStorage(current: Session(websiteId: .mock, sessionId: "session-1"))
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: storage)
+    }
+
+    let holdsSessionId = LockIsolated(false)
+    let sessionIdGate = Gate()
+    let evaluator = RecordingJSEvaluator { js in
+      guard js.contains("CrispClient.getSessionIdentifier()") else { return nil }
+      guard holdsSessionId.value else { return "session-1" }
+      await sessionIdGate.wait()
+      return "session-2"
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    holdsSessionId.setValue(true)
+    model.onWebContentProcessTerminated()
+    publisher.onInterfaceLifecycle(.ready)
+    await waitUntil {
+      evaluator.calls.count { $0.contains("CrispClient.getSessionIdentifier()") } == 2
+    }
+
+    var announcedSessionIds = [SessionId]()
+    api.addCallback(.sessionLoaded(SessionIdHandler { announcedSessionIds.append($0) }))
+    api.resetSession()
+    await waitUntil { model.state.isLoading }
+    #expect(model.state.isLoading)
+
+    sessionIdGate.open()
+
+    // Nothing may happen now, which can't be awaited: give a wrong adoption a chance to show up.
+    await waitUntil(timeout: NSEC_PER_MSEC * 200) { storage.current?.sessionId == "session-2" }
+    #expect(storage.current?.sessionId == "session-1")
+    #expect(announcedSessionIds.isEmpty)
   }
 
   /// A login while the reset reload is still deregistering the device (setTokenID + reset during

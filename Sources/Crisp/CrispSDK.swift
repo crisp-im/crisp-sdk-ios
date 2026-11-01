@@ -364,7 +364,7 @@ import UIKit
     chatBoxVersion
   }
 
-  static let apiModel = ChatBoxAPI(session: .live(userDefaults: .standard))
+  static let apiModel = ChatBoxAPI(session: .standard)
 
   override private init() {
     super.init()

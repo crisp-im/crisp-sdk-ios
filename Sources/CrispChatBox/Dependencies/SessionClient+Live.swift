@@ -3,6 +3,10 @@ import CrispLogging
 import Foundation
 
 package extension SessionClient {
+  /// The client for the stored native session, shared by the API (which persists pending resets)
+  /// and the host model.
+  static let standard = Self.live(userDefaults: .standard)
+
   static func live(userDefaults: UserDefaults) -> Self {
     // https://developer.apple.com/forums/thread/757527?answerId=792408022#792408022
     nonisolated(unsafe) let userDefaults = userDefaults

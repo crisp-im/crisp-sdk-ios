@@ -46,6 +46,9 @@ package final class ChatBoxHostModel {
       if case let .booting(boot) = oldValue, boot !== self.currentBoot {
         boot.cancel()
       }
+      if case let .loaded(load) = oldValue, load !== self.currentLoad {
+        load.cancel()
+      }
       if let handler = self.onStateChange, self.state != oldValue.state {
         handler()
       }
@@ -124,7 +127,7 @@ extension ChatBoxHostModel {
     let retry: (() -> Void)? = switch error {
     case .widgetTimeout:
       { [weak self] in
-        self?.performReload()
+        self?.beginBoot()
       }
     case .client, .eventDecodingFailed, .scriptError, .webViewNotInstalled:
       nil
@@ -146,7 +149,7 @@ extension ChatBoxHostModel {
     // long invisibility). It won't recover on its own, so reload from scratch,
     // showing the loading state meanwhile instead of a blank web view.
     log.warn("WebContent process terminated. Reloading the chatbox.")
-    self.performReload()
+    self.beginBoot()
   }
 
   func onAppear(isPresented: Bool) {
@@ -333,10 +336,7 @@ extension ChatBoxHostModel {
 
 private extension ChatBoxHostModel {
   func widgetIsReady() {
-    let boot = self.currentBoot
-    self.phase = .loaded
-
-    if let reset = boot?.reset {
+    if let reset = self.currentBoot?.reset {
       self.api.commands.completeReset(reset)
       self.env.session.reset()
     }
@@ -344,25 +344,44 @@ private extension ChatBoxHostModel {
     // A reset requested while booting makes the session this boot joined obsolete already. The
     // template was generated with the values current at that time (e.g. the token ID), so a newer
     // reset, such as a login (setTokenID + reset) while the chat is loading, can only be applied by
-    // regenerating the template and reloading the widget.
+    // regenerating the template and reloading the widget. Checked before leaving the boot, so the
+    // obsolete session is never revealed.
     guard self.api.commands.pendingReset == nil else {
       self.reloadForPendingReset()
       return
     }
 
-    self.withClient { client in
+    // A ready event while already loaded comes from the same page, so the new load starts out
+    // with the session the previous one joined until it has adopted it again.
+    let load = Load(joinedSessionId: self.currentLoad?.joinedSessionId)
+    self.phase = .loaded(load)
+
+    guard let client = self.client else { return }
+
+    load.task = Task { [weak self, weak load] in
       let sessionId: SessionId
 
       do {
         sessionId = try await client.getSessionIdentifier()
       } catch {
-        log.error("Failed to load session identifier. \(error.localizedDescription)")
+        if !Task.isCancelled {
+          log.error("Failed to load session identifier. \(error.localizedDescription)")
+        }
         return
       }
 
+      // A reset or a newer load may have superseded this load while it awaited the session.
+      guard !Task.isCancelled, let self, let load else { return }
+
       self.adoptLoadedSession(sessionId)
+      load.joinedSessionId = sessionId
       self.api.callbacks.handleSessionLoaded(sessionId: sessionId)
       self.flushCommandQueue()
+
+      // A pending reset hit by the flush (e.g. one the host requested in its session-loaded
+      // callback) reboots right away, which ends this load.
+      guard !Task.isCancelled, self.currentLoad === load else { return }
+
       self.api.commands.setOnAppendHandler { [weak self = self] in
         Task { @MainActor in
           self?.flushCommandQueue()
@@ -381,13 +400,22 @@ private extension ChatBoxHostModel {
   func adoptLoadedSession(_ sessionId: SessionId) {
     if self.env.session.load(self.websiteId)?.sessionId != sessionId {
       // The push registration belongs to the device rather than to the session, so carry it
-      // over to the new session. Front-queued so that a token the app registered meanwhile wins.
-      if let deviceToken = self.storedDeviceToken {
+      // over to the new session. Front-queued so that a token the app registered meanwhile wins,
+      // and stored right away so that a failed registration doesn't lose it.
+      let deviceToken = self.env.session.load(self.websiteId)?.settings.deviceToken
+        ?? self.env.session.loadPrevious(self.websiteId)?.settings.deviceToken
+      if let deviceToken {
         self.api.commands.enqueueFront(.setDeviceToken(deviceToken))
       }
       self.env.session.reset()
       self.env.session.resetPrevious()
-      self.env.session.save(Session(websiteId: self.websiteId, sessionId: sessionId))
+      self.env.session.save(
+        Session(
+          websiteId: self.websiteId,
+          sessionId: sessionId,
+          settings: .init(deviceToken: deviceToken),
+        ),
+      )
     }
 
     // One-time handoff complete: the web client now owns this session, so we stop injecting the
@@ -492,19 +520,23 @@ private extension ChatBoxHostModel {
     }
   }
 
-  func performReload(after prelude: (@MainActor () async -> Void)? = nil) {
-    self.beginBoot(after: prelude)
-  }
-
-  /// Reboots the loaded widget so that the pending reset is applied on boot. The device is
-  /// deregistered from the session being left first, since it can't be reached afterwards.
+  /// Reboots the widget so that the pending reset is applied on boot. The device is deregistered
+  /// from the session being left first, since it can't be reached afterwards. That's only possible
+  /// for the session the widget joined and we adopted: deregistering is bound to the joined
+  /// session, so using any other session's token would act on the wrong one.
   func reloadForPendingReset() {
-    guard let client = self.client, let deviceToken = self.storedDeviceToken else {
-      self.performReload()
+    guard
+      let client = self.client,
+      let joinedSessionId = self.currentLoad?.joinedSessionId,
+      let session = self.env.session.load(self.websiteId),
+      session.sessionId == joinedSessionId,
+      let deviceToken = session.settings.deviceToken
+    else {
+      self.beginBoot()
       return
     }
 
-    self.performReload {
+    self.beginBoot {
       do {
         try await client.unregisterNotification(deviceToken: deviceToken.description)
       } catch {
@@ -513,14 +545,16 @@ private extension ChatBoxHostModel {
     }
   }
 
-  var storedDeviceToken: DeviceToken? {
-    self.env.session.load(self.websiteId)?.settings.deviceToken
-      ?? self.env.session.loadPrevious(self.websiteId)?.settings.deviceToken
-  }
-
   var currentBoot: Boot? {
     if case let .booting(boot) = self.phase {
       return boot
+    }
+    return nil
+  }
+
+  var currentLoad: Load? {
+    if case let .loaded(load) = self.phase {
+      return load
     }
     return nil
   }
@@ -601,7 +635,7 @@ extension ChatBoxHostModel {
   enum Phase {
     case pending
     case booting(Boot)
-    case loaded
+    case loaded(Load)
     case failed(FailureViewModel)
 
     var state: State {
@@ -647,6 +681,25 @@ extension ChatBoxHostModel {
     func cancel() {
       self.timeoutTask?.cancel()
       self.preludeTask?.cancel()
+    }
+  }
+
+  /// The widget's work after it reported ready: adopting the joined session, flushing the command
+  /// queue and the push prompt. A load ends when the widget reboots or fails, or when it reports
+  /// ready again, which cancels this work.
+  @MainActor
+  final class Load {
+    var task: Task<Void, Never>?
+    /// The session this load joined, once adopted as the stored session. The only session the
+    /// device can be deregistered from.
+    fileprivate(set) var joinedSessionId: SessionId?
+
+    init(joinedSessionId: SessionId? = nil) {
+      self.joinedSessionId = joinedSessionId
+    }
+
+    func cancel() {
+      self.task?.cancel()
     }
   }
 }
