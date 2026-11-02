@@ -32,8 +32,7 @@ package final class ChatBoxHostModel {
   private var didAppear = false
   private var isPresented = false
   private var notificationPermission = NotificationPermission.notDetermined
-
-  var colorMode: ColorMode?
+  private var colorModeOverride: ColorMode?
 
   var onStateChange: (() -> Void)?
   var onRouteChange: (() -> Void)?
@@ -96,8 +95,9 @@ package final class ChatBoxHostModel {
 }
 
 extension ChatBoxHostModel {
-  func onClientInitialized(_ client: CrispClient) {
+  func onClientInitialized(_ client: CrispClient, colorMode: ColorMode? = nil) {
     self.client = client
+    self.colorModeOverride = colorMode
 
     client.onInterfaceLifecycle { [weak self] in self?.onInterfaceLifecycle(event: $0) }
     client.onInterfaceAction { [weak self] in self?.onInterfaceAction(event: $0) }
@@ -234,18 +234,23 @@ extension ChatBoxHostModel {
       return
     }
 
-    guard let client, let colorMode else {
+    guard let colorModeOverride, let client else {
       self.widgetIsReady()
       return
     }
 
-    // Applied before revealing the chatbox so that it never flashes in the website's color mode
-    Task {
+    // The widget follows the dashboard's color mode, so apply the override before revealing it to
+    // never flash in the dashboard's color mode.
+    let phase = self.phase
+
+    Task { [weak self] in
       do {
-        try await client.configColorMode(colorMode)
+        try await client.configColorMode(colorModeOverride)
       } catch {
         log.error("Failed to set color mode. \(error.localizedDescription)")
       }
+      // The phase may have moved on meanwhile, e.g. the boot failed or was replaced by a reboot.
+      guard let self, self.phase == phase else { return }
       self.widgetIsReady()
     }
   }
@@ -717,6 +722,25 @@ extension ChatBoxHostModel {
 
     func cancel() {
       self.task?.cancel()
+    }
+  }
+}
+
+extension ChatBoxHostModel.Phase: Equatable {
+  /// Phases are compared by identity: two phases are equal when they wrap the same boot, load or
+  /// failure instance, so a reboot into a fresh `Boot` is a different phase.
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    switch (lhs, rhs) {
+    case (.pending, .pending):
+      true
+    case let (.booting(lBoot), .booting(rBoot)):
+      lBoot === rBoot
+    case let (.loaded(lLoad), .loaded(rLoad)):
+      lLoad === rLoad
+    case let (.failed(lModel), .failed(rModel)):
+      lModel === rModel
+    case (.pending, _), (.booting, _), (.loaded, _), (.failed, _):
+      false
     }
   }
 }

@@ -12,6 +12,10 @@ package final class ChatBoxViewController: ContainerViewController {
     super.init()
 
     self.title = "Crisp Chat"
+
+    if let userInterfaceStyle = configuration.colorMode?.userInterfaceStyle {
+      self.overrideUserInterfaceStyle = userInterfaceStyle
+    }
   }
 
   @available(*, unavailable)

@@ -28,7 +28,7 @@ import TestMocks
 
   /// "Enable Notifications" choice flips the persisted flag *and* asks the
   /// notifications client for permission.
-  @Test func savesChoiceAndRequestsPermissionForEnableChoice() async throws {
+  @Test func savesChoiceAndRequestsPermissionForEnableChoice() async {
     let storage = SessionStorage(current: .mock)
     let recorder = NotificationsRecorder()
 

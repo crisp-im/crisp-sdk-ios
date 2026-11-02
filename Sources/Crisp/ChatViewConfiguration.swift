@@ -18,7 +18,8 @@ public final class ChatViewConfiguration: Sendable {
     set { self.inner.withValue { $0.activatesTextFieldOnAppear = newValue } }
   }
 
-  /// Overrides the color mode set in the Crisp dashboard. Default value is `nil`.
+  /// Overrides the color mode set in the Crisp dashboard. Default value is `nil`, which keeps the
+  /// dashboard's color mode.
   public var colorMode: ColorMode? {
     get { self.inner.colorMode }
     set { self.inner.withValue { $0.colorMode = newValue } }

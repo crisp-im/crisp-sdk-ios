@@ -20,8 +20,6 @@ final class ChatBoxHostViewController: ContainerViewController {
     self.model = model
     self.config = config
 
-    model.colorMode = config.colorMode
-
     super.init()
 
     NotificationCenter.default.addObserver(
@@ -224,7 +222,10 @@ private extension ChatBoxHostViewController {
       evaluator: webView.crisp_makeJSEvaluator(),
       events: .live(controller: contentController),
     )
-    self.model.onClientInitialized(client)
+    self.model.onClientInitialized(
+      client,
+      colorMode: self.config.colorMode,
+    )
 
     NSLayoutConstraint.activate([
       webView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
