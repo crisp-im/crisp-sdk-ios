@@ -1,11 +1,12 @@
 import UIKit
 
 final class LoadingViewController: UIViewController {
-  private static let loaderDelayNanoseconds = UInt64(300_000_000)
-  private static let cancelDelayNanoseconds = UInt64(3_000_000_000)
-  private static let fadeInDuration = TimeInterval(0.25)
+  private static let loaderDelay = NSEC_PER_MSEC * 300
+  private static let cancelDelay = NSEC_PER_SEC * 3
+  static let fadeDuration = TimeInterval(0.25)
 
-  private let model: LoadingViewModel
+  let model: LoadingViewModel
+  private var cancellables = Set<AnyCancellable>()
 
   init(model: LoadingViewModel) {
     self.model = model
@@ -34,8 +35,7 @@ final class LoadingViewController: UIViewController {
         value: "Cancel",
         comment: "Cancel button on the loading screen",
       ),
-      primaryAction: .init { [model] action in
-        (action.sender as? UIControl)?.isEnabled = false
+      primaryAction: .init { [model] _ in
         model.cancelButtonTapped()
       },
     )
@@ -53,28 +53,27 @@ final class LoadingViewController: UIViewController {
 
     loadingView.alpha = 0
     cancelButton.alpha = 0
-    cancelButton.isUserInteractionEnabled = false
 
+    // Delay via tasks rather than `UIView.animate(delay:)`: in `viewDidLoad` the view has not been
+    // rendered yet, so UIKit would apply the final alpha immediately instead of animating
     Task { [weak self, weak loadingView] in
-      try? await Task.sleep(nanoseconds: Self.loaderDelayNanoseconds)
+      try? await Task.sleep(nanoseconds: Self.loaderDelay)
       self?.fadeIn(loadingView)
-    }
+    }.store(in: &self.cancellables)
 
     Task { [weak self, weak cancelButton] in
-      try? await Task.sleep(nanoseconds: Self.cancelDelayNanoseconds)
-      cancelButton?.isUserInteractionEnabled = true
+      try? await Task.sleep(nanoseconds: Self.cancelDelay)
       self?.fadeIn(cancelButton)
-    }
+    }.store(in: &self.cancellables)
   }
 
   private func fadeIn(_ target: UIView?) {
-    // Skip if the whole overlay is already fading out because loading finished
-    guard let target, self.view.alpha == 1 else {
+    guard let target, !Task.isCancelled else {
       return
     }
 
     UIView.animate(
-      withDuration: Self.fadeInDuration,
+      withDuration: Self.fadeDuration,
       delay: 0,
       options: [.curveEaseOut, .allowUserInteraction],
     ) {

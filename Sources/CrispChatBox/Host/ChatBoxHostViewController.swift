@@ -107,8 +107,7 @@ private extension ChatBoxHostViewController {
   func revealWebView() {
     guard
       let loadingCtrl = self.contentViewController as? LoadingViewController,
-      self.view.window != nil,
-      !UIAccessibility.isReduceMotionEnabled
+      self.view.window != nil
     else {
       self.contentViewController = nil
       self.webView?.alpha = 1
@@ -116,7 +115,7 @@ private extension ChatBoxHostViewController {
     }
 
     UIView.animate(
-      withDuration: 0.25,
+      withDuration: LoadingViewController.fadeDuration,
       delay: 0,
       options: [.curveEaseInOut, .allowUserInteraction],
       animations: {
@@ -128,8 +127,7 @@ private extension ChatBoxHostViewController {
         guard
           let self,
           let loadingCtrl,
-          self.contentViewController === loadingCtrl,
-          self.model.state == .loaded
+          self.contentViewController === loadingCtrl
         else {
           return
         }

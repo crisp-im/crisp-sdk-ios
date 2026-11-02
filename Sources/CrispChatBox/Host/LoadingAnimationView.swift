@@ -11,6 +11,7 @@ package final class LoadingAnimationView: UIView {
 
   private let dots: [UIView]
   private var isAnimating = false
+  private var foregroundObservers = Set<AnyCancellable>()
 
   override package init(frame: CGRect) {
     self.dots = (0 ..< Self.numberOfDots).map { _ in
@@ -107,10 +108,42 @@ package final class LoadingAnimationView: UIView {
       self.isAnimating = true
 
     case .some where self.isAnimating:
-      self.isAnimating = false
-      self.startAnimating()
+      self.restartAnimating()
 
     default: break
     }
+
+    self.updateForegroundObserver()
+  }
+
+  private func restartAnimating() {
+    self.isAnimating = false
+    self.startAnimating()
+  }
+
+  /// iOS strips layer animations when the app is backgrounded, and `didMoveToWindow` doesn't
+  /// fire on return, so the pulse has to be restarted explicitly.
+  private func updateForegroundObserver() {
+    guard self.window != nil else {
+      self.foregroundObservers.removeAll()
+      return
+    }
+
+    guard self.foregroundObservers.isEmpty else {
+      return
+    }
+
+    NotificationCenter.default.addObserver(
+      forName: UIApplication.willEnterForegroundNotification,
+      object: nil,
+      queue: .main,
+    ) { [weak self] _ in
+      Task { @MainActor in
+        guard let self, self.isAnimating else {
+          return
+        }
+        self.restartAnimating()
+      }
+    }.store(in: &self.foregroundObservers)
   }
 }
