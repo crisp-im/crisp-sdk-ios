@@ -34,6 +34,12 @@ import UIKit
     )
     super.init(nibName: nil, bundle: nil)
     self.title = "Crisp Chat"
+
+    // Also applied here, not only to the embedded controller, so that the status bar follows it
+    // when this controller is presented.
+    if let userInterfaceStyle = configuration.chatBoxConfiguration.colorMode?.userInterfaceStyle {
+      self.overrideUserInterfaceStyle = userInterfaceStyle
+    }
   }
 
   @available(*, unavailable)

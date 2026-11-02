@@ -1,3 +1,4 @@
+import Crisp
 import SwiftUI
 
 struct SettingsView: View {
@@ -8,6 +9,8 @@ struct SettingsView: View {
       WebsiteIdView(model: self.model)
 
       TokenIdView(model: self.model)
+
+      ColorModeView(model: self.model)
 
       GroupBox(label: Label("Session", systemImage: "bubble")) {
         Button("Reset Session") {
@@ -55,6 +58,22 @@ struct WebsiteIdView: View {
       Button("Cancel", role: .cancel) {}
     } message: {
       Text("Changing the Website ID will reload the chat.")
+    }
+  }
+}
+
+struct ColorModeView: View {
+  @Bindable var model: SettingsViewModel
+
+  var body: some View {
+    GroupBox(label: Label("Color Mode", systemImage: "circle.lefthalf.filled")) {
+      Picker("Color Mode", selection: self.$model.colorMode) {
+        Text("Dashboard").tag(ColorMode?.none)
+        Text("Light").tag(ColorMode?.some(.light))
+        Text("Dark").tag(ColorMode?.some(.dark))
+        Text("Auto").tag(ColorMode?.some(.auto))
+      }
+      .pickerStyle(.segmented)
     }
   }
 }

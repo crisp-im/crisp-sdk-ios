@@ -250,6 +250,14 @@ package struct CrispClient {
     return try await caller()
   }
 
+  @MainActor package func configColorMode(_ mode: ColorMode) async throws {
+    let caller = JSCaller(
+      funcName: "\(Self._jsClassName).configColorMode",
+      evaluator: self.evaluator,
+    )
+    return try await caller(jsEncode(mode))
+  }
+
   @MainActor package func onInterfaceLifecycle(
     _ handler: @MainActor @escaping (InterfaceLifecycleEvent) -> Void,
   ) {
@@ -290,6 +298,7 @@ package struct CrispClient {
   import {
     botScenarioRun,
     chatShow,
+    configColorMode,
     connectSocket,
     disconnectSocket,
     focusOnForeground,
@@ -324,6 +333,7 @@ package struct CrispClient {
   window.CrispClient = {
     botScenarioRun,
     chatShow,
+    configColorMode,
     connectSocket,
     disconnectSocket,
     focusOnForeground,

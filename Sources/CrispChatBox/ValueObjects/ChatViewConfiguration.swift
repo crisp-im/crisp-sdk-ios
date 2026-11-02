@@ -1,4 +1,4 @@
-import Foundation
+import CrispChatBoxFFI
 
 /// Configuration options that control the appearance and behavior of a ChatViewController.
 package struct ChatViewConfiguration {
@@ -7,7 +7,11 @@ package struct ChatViewConfiguration {
   /// the ChatViewController is presented. Default value is `false`.
   package var activatesTextFieldOnAppear: Bool
 
-  package init(activatesTextFieldOnAppear: Bool = true) {
+  /// Overrides the color mode set in the Crisp dashboard. `nil` keeps the dashboard's color mode.
+  package var colorMode: ColorMode?
+
+  package init(activatesTextFieldOnAppear: Bool = true, colorMode: ColorMode? = nil) {
     self.activatesTextFieldOnAppear = activatesTextFieldOnAppear
+    self.colorMode = colorMode
   }
 }
