@@ -20,6 +20,14 @@ public final class SettingsViewModel {
     }
   }
 
+  var colorMode: ColorMode? {
+    didSet {
+      if self.colorMode != oldValue {
+        self.colorModeDidChange()
+      }
+    }
+  }
+
   var url: String = "https://www.crisp.com"
 
   var onShouldReload: (() -> Void)?
@@ -33,6 +41,10 @@ public final class SettingsViewModel {
     if let websiteId {
       CrispSDK.configure(websiteID: websiteId)
     }
+
+    self.colorMode = UserDefaults.standard.string(forKey: .UserDefaultsKey.colorMode)
+      .flatMap(ColorMode.init(storageValue:))
+    ChatViewConfiguration.default.colorMode = self.colorMode
   }
 
   func onAppear() {}
@@ -64,6 +76,34 @@ private extension SettingsViewModel {
     CrispSDK.setTokenID(tokenID: self.tokenId)
     CrispSDK.session.reset()
   }
+
+  func colorModeDidChange() {
+    UserDefaults.standard.set(
+      self.colorMode?.storageValue,
+      forKey: .UserDefaultsKey.colorMode,
+    )
+    ChatViewConfiguration.default.colorMode = self.colorMode
+    self.onShouldReload?()
+  }
+}
+
+private extension ColorMode {
+  init?(storageValue: String) {
+    switch storageValue {
+    case "light": self = .light
+    case "dark": self = .dark
+    case "auto": self = .auto
+    default: return nil
+    }
+  }
+
+  var storageValue: String {
+    switch self {
+    case .light: "light"
+    case .dark: "dark"
+    case .auto: "auto"
+    }
+  }
 }
 
 extension String {
@@ -73,5 +113,6 @@ extension String {
     static let lastSessionDataKey = "SessionDataKey"
     static let lastSessionDataValue = "SessionDataValue"
     static let mobileSDKEnabled = "MobileSDKEnabled"
+    static let colorMode = "ColorMode"
   }
 }
