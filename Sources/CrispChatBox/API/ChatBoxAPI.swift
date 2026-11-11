@@ -15,7 +15,7 @@ package final class ChatBoxAPI: Sendable {
 
     package fileprivate(set) var sessionId: SessionId?
     package var visitorData: VisitorData?
-    package var isSessionOngoing = false
+    package fileprivate(set) var isSessionOngoing = false
   }
 
   private let state = LockIsolated(State())
@@ -70,23 +70,41 @@ package extension ChatBoxAPI {
 }
 
 package extension ChatBoxAPI {
-  /// Records the session the widget loaded, which `Session.identifier` reports. Records nothing
-  /// and returns false while a reset is pending: that session is obsolete already.
-  func recordLoadedSession(_ id: SessionId) -> Bool {
+  /// Records the session the widget loaded and whether messages have been exchanged in it,
+  /// which `Session.identifier` and `Session.isOngoing` report. Records nothing and returns
+  /// false while a reset is pending: that session is obsolete already.
+  func recordLoadedSession(_ id: SessionId, isOngoing: Bool) -> Bool {
     self.state.withValue {
       guard self.commands.pendingReset == nil else { return false }
+      // A message that arrived while we were asking the web client has marked the session
+      // ongoing already. The web client's answer only adds to that, unless it joined another
+      // session than the one we knew.
+      let isKnownSession = $0.sessionId == nil || $0.sessionId == id
+      $0.isSessionOngoing = isOngoing || (isKnownSession && $0.isSessionOngoing)
       $0.sessionId = id
       return true
     }
   }
 
+  /// A message was sent or received, so the session is ongoing from now on. Not while a reset is
+  /// pending: the message belongs to the page we're leaving.
+  func markSessionOngoing() {
+    self.state.withValue {
+      guard self.commands.pendingReset == nil else { return }
+      $0.isSessionOngoing = true
+    }
+  }
+
   func resetSession() {
-    // The session we're leaving is obsolete, so `Session.identifier` returns nil until the next
-    // one has loaded. We enqueue the reset before clearing: a load that's adopting its session
-    // right now either sees the pending reset and records nothing, or recorded earlier and is
-    // cleared here.
+    // The session we're leaving is obsolete, so `Session.identifier` returns nil and
+    // `Session.isOngoing` false until the next one has loaded. We enqueue the reset before
+    // clearing: a load that's adopting its session right now either sees the pending reset and
+    // records nothing, or recorded earlier and is cleared here.
     self.commands.enqueueReset()
-    self.state.withValue { $0.sessionId = nil }
+    self.state.withValue {
+      $0.sessionId = nil
+      $0.isSessionOngoing = false
+    }
   }
 
   func setSessionData(_ data: [String: any Encodable & Sendable]) {

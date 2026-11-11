@@ -257,4 +257,188 @@ import TestMocks
     api.resetSession()
     #expect(api.sessionId == nil)
   }
+
+  /// `Session.isOngoing` reads the API as well. The web client is asked whether the session is
+  /// ongoing before the host is told the session has loaded, and a reset clears the answer.
+  @Test func exposesWhetherSessionIsOngoing() async {
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    #expect(!api.isSessionOngoing)
+
+    var ongoingInCallback: Bool?
+    api
+      .addCallback(.sessionLoaded(SessionIdHandler { _ in
+        ongoingInCallback = api.isSessionOngoing
+      }))
+
+    let evaluator: JSEvaluator = { js in
+      if js.contains("CrispClient.getSessionIdentifier()") {
+        return "session-1"
+      }
+      if js.contains("CrispClient.isSessionOngoing()") {
+        return true
+      }
+      return nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator, events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    #expect(ongoingInCallback == true)
+    #expect(api.isSessionOngoing)
+
+    api.resetSession()
+    #expect(!api.isSessionOngoing)
+  }
+
+  /// A session becomes ongoing with its first message, in either direction.
+  @Test(arguments: ["onMessageSent", "onMessageReceived"])
+  func marksSessionOngoingOnFirstMessage(channel: String) async throws {
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    let publisher = initializeClient(model: model)
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+    #expect(!api.isSessionOngoing)
+
+    try publisher(channel: channel, body: messageBody())
+    #expect(api.isSessionOngoing)
+  }
+
+  /// A message that arrives while the web client is still asked whether the session is ongoing
+  /// answers that already. The web client's older answer doesn't take it back.
+  @Test func keepsMessageMarkWhileQueryingWhetherSessionIsOngoing() async throws {
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    let ongoingGate = Gate()
+    let evaluator = RecordingJSEvaluator { js in
+      if js.contains("CrispClient.getSessionIdentifier()") {
+        return "session-1"
+      }
+      if js.contains("CrispClient.isSessionOngoing()") {
+        await ongoingGate.wait()
+        return false
+      }
+      return nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    publisher.onInterfaceLifecycle(.ready)
+    try await evaluator.waitForCall { $0.contains("CrispClient.isSessionOngoing()") }
+
+    try publisher(channel: "onMessageReceived", body: messageBody())
+    await waitForSessionLoadedEvent(api: api) {
+      ongoingGate.open()
+    }
+    #expect(api.isSessionOngoing)
+  }
+
+  /// If the web client can't tell whether the session is ongoing, what we know about it stands.
+  @Test func keepsSessionOngoingWhenQueryFails() async {
+    struct Failure: Error {}
+
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    let queryFails = LockIsolated(false)
+    let evaluator = RecordingJSEvaluator { js in
+      if js.contains("CrispClient.getSessionIdentifier()") {
+        return "session-1"
+      }
+      if js.contains("CrispClient.isSessionOngoing()") {
+        if queryFails.value {
+          throw Failure()
+        }
+        return true
+      }
+      return nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator.asEvaluator(), events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+    #expect(api.isSessionOngoing)
+
+    // The web client reports ready again on the same page, and this time can't answer.
+    queryFails.setValue(true)
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+    #expect(api.isSessionOngoing)
+  }
+
+  /// A load that joins another session than the one we knew starts from the web client's answer:
+  /// the previous session's messages don't make the new one ongoing.
+  @Test func dropsOngoingFlagWhenJoiningAnotherSession() async {
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    let joinedSessionId = LockIsolated("session-1")
+    let joinedSessionIsOngoing = LockIsolated(true)
+    let evaluator: JSEvaluator = { js in
+      if js.contains("CrispClient.getSessionIdentifier()") {
+        return joinedSessionId.value
+      }
+      if js.contains("CrispClient.isSessionOngoing()") {
+        return joinedSessionIsOngoing.value
+      }
+      return nil
+    }
+    let (bus, publisher) = JSEventBus.inMemory()
+    model.onClientInitialized(CrispClient(evaluator: evaluator, events: bus))
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+    #expect(api.isSessionOngoing)
+
+    // The reloaded web client comes up with a fresh session.
+    joinedSessionId.setValue("session-2")
+    joinedSessionIsOngoing.setValue(false)
+    model.onWebContentProcessTerminated()
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+    #expect(api.sessionId == "session-2")
+    #expect(!api.isSessionOngoing)
+  }
+
+  /// After a reset, a message from the page we're leaving doesn't make the next session ongoing.
+  @Test func doesNotMarkSessionOngoingAfterReset() async throws {
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    let publisher = initializeClient(model: model)
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    api.resetSession()
+    try publisher(channel: "onMessageReceived", body: messageBody())
+    #expect(!api.isSessionOngoing)
+  }
+}
+
+/// The JSON the web client sends with a message event.
+private func messageBody() throws -> String {
+  let message = Message(
+    content: .text("hi"),
+    origin: .chat,
+    timestamp: Date(timeIntervalSinceReferenceDate: 0),
+    fingerprint: 1,
+    from: .operator,
+  )
+  return try String(decoding: JSONEncoder().encode(message), as: UTF8.self)
 }

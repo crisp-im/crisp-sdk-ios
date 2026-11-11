@@ -288,6 +288,7 @@ extension ChatBoxHostModel {
   }
 
   func onMessageSent(message: Message) {
+    self.api.markSessionOngoing()
     self.api.callbacks.handleMessageSent(message)
 
     Task {
@@ -300,6 +301,7 @@ extension ChatBoxHostModel {
   }
 
   func onMessageReceived(message: Message) {
+    self.api.markSessionOngoing()
     self.api.callbacks.handleMessageReceived(message)
   }
 
@@ -396,13 +398,24 @@ private extension ChatBoxHostModel {
         return
       }
 
+      // Asked before the session is announced, so that a session-loaded callback reading
+      // `Session.isOngoing` gets the answer. If the web client can't tell, what we know about the
+      // session stands (see `ChatBoxAPI.recordLoadedSession`).
+      let isOngoing: Bool
+      do {
+        isOngoing = try await client.isSessionOngoing()
+      } catch {
+        log.warn("Failed to query whether the session is ongoing. \(error.localizedDescription)")
+        isOngoing = false
+      }
+
       // A reset or a newer load may have superseded this load while it awaited the session.
       guard !Task.isCancelled, let self, let load else { return }
       load.joinedSessionId = sessionId
 
       // If we've received a reset while waiting for the web client, the session it returned is
       // obsolete already. We don't adopt or announce it and reload the WebView instead.
-      guard self.api.recordLoadedSession(sessionId) else {
+      guard self.api.recordLoadedSession(sessionId, isOngoing: isOngoing) else {
         self.reloadForPendingReset()
         return
       }
