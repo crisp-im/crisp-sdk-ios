@@ -233,4 +233,28 @@ import TestMocks
     #expect(storage.current?.settings.deviceToken == token)
     #expect(storage.current?.settings.pushNotificationsPermissionRequested == true)
   }
+
+  /// The public `Session.identifier` reads the API, so the loaded session is exposed there before
+  /// the host is told about it, and no longer once the host resets.
+  @Test func exposesLoadedSessionUntilReset() async {
+    let api = ChatBoxAPI()
+    let model = ChatBoxHostModel(api: api) {
+      $0.session = .inMemory(storage: SessionStorage())
+    }
+    #expect(api.sessionId == nil)
+
+    var exposedInCallback: SessionId?
+    api.addCallback(.sessionLoaded(SessionIdHandler { _ in exposedInCallback = api.sessionId }))
+
+    let publisher = initializeClient(model: model, sessionId: "session-1")
+    await waitForSessionLoadedEvent(api: api) {
+      publisher.onInterfaceLifecycle(.ready)
+    }
+
+    #expect(exposedInCallback == "session-1")
+    #expect(api.sessionId == "session-1")
+
+    api.resetSession()
+    #expect(api.sessionId == nil)
+  }
 }

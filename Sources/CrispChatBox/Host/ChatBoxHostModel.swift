@@ -397,6 +397,7 @@ private extension ChatBoxHostModel {
 
       self.adoptLoadedSession(sessionId)
       load.joinedSessionId = sessionId
+      self.api.recordLoadedSession(sessionId)
       self.api.callbacks.handleSessionLoaded(sessionId: sessionId)
       self.flushCommandQueue()
 
