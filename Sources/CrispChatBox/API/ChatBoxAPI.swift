@@ -70,15 +70,22 @@ package extension ChatBoxAPI {
 }
 
 package extension ChatBoxAPI {
-  /// Records the session the widget loaded, which `Session.identifier` reports.
-  func recordLoadedSession(_ id: SessionId) {
-    self.state.withValue { $0.sessionId = id }
+  /// Records the session the widget loaded, which `Session.identifier` reports. Records nothing
+  /// and returns false while a reset is pending: that session is obsolete already.
+  func recordLoadedSession(_ id: SessionId) -> Bool {
+    self.state.withValue {
+      guard self.commands.pendingReset == nil else { return false }
+      $0.sessionId = id
+      return true
+    }
   }
 
   func resetSession() {
-    self.commands.enqueueReset()
     // The session we're leaving is obsolete, so `Session.identifier` returns nil until the next
-    // one has loaded.
+    // one has loaded. We enqueue the reset before clearing: a load that's adopting its session
+    // right now either sees the pending reset and records nothing, or recorded earlier and is
+    // cleared here.
+    self.commands.enqueueReset()
     self.state.withValue { $0.sessionId = nil }
   }
 

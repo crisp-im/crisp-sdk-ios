@@ -386,18 +386,28 @@ private extension ChatBoxHostModel {
       do {
         sessionId = try await client.getSessionIdentifier()
       } catch {
-        if !Task.isCancelled {
-          log.error("Failed to load session identifier. \(error.localizedDescription)")
+        guard !Task.isCancelled, let self else { return }
+        log.error("Failed to load session identifier. \(error.localizedDescription)")
+        // If we've received a reset while waiting for getSessionIdentifier(), we'll reload the
+        // WebView.
+        if self.api.commands.pendingReset != nil {
+          self.reloadForPendingReset()
         }
         return
       }
 
       // A reset or a newer load may have superseded this load while it awaited the session.
       guard !Task.isCancelled, let self, let load else { return }
+      load.joinedSessionId = sessionId
+
+      // If we've received a reset while waiting for the web client, the session it returned is
+      // obsolete already. We don't adopt or announce it and reload the WebView instead.
+      guard self.api.recordLoadedSession(sessionId) else {
+        self.reloadForPendingReset()
+        return
+      }
 
       self.adoptLoadedSession(sessionId)
-      load.joinedSessionId = sessionId
-      self.api.recordLoadedSession(sessionId)
       self.api.callbacks.handleSessionLoaded(sessionId: sessionId)
       self.flushCommandQueue()
 
@@ -713,8 +723,9 @@ extension ChatBoxHostModel {
   @MainActor
   final class Load {
     var task: Task<Void, Never>?
-    /// The session this load joined, once adopted as the stored session. The only session the
-    /// device can be deregistered from.
+    /// The session the web client joined for this load, once it has told us. The only session
+    /// the device can be deregistered from, and only while it's the stored session (see
+    /// `reloadForPendingReset()`).
     fileprivate(set) var joinedSessionId: SessionId?
 
     init(joinedSessionId: SessionId? = nil) {
