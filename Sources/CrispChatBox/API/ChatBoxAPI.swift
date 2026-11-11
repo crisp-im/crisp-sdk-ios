@@ -13,7 +13,7 @@ package final class ChatBoxAPI: Sendable {
     package fileprivate(set) var missingUsageDescriptionWarningsDisabled = false
     package fileprivate(set) var defaultLogHandlerAdded = false
 
-    package var sessionId: SessionId?
+    package fileprivate(set) var sessionId: SessionId?
     package var visitorData: VisitorData?
     package var isSessionOngoing = false
   }
@@ -70,8 +70,16 @@ package extension ChatBoxAPI {
 }
 
 package extension ChatBoxAPI {
+  /// Records the session the widget loaded, which `Session.identifier` reports.
+  func recordLoadedSession(_ id: SessionId) {
+    self.state.withValue { $0.sessionId = id }
+  }
+
   func resetSession() {
     self.commands.enqueueReset()
+    // The session we're leaving is obsolete, so `Session.identifier` returns nil until the next
+    // one has loaded.
+    self.state.withValue { $0.sessionId = nil }
   }
 
   func setSessionData(_ data: [String: any Encodable & Sendable]) {
