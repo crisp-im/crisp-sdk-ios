@@ -69,9 +69,13 @@ extension ChatBoxHostModel {
 func initializeClient(model: ChatBoxHostModel, sessionId: SessionId = .mock) -> JSEventPublisher {
   let (bus, publisher) = JSEventBus.inMemory()
   let evaluator: JSEvaluator = { js in
-    js.contains("CrispClient.getSessionIdentifier()")
-      ? sessionId.rawValue
-      : nil
+    if js.contains("CrispClient.getSessionIdentifier()") {
+      return sessionId.rawValue
+    }
+    if js.contains("CrispClient.isSessionOngoing()") {
+      return false
+    }
+    return nil
   }
 
   model.onClientInitialized(CrispClient(evaluator: evaluator, events: bus))
